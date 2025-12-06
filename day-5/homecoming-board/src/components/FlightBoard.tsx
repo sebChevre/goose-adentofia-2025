@@ -255,6 +255,7 @@ export function FlightBoard({ onFlightSelect, onGestureNavigate, gesture, onGest
             isSelected={index === selectedIndex}
             onClick={() => {
               setSelectedIndex(index);
+              setIsModalOpen(true);
               onFlightSelect?.(flight.id);
             }}
           />
