@@ -7,6 +7,7 @@ interface UseGesturesOptions {
   onGesture?: (gesture: GestureResult) => void;
   debounceMs?: number;
   enabled?: boolean;
+  ignoredGestures?: Set<GestureType>,
 }
 
 interface UseGesturesReturn {
@@ -24,6 +25,7 @@ export function useGestures(
     onGesture,
     debounceMs = 300,
     enabled = true,
+    ignoredGestures,
   } = options;
 
   const [currentGesture, setCurrentGesture] = useState<GestureResult | null>(null);
@@ -72,6 +74,13 @@ export function useGestures(
 
       if (debouncedGesture) {
         console.log(`✨ Gesture confirmed: ${debouncedGesture.type} (${debouncedGesture.hand} hand)`);
+
+        // Check if gesture should be ignored
+        if (ignoredGestures?.has(debouncedGesture.type)) {
+          console.log(`🚫 Gesture ignored (modal open): ${debouncedGesture.type}`);
+          continue;
+        }
+
         detectedGestures.push(debouncedGesture);
 
         // Play sound for gesture change
@@ -86,8 +95,8 @@ export function useGestures(
         }
       }
 
-      // Also add non-debounced gestures if they're not UNKNOWN
-      if (!debouncedGesture && gesture.type !== GestureType.UNKNOWN) {
+      // Also add non-debounced gestures if they're not UNKNOWN and not ignored
+      if (!debouncedGesture && gesture.type !== GestureType.UNKNOWN && !ignoredGestures?.has(gesture.type)) {
         detectedGestures.push(gesture);
       }
     }
@@ -98,7 +107,7 @@ export function useGestures(
     // Set currentGesture to first detected gesture (for backwards compatibility)
     setCurrentGesture(detectedGestures.length > 0 ? detectedGestures[0] : null);
 
-  }, [handResults, enabled, onGesture]);
+  }, [handResults, enabled, onGesture, ignoredGestures]);
 
   return {
     currentGesture,
