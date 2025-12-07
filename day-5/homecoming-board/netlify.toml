@@ -1,7 +1,4 @@
 [build]
+base = "../../day-5/homecoming-board"
 command = "npm run build"
-dir = "dist"
-base = "."
-[dev]
-command = "npm run dev"
-port = 3000
+publish = "build"
