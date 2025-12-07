@@ -1,118 +1,138 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { detectGesture, GestureDebouncer, GestureType, type GestureResult } from '../utils/gestureDetection';
-import { playGestureSound } from '../utils/gestureAudio';
-import type { HandResults } from '../types/hand';
+import { useState, useEffect, useRef, useCallback } from "react";
+import {
+	detectGesture,
+	GestureDebouncer,
+	GestureType,
+	type GestureResult,
+} from "../utils/gestureDetection";
+import { playGestureSound } from "../utils/gestureAudio";
+import type { HandResults } from "../types/hand";
 
 interface UseGesturesOptions {
-  onGesture?: (gesture: GestureResult) => void;
-  debounceMs?: number;
-  enabled?: boolean;
-  ignoredGestures?: Set<GestureType>,
+	onGesture?: (gesture: GestureResult) => void;
+	debounceMs?: number;
+	enabled?: boolean;
+	ignoredGestures?: Set<GestureType>;
 }
 
 interface UseGesturesReturn {
-  currentGesture: GestureResult | null;
-  allGestures: GestureResult[]; // All current gestures (one per hand)
-  gestureHistory: GestureResult[];
-  clearHistory: () => void;
+	currentGesture: GestureResult | null;
+	allGestures: GestureResult[]; // All current gestures (one per hand)
+	gestureHistory: GestureResult[];
+	clearHistory: () => void;
 }
 
 export function useGestures(
-  handResults: HandResults | null,
-  options: UseGesturesOptions = {}
+	handResults: HandResults | null,
+	options: UseGesturesOptions = {},
 ): UseGesturesReturn {
-  const {
-    onGesture,
-    debounceMs = 300,
-    enabled = true,
-    ignoredGestures,
-  } = options;
+	const {
+		onGesture,
+		debounceMs = 300,
+		enabled = true,
+		ignoredGestures,
+	} = options;
 
-  const [currentGesture, setCurrentGesture] = useState<GestureResult | null>(null);
-  const [allGestures, setAllGestures] = useState<GestureResult[]>([]);
-  const [gestureHistory, setGestureHistory] = useState<GestureResult[]>([]);
+	const [currentGesture, setCurrentGesture] = useState<GestureResult | null>(
+		null,
+	);
+	const [allGestures, setAllGestures] = useState<GestureResult[]>([]);
+	const [gestureHistory, setGestureHistory] = useState<GestureResult[]>([]);
 
-  // Separate debouncers for left and right hands
-  const leftDebouncerRef = useRef(new GestureDebouncer(debounceMs));
-  const rightDebouncerRef = useRef(new GestureDebouncer(debounceMs));
+	// Separate debouncers for left and right hands
+	const leftDebouncerRef = useRef(new GestureDebouncer(debounceMs));
+	const rightDebouncerRef = useRef(new GestureDebouncer(debounceMs));
 
-  const clearHistory = useCallback(() => {
-    setGestureHistory([]);
-  }, []);
+	const clearHistory = useCallback(() => {
+		setGestureHistory([]);
+	}, []);
 
-  useEffect(() => {
-    if (!enabled || !handResults) {
-      setCurrentGesture(null);
-      setAllGestures([]);
-      return;
-    }
+	useEffect(() => {
+		if (!enabled || !handResults) {
+			setCurrentGesture(null);
+			setAllGestures([]);
+			return;
+		}
 
-    // Process each detected hand
-    const { multiHandLandmarks, multiHandedness } = handResults;
+		// Process each detected hand
+		const { multiHandLandmarks, multiHandedness } = handResults;
 
-    if (!multiHandLandmarks || multiHandLandmarks.length === 0) {
-      setCurrentGesture(null);
-      setAllGestures([]);
-      return;
-    }
+		if (!multiHandLandmarks || multiHandLandmarks.length === 0) {
+			setCurrentGesture(null);
+			setAllGestures([]);
+			return;
+		}
 
-    console.debug(`🖐️ Processing ${multiHandLandmarks.length} hand(s)`);
+		console.debug(`🖐️ Processing ${multiHandLandmarks.length} hand(s)`);
 
-    // Detect gestures for all hands
-    const detectedGestures: GestureResult[] = [];
+		// Detect gestures for all hands
+		const detectedGestures: GestureResult[] = [];
 
-    for (let i = 0; i < multiHandLandmarks.length; i++) {
-      const keypoints = multiHandLandmarks[i];
-      const handedness = (multiHandedness?.[i]?.label || 'Unknown') as 'Left' | 'Right' | 'Unknown';
+		for (let i = 0; i < multiHandLandmarks.length; i++) {
+			const keypoints = multiHandLandmarks[i];
+			const handedness = (multiHandedness?.[i]?.label || "Unknown") as
+				| "Left"
+				| "Right"
+				| "Unknown";
 
-      // Detect gesture for this hand
-      const gesture = detectGesture(keypoints, handedness);
+			// Detect gesture for this hand
+			const gesture = detectGesture(keypoints, handedness);
 
-      // Use appropriate debouncer based on hand
-      const debouncer = handedness === 'Left' ? leftDebouncerRef.current : rightDebouncerRef.current;
-      const debouncedGesture = debouncer.process(gesture);
+			// Use appropriate debouncer based on hand
+			const debouncer =
+				handedness === "Left"
+					? leftDebouncerRef.current
+					: rightDebouncerRef.current;
+			const debouncedGesture = debouncer.process(gesture);
 
-      if (debouncedGesture) {
-        console.debug(`✨ Gesture confirmed: ${debouncedGesture.type} (${debouncedGesture.hand} hand)`);
+			if (debouncedGesture) {
+				console.debug(
+					`✨ Gesture confirmed: ${debouncedGesture.type} (${debouncedGesture.hand} hand)`,
+				);
 
-        // Check if gesture should be ignored
-        if (ignoredGestures?.has(debouncedGesture.type)) {
-          console.debug(`🚫 Gesture ignored (modal open): ${debouncedGesture.type}`);
-          continue;
-        }
+				// Check if gesture should be ignored
+				if (ignoredGestures?.has(debouncedGesture.type)) {
+					console.debug(
+						`🚫 Gesture ignored (modal open): ${debouncedGesture.type}`,
+					);
+					continue;
+				}
 
-        detectedGestures.push(debouncedGesture);
+				detectedGestures.push(debouncedGesture);
 
-        // Play sound for gesture change
-        playGestureSound(debouncedGesture.type);
+				// Play sound for gesture change
+				playGestureSound(debouncedGesture.type);
 
-        // Add to history (keep last 10)
-        setGestureHistory(prev => [...prev, debouncedGesture].slice(-10));
+				// Add to history (keep last 10)
+				setGestureHistory((prev) => [...prev, debouncedGesture].slice(-10));
 
-        // Call callback if provided
-        if (onGesture) {
-          onGesture(debouncedGesture);
-        }
-      }
+				// Call callback if provided
+				if (onGesture) {
+					onGesture(debouncedGesture);
+				}
+			}
 
-      // Also add non-debounced gestures if they're not UNKNOWN and not ignored
-      if (!debouncedGesture && gesture.type !== GestureType.UNKNOWN && !ignoredGestures?.has(gesture.type)) {
-        detectedGestures.push(gesture);
-      }
-    }
+			// Also add non-debounced gestures if they're not UNKNOWN and not ignored
+			if (
+				!debouncedGesture &&
+				gesture.type !== GestureType.UNKNOWN &&
+				!ignoredGestures?.has(gesture.type)
+			) {
+				detectedGestures.push(gesture);
+			}
+		}
 
-    // Update state
-    setAllGestures(detectedGestures);
+		// Update state
+		setAllGestures(detectedGestures);
 
-    // Set currentGesture to first detected gesture (for backwards compatibility)
-    setCurrentGesture(detectedGestures.length > 0 ? detectedGestures[0] : null);
+		// Set currentGesture to first detected gesture (for backwards compatibility)
+		setCurrentGesture(detectedGestures.length > 0 ? detectedGestures[0] : null);
+	}, [handResults, enabled, onGesture, ignoredGestures]);
 
-  }, [handResults, enabled, onGesture, ignoredGestures]);
-
-  return {
-    currentGesture,
-    allGestures,
-    gestureHistory,
-    clearHistory,
-  };
+	return {
+		currentGesture,
+		allGestures,
+		gestureHistory,
+		clearHistory,
+	};
 }

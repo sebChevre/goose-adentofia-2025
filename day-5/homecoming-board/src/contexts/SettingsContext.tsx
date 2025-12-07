@@ -1,67 +1,77 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import {
+	createContext,
+	useContext,
+	useState,
+	useEffect,
+	type ReactNode,
+} from "react";
 
 interface SettingsContextType {
-  soundEnabled: boolean
-  toggleSound: () => void
-  setSoundEnabled: (enabled: boolean) => void
+	soundEnabled: boolean;
+	toggleSound: () => void;
+	setSoundEnabled: (enabled: boolean) => void;
 }
 
-const SettingsContext = createContext<SettingsContextType | undefined>(undefined)
+const SettingsContext = createContext<SettingsContextType | undefined>(
+	undefined,
+);
 
-const STORAGE_KEY = 'homecoming-board-settings'
+const STORAGE_KEY = "homecoming-board-settings";
 
 interface SettingsProviderProps {
-  children: ReactNode
+	children: ReactNode;
 }
 
 export function SettingsProvider({ children }: SettingsProviderProps) {
-  // Load initial state from localStorage (only in browser)
-  const [soundEnabled, setSoundEnabledState] = useState(() => {
-    // Check if we're in a browser environment
-    if (typeof window === 'undefined') {
-      return true // Default to enabled during SSR
-    }
-    
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) {
-        const settings = JSON.parse(stored)
-        return settings.soundEnabled ?? true
-      }
-    } catch (e) {
-      console.error('Failed to load settings:', e)
-    }
-    return true // Default to enabled
-  })
+	// Load initial state from localStorage (only in browser)
+	const [soundEnabled, setSoundEnabledState] = useState(() => {
+		// Check if we're in a browser environment
+		if (typeof window === "undefined") {
+			return true; // Default to enabled during SSR
+		}
 
-  // Save to localStorage whenever it changes
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ soundEnabled }))
-    } catch (e) {
-      console.error('Failed to save settings:', e)
-    }
-  }, [soundEnabled])
+		try {
+			const stored = localStorage.getItem(STORAGE_KEY);
+			if (stored) {
+				const settings = JSON.parse(stored);
+				return settings.soundEnabled ?? true;
+			}
+		} catch (e) {
+			console.error("Failed to load settings:", e);
+		}
+		return true; // Default to enabled
+	});
 
-  const toggleSound = () => {
-    setSoundEnabledState(prev => !prev)
-  }
+	// Save to localStorage whenever it changes
+	useEffect(() => {
+		try {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify({ soundEnabled }));
+		} catch (e) {
+			console.error("Failed to save settings:", e);
+		}
+	}, [soundEnabled]);
 
-  const setSoundEnabled = (enabled: boolean) => {
-    setSoundEnabledState(enabled)
-  }
+	const toggleSound = () => {
+		setSoundEnabledState((prev) => !prev);
+	};
 
-  return (
-    <SettingsContext.Provider value={{ soundEnabled, toggleSound, setSoundEnabled }}>
-      {children}
-    </SettingsContext.Provider>
-  )
+	const setSoundEnabled = (enabled: boolean) => {
+		setSoundEnabledState(enabled);
+	};
+
+	return (
+		<SettingsContext.Provider
+			value={{ soundEnabled, toggleSound, setSoundEnabled }}
+		>
+			{children}
+		</SettingsContext.Provider>
+	);
 }
 
 export function useSettings() {
-  const context = useContext(SettingsContext)
-  if (context === undefined) {
-    throw new Error('useSettings must be used within a SettingsProvider')
-  }
-  return context
+	const context = useContext(SettingsContext);
+	if (context === undefined) {
+		throw new Error("useSettings must be used within a SettingsProvider");
+	}
+	return context;
 }
