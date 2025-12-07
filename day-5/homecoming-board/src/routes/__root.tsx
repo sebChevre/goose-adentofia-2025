@@ -32,6 +32,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         title: 'TanStack Start Starter',
       },
       {
+        property: 'og:title',
+        content: 'Homecoming Board - Advent of AI Day 5',
+      },
+      {
+        property: 'og:description',
+        content: 'A modern demo app for hand tracking, flight boards, and gesture features built with TanStack and MediaPipe.',
+      },
+      {
         property: 'og:image',
         content: 'https://flightboard.nickyt.co/og-image.png',
       },
