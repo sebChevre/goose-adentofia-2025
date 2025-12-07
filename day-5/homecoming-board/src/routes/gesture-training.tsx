@@ -25,7 +25,7 @@ function GestureTraining() {
 
   // Gesture detection with callback
   const handleGesture = useCallback((gesture: any) => {
-    console.log(`✨ Gesture detected: ${gesture.type} - ${gesture.hand} hand`)
+    console.debug(`✨ Gesture detected: ${gesture.type} - ${gesture.hand} hand`)
   }, [])
 
   const { currentGesture, allGestures } = useGestures(results, {
@@ -38,11 +38,11 @@ function GestureTraining() {
   // Load trained thresholds on mount
   useEffect(() => {
     const loaded = loadTrainedThresholds();
-    console.log('📚 Loaded thresholds on page load:', loaded);
+    console.debug('📚 Loaded thresholds on page load:', loaded);
   }, []);
 
   const handleThresholdsLearned = useCallback((thresholds: any) => {
-    console.log('🎓 New thresholds learned:', thresholds);
+    console.debug('🎓 New thresholds learned:', thresholds);
     // Update the gesture detection system with new thresholds
     updateThresholds(thresholds);
     alert('✅ Training complete! Your custom gesture thresholds are now active.\n\nGo to the Flight Board to test them!');

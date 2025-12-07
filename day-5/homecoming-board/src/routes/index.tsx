@@ -20,7 +20,7 @@ function App() {
   // Load trained thresholds on mount
   useEffect(() => {
     const loaded = loadTrainedThresholds();
-    console.log('📚 Loaded trained thresholds:', loaded);
+    console.debug('📚 Loaded trained thresholds:', loaded);
   }, []);
 
   // Sync sound settings with audio utility
@@ -45,7 +45,7 @@ function App() {
 
   // Gesture detection with callback
   const handleGesture = useCallback((gesture: GestureResult) => {
-    console.log(`✨ Gesture detected: ${gesture.type} - ${gesture.hand} hand`)
+    console.debug(`✨ Gesture detected: ${gesture.type} - ${gesture.hand} hand`)
     setCurrentGestureForBoard(gesture.type)
   }, [])
 

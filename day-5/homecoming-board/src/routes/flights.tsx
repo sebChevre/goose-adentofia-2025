@@ -33,8 +33,8 @@ function FlightsPage() {
       <main className="py-8 px-6">
         <div className="max-w-7xl mx-auto">
           <FlightBoard
-            onFlightSelect={(id) => console.log('Selected flight:', id)}
-            onGestureNavigate={(direction) => console.log('Navigate:', direction)}
+            onFlightSelect={(id) => console.debug('Selected flight:', id)}
+            onGestureNavigate={(direction) => console.debug('Navigate:', direction)}
           />
         </div>
       </main>

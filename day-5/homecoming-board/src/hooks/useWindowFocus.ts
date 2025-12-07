@@ -15,12 +15,12 @@ export function useWindowFocus() {
 
   useEffect(() => {
     const handleFocus = () => {
-      console.log('👁️ Window gained focus - resuming camera');
+      console.debug('👁️ Window gained focus - resuming camera');
       setHasFocus(true);
     };
 
     const handleBlur = () => {
-      console.log('👁️ Window lost focus - pausing camera');
+      console.debug('👁️ Window lost focus - pausing camera');
       setHasFocus(false);
     };
 
@@ -31,10 +31,10 @@ export function useWindowFocus() {
     // Also listen for visibilitychange (handles tab switching)
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        console.log('📑 Tab hidden - pausing camera');
+        console.debug('📑 Tab hidden - pausing camera');
         setHasFocus(false);
       } else {
-        console.log('📑 Tab visible - resuming camera');
+        console.debug('📑 Tab visible - resuming camera');
         setHasFocus(true);
       }
     };

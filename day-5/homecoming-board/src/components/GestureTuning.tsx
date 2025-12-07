@@ -51,7 +51,7 @@ export function GestureTuning({ handResults, onThresholdsChange }: GestureTuning
 
   // Calculate finger curls from hand results
   useEffect(() => {
-    console.log('🎛️ GestureTuning received handResults:', handResults?.multiHandLandmarks?.length || 0, 'hands');
+    console.debug('🎛️ GestureTuning received handResults:', handResults?.multiHandLandmarks?.length || 0, 'hands');
     
     if (!handResults?.multiHandLandmarks?.[0]) {
       setFingerCurls(null);

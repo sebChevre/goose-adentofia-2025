@@ -41,66 +41,66 @@ export function FlightBoard({ onFlightSelect, onGestureNavigate, gesture, onGest
 
   // Handle gesture input from parent
   useEffect(() => {
-    console.log('🎮 Gesture effect triggered - gesture:', gesture, 'flights:', flights?.length);
+    console.debug('🎮 Gesture effect triggered - gesture:', gesture, 'flights:', flights?.length);
 
     if (!gesture) {
-      console.log('  ⏭️ No gesture, skipping');
+      console.debug('  ⏭️ No gesture, skipping');
       return;
     }
 
     if (!flights || flights.length === 0) {
-      console.log('  ⏭️ No flights, skipping');
+      console.debug('  ⏭️ No flights, skipping');
       return;
     }
 
-    console.log('  ✅ Processing gesture:', gesture);
+    console.debug('  ✅ Processing gesture:', gesture);
 
     // Map gestures to navigation actions
     if (gesture === GestureType.CLOSED_FIST) {
-      console.log('  ✊ Closed fist - navigate down');
+      console.debug('  ✊ Closed fist - navigate down');
       handleNavigate('down');
     } else if (gesture === GestureType.OPEN_PALM) {
-      console.log('  ✋ Open palm - navigate up');
+      console.debug('  ✋ Open palm - navigate up');
       handleNavigate('up');
     } else if (gesture === GestureType.THUMBS_UP) {
-      console.log('  👍 Thumbs up - opening modal for selected flight');
+      console.debug('  👍 Thumbs up - opening modal for selected flight');
       // Open the modal for the currently selected flight
       if (flights && flights[selectedIndex]) {
         setIsModalOpen(true);
       }
     } else if (gesture === GestureType.THUMBS_DOWN) {
-      console.log('  👎 Thumbs down - closing modal');
+      console.debug('  👎 Thumbs down - closing modal');
       // Close the modal if it's open
       if (isModalOpen) {
         setIsModalOpen(false);
       }
     } else {
-      console.log('  ❓ Unknown gesture type:', gesture);
+      console.debug('  ❓ Unknown gesture type:', gesture);
     }
 
     // Mark gesture as processed
-    console.log('  🧹 Calling onGestureProcessed');
+    console.debug('  🧹 Calling onGestureProcessed');
     onGestureProcessed?.();
   }, [gesture, flights, selectedIndex, isModalOpen, refetch, onGestureProcessed]);
 
   // Navigate between flights
   const handleNavigate = (direction: 'up' | 'down') => {
-    console.log('  📍 handleNavigate called with direction:', direction);
-    console.log('  📍 Current selectedIndex:', selectedIndex);
-    console.log('  📍 Total flights:', flights?.length);
+    console.debug('  📍 handleNavigate called with direction:', direction);
+    console.debug('  📍 Current selectedIndex:', selectedIndex);
+    console.debug('  📍 Total flights:', flights?.length);
 
     if (!flights || flights.length === 0) {
-      console.log('  ❌ No flights available');
+      console.debug('  ❌ No flights available');
       return;
     }
 
     let newIndex = selectedIndex;
     if (direction === 'down') {
       newIndex = Math.min(selectedIndex + 1, flights.length - 1);
-      console.log('  ⬇️ Scrolling DOWN: from', selectedIndex, 'to', newIndex);
+      console.debug('  ⬇️ Scrolling DOWN: from', selectedIndex, 'to', newIndex);
     } else {
       newIndex = Math.max(selectedIndex - 1, 0);
-      console.log('  ⬆️ Scrolling UP: from', selectedIndex, 'to', newIndex);
+      console.debug('  ⬆️ Scrolling UP: from', selectedIndex, 'to', newIndex);
     }
 
     setSelectedIndex(newIndex);

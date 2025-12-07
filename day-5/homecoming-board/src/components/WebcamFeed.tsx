@@ -26,7 +26,7 @@ export function WebcamFeed({ onVideoReady, mirrored = true, className = '' }: We
 
   // Start webcam on mount and when selectedDeviceId changes
   useEffect(() => {
-    console.log('🚀 WebcamFeed effect - selectedDeviceId:', selectedDeviceId);
+    console.debug('🚀 WebcamFeed effect - selectedDeviceId:', selectedDeviceId);
     // Small delay to ensure previous stream is fully stopped
     const timer = setTimeout(() => {
       startWebcam();
@@ -41,13 +41,13 @@ export function WebcamFeed({ onVideoReady, mirrored = true, className = '' }: We
 
     if (!hasFocus) {
       // Pause all video tracks when window loses focus
-      console.log('⏸️ Pausing camera (no focus)');
+      console.debug('⏸️ Pausing camera (no focus)');
       stream.getVideoTracks().forEach(track => {
         track.enabled = false;
       });
     } else {
       // Resume all video tracks when window gains focus
-      console.log('▶️ Resuming camera (has focus)');
+      console.debug('▶️ Resuming camera (has focus)');
       stream.getVideoTracks().forEach(track => {
         track.enabled = true;
       });
@@ -56,7 +56,7 @@ export function WebcamFeed({ onVideoReady, mirrored = true, className = '' }: We
 
   // Call onVideoReady when stream is attached to video element
   useEffect(() => {
-    console.log('📹 Stream/Video check - stream:', stream, 'videoRef.current:', videoRef.current);
+    console.debug('📹 Stream/Video check - stream:', stream, 'videoRef.current:', videoRef.current);
     
     if (!stream || !onVideoReady) return;
     
@@ -65,12 +65,12 @@ export function WebcamFeed({ onVideoReady, mirrored = true, className = '' }: We
       const video = videoRef.current;
       
       if (!video) {
-        console.log('⏳ Video element not yet available, retrying...');
+        console.debug('⏳ Video element not yet available, retrying...');
         return false;
       }
       
       const handleLoadedData = () => {
-        console.log('✅ Video loadeddata event - calling onVideoReady');
+        console.debug('✅ Video loadeddata event - calling onVideoReady');
         onVideoReady(video);
       };
       
@@ -78,7 +78,7 @@ export function WebcamFeed({ onVideoReady, mirrored = true, className = '' }: We
       
       // If already loaded, call immediately
       if (video.readyState >= 2) {
-        console.log('✅ Video already loaded (readyState:', video.readyState, ') - calling onVideoReady immediately');
+        console.debug('✅ Video already loaded (readyState:', video.readyState, ') - calling onVideoReady immediately');
         onVideoReady(video);
       }
       
@@ -117,7 +117,7 @@ export function WebcamFeed({ onVideoReady, mirrored = true, className = '' }: We
   }, [stream, onVideoReady]);
 
   const handleCameraChange = async (deviceId: string) => {
-    console.log('🔄 Switching camera to:', deviceId);
+    console.debug('🔄 Switching camera to:', deviceId);
     setShowCameraSelector(false);
     stopWebcam();
     // Wait a bit for the stream to fully stop before switching

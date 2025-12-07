@@ -45,7 +45,7 @@ export function useWebcam(options: UseWebcamOptions = {}): UseWebcamReturn {
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter(device => device.kind === 'videoinput');
       setAvailableCameras(videoDevices);
-      console.log('📹 Available cameras:', videoDevices.map(d => d.label || d.deviceId));
+      console.debug('📹 Available cameras:', videoDevices.map(d => d.label || d.deviceId));
     } catch (err) {
       console.error('❌ Failed to enumerate cameras:', err);
     }
@@ -53,7 +53,7 @@ export function useWebcam(options: UseWebcamOptions = {}): UseWebcamReturn {
 
   const stopWebcam = useCallback(() => {
     if (streamRef.current) {
-      console.log('🛑 Stopping webcam stream');
+      console.debug('🛑 Stopping webcam stream');
       streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
@@ -75,7 +75,7 @@ export function useWebcam(options: UseWebcamOptions = {}): UseWebcamReturn {
       // Ensure any existing stream is stopped before requesting a new one
       stopWebcam();
 
-      console.log('🎥 Requesting webcam access with deviceId:', optionsRef.current.deviceId);
+      console.debug('🎥 Requesting webcam access with deviceId:', optionsRef.current.deviceId);
 
       const videoConstraints = optionsRef.current.videoConstraints || {
         width: { ideal: 1280 },
@@ -88,7 +88,7 @@ export function useWebcam(options: UseWebcamOptions = {}): UseWebcamReturn {
         audio: false,
       });
 
-      console.log('✅ Webcam access granted!', mediaStream);
+      console.debug('✅ Webcam access granted!', mediaStream);
       streamRef.current = mediaStream;
       setStream(mediaStream);
 
@@ -113,7 +113,7 @@ export function useWebcam(options: UseWebcamOptions = {}): UseWebcamReturn {
       const video = videoRef.current;
 
       if (video) {
-        console.log('📹 Attaching stream to video element', {
+        console.debug('📹 Attaching stream to video element', {
           streamId: stream.id,
           videoElement: video.tagName
         });
@@ -125,7 +125,7 @@ export function useWebcam(options: UseWebcamOptions = {}): UseWebcamReturn {
           console.warn('⚠️ Video play failed (might be ok):', err);
         });
       } else {
-        console.log('⏳ Video element not ready yet, will retry...');
+        console.debug('⏳ Video element not ready yet, will retry...');
         // Retry after a short delay if video element isn't ready
         retryTimer = setTimeout(() => {
           attachStream();

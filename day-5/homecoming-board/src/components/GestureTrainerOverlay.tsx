@@ -112,7 +112,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
     const thumbsUpSamples = samples.get(GestureType.THUMBS_UP) || [];
     const thumbsDownSamples = samples.get(GestureType.THUMBS_DOWN) || [];
 
-    console.log('📊 Training data:', {
+    console.debug('📊 Training data:', {
       fist: fistSamples.length,
       palm: palmSamples.length,
       thumbsUp: thumbsUpSamples.length,
@@ -173,7 +173,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
     const palmAvg = calcAvgCurls(palmSamples);
     const thumbsUpAvg = calcAvgCurls(thumbsUpSamples);
 
-    console.log('📈 Average curls per gesture:', { fistAvg, palmAvg, thumbsUpAvg });
+    console.debug('📈 Average curls per gesture:', { fistAvg, palmAvg, thumbsUpAvg });
 
     // Calculate thresholds based on learned data with standard deviation awareness
     // Use stdDev to add tolerance margins - more variance = more lenient thresholds
@@ -212,7 +212,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
       },
     };
 
-    console.log('🎓 Learned new thresholds:', newThresholds);
+    console.debug('🎓 Learned new thresholds:', newThresholds);
     
     // Save to localStorage
     try {
@@ -223,7 +223,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
         thumbsUp: thumbsUpSamples,
         thumbsDown: thumbsDownSamples,
       }));
-      console.log('💾 Saved thresholds to localStorage');
+      console.debug('💾 Saved thresholds to localStorage');
     } catch (e) {
       console.error('Failed to save to localStorage:', e);
     }

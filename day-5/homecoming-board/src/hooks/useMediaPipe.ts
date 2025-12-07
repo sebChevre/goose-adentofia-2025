@@ -37,11 +37,11 @@ export function useMediaPipe(
   useEffect(() => {
     // Only run on client side
     if (typeof window === 'undefined' || !videoElement) {
-      console.log('⏸️ Skipping MediaPipe init - no video element yet');
+      console.debug('⏸️ Skipping MediaPipe init - no video element yet');
       return;
     }
 
-    console.log('🎬 MediaPipe effect triggered - videoElement:', videoElement);
+    console.debug('🎬 MediaPipe effect triggered - videoElement:', videoElement);
     
     // Reset state for new initialization
     setIsReady(false);
@@ -54,44 +54,44 @@ export function useMediaPipe(
     const initializeHandDetection = async () => {
       try {
         setError(null);
-        console.log('🤖 Initializing TensorFlow.js Hand Detection...');
+        console.debug('🤖 Initializing TensorFlow.js Hand Detection...');
 
         // Dynamically import TensorFlow.js
-        console.log('📦 Loading TensorFlow.js modules...');
+        console.debug('📦 Loading TensorFlow.js modules...');
         const tf = await import('@tensorflow/tfjs');
         const handPoseDetection = await import('@tensorflow-models/hand-pose-detection');
-        console.log('✅ TensorFlow modules loaded');
+        console.debug('✅ TensorFlow modules loaded');
 
         // Check WebGL availability first
         const canvas = document.createElement('canvas');
         const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
-        console.log('🔍 WebGL browser support:', {
+        console.debug('🔍 WebGL browser support:', {
           webgl2: !!canvas.getContext('webgl2'),
           webgl: !!canvas.getContext('webgl'),
           supported: !!gl
         });
 
         // Try to use WebGL backend (best for performance and accuracy)
-        console.log('🔧 Attempting to use WebGL backend...');
+        console.debug('🔧 Attempting to use WebGL backend...');
         try {
           await tf.setBackend('webgl');
           await tf.ready();
-          console.log(`✅ TensorFlow backend ready: ${tf.getBackend()}`);
+          console.debug(`✅ TensorFlow backend ready: ${tf.getBackend()}`);
         } catch (backendError) {
           console.warn('Could not set WebGL backend, trying CPU:', backendError);
           try {
             await tf.setBackend('cpu');
             await tf.ready();
-            console.log(`⚠️ TensorFlow backend ready: ${tf.getBackend()} (CPU - may have limited functionality)`);
+            console.debug(`⚠️ TensorFlow backend ready: ${tf.getBackend()} (CPU - may have limited functionality)`);
           } catch (cpuError) {
             console.warn('Could not set any backend, using default:', cpuError);
             await tf.ready();
-            console.log(`⚠️ TensorFlow backend ready: ${tf.getBackend()}`);
+            console.debug(`⚠️ TensorFlow backend ready: ${tf.getBackend()}`);
           }
         }
 
         // Create MediaPipe Hands detector
-        console.log('🖐️ Creating hand detector...');
+        console.debug('🖐️ Creating hand detector...');
         const model = handPoseDetection.SupportedModels.MediaPipeHands;
         
         // Try mediapipe runtime instead of tfjs (might have better coordinate support)
@@ -101,18 +101,18 @@ export function useMediaPipe(
           maxHands: options.config?.maxNumHands || DEFAULT_HAND_CONFIG.maxNumHands,
         };
         
-        console.log('⚙️ Detector config (trying mediapipe runtime):', detectorConfig);
+        console.debug('⚙️ Detector config (trying mediapipe runtime):', detectorConfig);
         const detector = await handPoseDetection.createDetector(model, detectorConfig);
         
-        console.log('✅ Hand detector created successfully');
+        console.debug('✅ Hand detector created successfully');
         handLandmarkerRef.current = detector;
 
         // Mark as ready
         setIsReady(true);
-        console.log('✅ Hand detection fully initialized and running!');
+        console.debug('✅ Hand detection fully initialized and running!');
 
         // Start processing frames
-        console.log('▶️ Starting video frame processing...');
+        console.debug('▶️ Starting video frame processing...');
         
         const processFrame = async () => {
           if (!handLandmarkerRef.current || !videoElement || videoElement.readyState < 2) {
@@ -123,7 +123,7 @@ export function useMediaPipe(
           try {
             // Debug video element before estimation
             if (frameCountRef.current === 0) {
-              console.log('🎥 Video element status:', {
+              console.debug('🎥 Video element status:', {
                 width: videoElement.videoWidth,
                 height: videoElement.videoHeight,
                 readyState: videoElement.readyState,
@@ -139,7 +139,7 @@ export function useMediaPipe(
 
             // Debug: Log the actual TensorFlow.js hand data structure (less frequently)
             if (hands.length > 0 && frameCountRef.current % 60 === 0) {
-              console.log('🔍 TF.js hand data structure:', {
+              console.debug('🔍 TF.js hand data structure:', {
                 keys: Object.keys(hands[0]),
                 keypointsExists: !!hands[0].keypoints,
                 keypointsLength: hands[0].keypoints?.length,
@@ -164,7 +164,7 @@ export function useMediaPipe(
 
             // Log when hands are first detected (less spam)
             if (hands.length > 0 && frameCountRef.current % 30 === 0) {
-              console.log(`👋 Detected ${hands.length} hand(s)`);
+              console.debug(`👋 Detected ${hands.length} hand(s)`);
             }
 
             // Convert TensorFlow format to our HandResults format
@@ -182,7 +182,7 @@ export function useMediaPipe(
             // Only update React state when hand count changes (to avoid infinite re-renders)
             const currentHandCount = hands.length;
             if (currentHandCount !== lastHandCountRef.current) {
-              console.log(`🔄 Hand count changed: ${lastHandCountRef.current} → ${currentHandCount}`);
+              console.debug(`🔄 Hand count changed: ${lastHandCountRef.current} → ${currentHandCount}`);
               lastHandCountRef.current = currentHandCount;
               setResults(handResults);
             }
@@ -223,7 +223,7 @@ export function useMediaPipe(
 
     // Cleanup
     return () => {
-      console.log('🧹 Cleaning up MediaPipe resources...');
+      console.debug('🧹 Cleaning up MediaPipe resources...');
       
       // Stop animation frame
       if (animationFrameIdRef.current) {
@@ -245,7 +245,7 @@ export function useMediaPipe(
         }
       }
       
-      console.log('✅ MediaPipe cleanup complete');
+      console.debug('✅ MediaPipe cleanup complete');
     };
   }, [videoElement, options.config?.maxNumHands, options.config?.modelComplexity]);
 

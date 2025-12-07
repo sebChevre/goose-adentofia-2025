@@ -98,7 +98,7 @@ export function useFlightData(options: UseFlightDataOptions = {}) {
     queryKey: ['flights', airport, bbox],
 
     queryFn: async (): Promise<ProcessedFlight[]> => {
-      console.log('🛫 Fetching flight data...');
+      console.debug('🛫 Fetching flight data...');
 
       // OpenSky Network API endpoint with bounding box
       const url = new URL('https://opensky-network.org/api/states/all');
@@ -150,7 +150,7 @@ export function useFlightData(options: UseFlightDataOptions = {}) {
         // Filter out invalid flights
         .filter((flight) => flight.position !== null);
 
-      console.log(`✅ Fetched ${flights.length} flights`);
+      console.debug(`✅ Fetched ${flights.length} flights`);
       return flights;
     },
 
@@ -184,7 +184,7 @@ export function useRefreshFlights() {
   return {
     // This would be implemented with queryClient.invalidateQueries
     refreshAll: () => {
-      console.log('🔄 Refreshing all flight data...');
+      console.debug('🔄 Refreshing all flight data...');
       // Implementation depends on accessing queryClient
     },
   };

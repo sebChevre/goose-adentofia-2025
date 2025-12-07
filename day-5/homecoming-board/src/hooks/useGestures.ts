@@ -56,7 +56,7 @@ export function useGestures(
       return;
     }
 
-    console.log(`🖐️ Processing ${multiHandLandmarks.length} hand(s)`);
+    console.debug(`🖐️ Processing ${multiHandLandmarks.length} hand(s)`);
 
     // Detect gestures for all hands
     const detectedGestures: GestureResult[] = [];
@@ -73,11 +73,11 @@ export function useGestures(
       const debouncedGesture = debouncer.process(gesture);
 
       if (debouncedGesture) {
-        console.log(`✨ Gesture confirmed: ${debouncedGesture.type} (${debouncedGesture.hand} hand)`);
+        console.debug(`✨ Gesture confirmed: ${debouncedGesture.type} (${debouncedGesture.hand} hand)`);
 
         // Check if gesture should be ignored
         if (ignoredGestures?.has(debouncedGesture.type)) {
-          console.log(`🚫 Gesture ignored (modal open): ${debouncedGesture.type}`);
+          console.debug(`🚫 Gesture ignored (modal open): ${debouncedGesture.type}`);
           continue;
         }
 
