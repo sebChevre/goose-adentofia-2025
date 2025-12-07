@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState, useCallback, useEffect } from 'react'
 import { HandTracker } from '../components/HandTracker'
-import { SettingsButton } from '../components/SettingsButton'
 import { GestureTrainerOverlay } from '../components/GestureTrainerOverlay'
 import { useMediaPipe } from '../hooks/useMediaPipe'
 import { useGestures } from '../hooks/useGestures'
@@ -86,7 +85,6 @@ function GestureTraining() {
 
           {/* Settings Button and Reset Training */}
           <div className="mb-6 flex items-center justify-between">
-            <SettingsButton />
             <button
               onClick={handleResetTraining}
               className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-lg transition-colors"

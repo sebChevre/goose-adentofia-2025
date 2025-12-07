@@ -2,7 +2,6 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { HandTracker } from '../components/HandTracker'
 import { FlightBoard } from '../components/FlightBoard'
-import { SettingsButton } from '../components/SettingsButton'
 import { useMediaPipe } from '../hooks/useMediaPipe'
 import { useGestures } from '../hooks/useGestures'
 import { useSettings } from '../contexts/SettingsContext'
@@ -67,7 +66,7 @@ function App() {
   const handsDetected = results?.multiHandLandmarks?.length || 0
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-b from-background via-primary/10 to-background">
       {/* Header */}
       <header className="sr-only">
         Gesture-Controlled Flight Tracker
@@ -94,71 +93,36 @@ function App() {
             />
           </div>
 
-          {/* Gesture Status Badge and Settings */}
           <div className="mb-6 flex justify-between items-center">
-            <SettingsButton />
-            <div className="inline-flex items-center gap-3 px-4 py-2 bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-full">
-              <span className="text-sm text-gray-300">Gesture Control</span>
+            <div className="inline-flex items-center gap-3 px-4 py-2 bg-card/50 backdrop-blur-sm border border-border rounded-full">
+              <span className="text-sm text-muted-foreground">Gesture Control</span>
               {isReady ? (
-                <span className="flex items-center gap-2 text-green-400 text-sm">
-                  <span className="inline-block w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span className="flex items-center gap-2 text-green-500 dark:text-green-400 text-sm">
+                  <span className="inline-block w-2 h-2 bg-green-500 dark:bg-green-400 rounded-full animate-pulse"></span>
                   Active
                 </span>
               ) : error ? (
-                <span className="text-red-400 text-sm">Inactive</span>
+                <span className="text-red-500 dark:text-red-400 text-sm">Inactive</span>
               ) : (
-                <span className="text-yellow-400 text-sm">Starting...</span>
+                <span className="text-yellow-500 dark:text-yellow-400 text-sm">Starting...</span>
               )}
             </div>
           </div>
 
           {/* Flight Board - Full Width */}
-          <div className="bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
+          <div className="bg-card/30 backdrop-blur-sm border border-border rounded-xl p-6">
             <FlightBoard
               gesture={currentGestureForBoard}
               onGestureProcessed={handleGestureProcessed}
               onModalStateChange={handleModalStateChange}
             />
           </div>
-
-          {/* Quick Gesture Reference */}
-          <div className="mt-8 p-6 bg-gradient-to-r from-blue-900/30 to-cyan-900/30 border border-blue-700/50 rounded-xl backdrop-blur-sm">
-            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-              <span>🧤</span> Gesture Controls
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div className="bg-slate-800/50 rounded-lg p-4 text-center">
-                <div className="text-4xl mb-2">👊</div>
-                <h3 className="font-bold text-cyan-300 mb-1">Fist</h3>
-                <p className="text-gray-300">Next Flight</p>
-              </div>
-              <div className="bg-slate-800/50 rounded-lg p-4 text-center">
-                <div className="text-4xl mb-2">🖐️</div>
-                <h3 className="font-bold text-green-300 mb-1">Palm</h3>
-                <p className="text-gray-300">Previous Flight</p>
-              </div>
-              <div className="bg-slate-800/50 rounded-lg p-4 text-center">
-                <div className="text-4xl mb-2">👍</div>
-                <h3 className="font-bold text-yellow-300 mb-1">Thumbs Up</h3>
-                <p className="text-gray-300">View Details</p>
-              </div>
-            </div>
-            <div className="mt-4 text-center">
-              <Link
-                to="/gesture-training"
-                className="text-cyan-300 hover:text-cyan-200 underline text-sm"
-              >
-                Need help? Try the Gesture Training Mode →
-              </Link>
-            </div>
-          </div>
-
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="py-6 px-6 text-center border-t border-slate-700/50 mt-12 backdrop-blur-sm bg-slate-900/30">
-        <p className="text-gray-400 text-sm">
+      <footer className="py-6 px-6 text-center border-t border-border mt-12 backdrop-blur-sm bg-card/30">
+        <p className="text-muted-foreground text-sm">
           Built with TanStack Start • MediaPipe Hands • OpenSky Network • Day 5: Advent of AI 2025
         </p>
       </footer>

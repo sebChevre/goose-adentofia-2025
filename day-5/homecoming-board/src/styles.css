@@ -57,71 +57,107 @@ code {
 
 :root {
   --radius: 0.625rem;
+
+  /* Light Mode - Crisp Professional Winter Theme */
+  /* Pure white with rich, highly saturated accents for maximum contrast */
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --foreground: oklch(0.15 0.015 250);
+  --card: oklch(0.98 0.008 240);
+  --card-foreground: oklch(0.15 0.015 250);
+  --popover: oklch(0.98 0.008 240);
+  --popover-foreground: oklch(0.15 0.015 250);
+
+  /* Deep Saturated Ice Blue - WCAG AAA on white (7:1) */
+  --primary: oklch(0.38 0.2 235);
+  --primary-foreground: oklch(1 0 0);
+
+  /* Soft cool gray secondary */
+  --secondary: oklch(0.9 0.015 240);
+  --secondary-foreground: oklch(0.2 0.02 240);
+
+  /* Medium contrast muted */
+  --muted: oklch(0.92 0.012 240);
+  --muted-foreground: oklch(0.35 0.02 240);
+
+  /* Rich Purple Accent - AAA compliant */
+  --accent: oklch(0.42 0.2 285);
+  --accent-foreground: oklch(1 0 0);
+
+  --destructive: oklch(0.48 0.26 27);
+
+  /* Clearly visible borders */
+  --border: oklch(0.78 0.015 240);
+  --input: oklch(0.78 0.015 240);
+  --ring: oklch(0.38 0.2 235);
+
+  /* Rich, saturated chart colors - all AAA compliant */
+  --chart-1: oklch(0.38 0.2 235);
+  --chart-2: oklch(0.42 0.2 285);
+  --chart-3: oklch(0.4 0.18 200);
+  --chart-4: oklch(0.45 0.22 315);
+  --chart-5: oklch(0.4 0.18 265);
+
+  --sidebar: oklch(0.98 0.008 240);
+  --sidebar-foreground: oklch(0.15 0.015 250);
+  --sidebar-primary: oklch(0.38 0.2 235);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.9 0.015 240);
+  --sidebar-accent-foreground: oklch(0.2 0.02 240);
+  --sidebar-border: oklch(0.78 0.015 240);
+  --sidebar-ring: oklch(0.38 0.2 235);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  /* Dark Mode - Winter Night Theme inspired by day-4 */
+  /* Deep blue/purple backgrounds */
+  --background: oklch(0.12 0.02 260);
+  --foreground: oklch(0.95 0.01 240);
+
+  /* Card with subtle blue */
+  --card: oklch(0.18 0.02 260);
+  --card-foreground: oklch(0.95 0.01 240);
+
+  --popover: oklch(0.18 0.02 260);
+  --popover-foreground: oklch(0.95 0.01 240);
+
+  /* Bright Ice Blue Primary */
+  --primary: oklch(0.72 0.14 240);
+  --primary-foreground: oklch(0.15 0.02 240);
+
+  /* Darker secondary with blue tint */
+  --secondary: oklch(0.24 0.02 260);
+  --secondary-foreground: oklch(0.95 0.01 240);
+
+  /* Muted with blue-gray */
+  --muted: oklch(0.24 0.02 260);
+  --muted-foreground: oklch(0.65 0.01 240);
+
+  /* Accent - bright purple */
+  --accent: oklch(0.68 0.16 300);
+  --accent-foreground: oklch(0.95 0.01 240);
+
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
+
+  /* Borders with ice blue tint */
+  --border: oklch(0.72 0.14 240 / 20%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --ring: oklch(0.72 0.14 240);
+
+  /* Charts with vibrant winter colors */
+  --chart-1: oklch(0.72 0.14 240);
+  --chart-2: oklch(0.68 0.16 300);
+  --chart-3: oklch(0.7 0.15 200);
+  --chart-4: oklch(0.75 0.16 330);
+  --chart-5: oklch(0.65 0.15 260);
+
+  --sidebar: oklch(0.18 0.02 260);
+  --sidebar-foreground: oklch(0.95 0.01 240);
+  --sidebar-primary: oklch(0.72 0.14 240);
+  --sidebar-primary-foreground: oklch(0.15 0.02 240);
+  --sidebar-accent: oklch(0.24 0.02 260);
+  --sidebar-accent-foreground: oklch(0.95 0.01 240);
+  --sidebar-border: oklch(0.72 0.14 240 / 20%);
+  --sidebar-ring: oklch(0.72 0.14 240);
 }
 
 @layer base {
@@ -130,5 +166,21 @@ code {
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Subtle winter gradient for light mode - cleaner look */
+  :root:not(.dark) {
+    background-image: linear-gradient(135deg,
+      oklch(0.995 0.005 235) 0%,
+      oklch(0.985 0.01 245) 25%,
+      oklch(0.99 0.008 240) 50%,
+      oklch(0.985 0.01 230) 75%,
+      oklch(0.995 0.005 235) 100%
+    );
+    background-attachment: fixed;
+  }
+
+  html {
+    @apply min-h-screen;
   }
 }
