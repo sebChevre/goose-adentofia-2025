@@ -77,23 +77,13 @@ function GestureTraining() {
           <p className="text-sm text-pink-300">
             Perfect your gestures before using them on the flight board!
           </p>
-          
-          {/* Navigation */}
-          <div className="mt-4">
-            <Link 
-              to="/" 
-              className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors"
-            >
-              <span>✈️</span> Go to Flight Board
-            </Link>
-          </div>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="py-8 px-6">
         <div className="max-w-7xl mx-auto">
-          
+
           {/* Settings Button and Reset Training */}
           <div className="mb-6 flex items-center justify-between">
             <SettingsButton />
@@ -115,7 +105,7 @@ function GestureTraining() {
                 </span>
               </h2>
               <div className="relative">
-                <HandTracker 
+                <HandTracker
                   onVideoReady={setVideoElement}
                   canvasRef={canvasRef}
                   showCanvas={true}
@@ -129,7 +119,7 @@ function GestureTraining() {
                   className="rounded-lg overflow-hidden"
                 />
                 {/* Overlay the trainer on top of the video */}
-                <GestureTrainerOverlay 
+                <GestureTrainerOverlay
                   handResults={results}
                   onThresholdsLearned={handleThresholdsLearned}
                 />
@@ -143,7 +133,7 @@ function GestureTraining() {
               <span>🎓</span> Gesture Guide
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              
+
               {/* Fist Gesture */}
               <div className="bg-gradient-to-br from-blue-900/50 to-blue-800/30 border border-blue-600/50 rounded-xl p-6">
                 <div className="text-5xl mb-3 text-center">👊</div>
@@ -205,7 +195,7 @@ function GestureTraining() {
                 <div className="text-3xl mb-2">✋</div>
                 <h3 className="font-bold text-purple-300 mb-2">Make & Correct Gestures</h3>
                 <p className="text-gray-300">
-                  Make a gesture. If it's wrong or unknown, click the correct button (Fist/Palm/Thumbs Up/Down). 
+                  Make a gesture. If it's wrong or unknown, click the correct button (Fist/Palm/Thumbs Up/Down).
                   Do this 3 times per gesture.
                 </p>
               </div>

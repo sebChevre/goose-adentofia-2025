@@ -69,43 +69,17 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-900 to-slate-900">
       {/* Header */}
-      <header className="py-8 px-6 text-center border-b border-slate-700/50 backdrop-blur-sm bg-slate-900/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <span className="text-5xl">✈️</span>
-            <h1 className="text-5xl md:text-6xl font-black text-white">
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                The Homecoming Board
-              </span>
-            </h1>
-            <span className="text-5xl">🧤</span>
-          </div>
-          <p className="text-xl text-cyan-200 mb-2 font-semibold">
-            Gesture-Controlled Flight Tracker
-          </p>
-          <p className="text-sm text-blue-300">
-            ❄️ Winter Festival Edition - No touching required! 🎄
-          </p>
-          
-          {/* Navigation */}
-          <div className="mt-4">
-            <Link 
-              to="/gesture-training" 
-              className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors"
-            >
-              <span>🎓</span> Practice Gestures
-            </Link>
-          </div>
-        </div>
+      <header className="sr-only">
+        Gesture-Controlled Flight Tracker
       </header>
 
       {/* Main Content */}
       <main className="py-8 px-6">
         <div className="max-w-7xl mx-auto">
-          
+
           {/* Hidden Hand Tracker - runs in background for gesture detection */}
           <div className="hidden">
-            <HandTracker 
+            <HandTracker
               onVideoReady={setVideoElement}
               canvasRef={canvasRef}
               showCanvas={false}
@@ -170,8 +144,8 @@ function App() {
               </div>
             </div>
             <div className="mt-4 text-center">
-              <Link 
-                to="/gesture-training" 
+              <Link
+                to="/gesture-training"
                 className="text-cyan-300 hover:text-cyan-200 underline text-sm"
               >
                 Need help? Try the Gesture Training Mode →
