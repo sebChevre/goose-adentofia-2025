@@ -31,6 +31,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       {
         title: 'TanStack Start Starter',
       },
+      {
+        property: 'og:image',
+        content: 'https://flightboard.nickyt.co/og-image.png',
+      },
     ],
     links: [
       {
