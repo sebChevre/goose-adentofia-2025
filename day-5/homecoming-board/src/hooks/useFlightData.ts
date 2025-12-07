@@ -78,7 +78,7 @@ interface UseFlightDataOptions {
 
 /**
  * Custom hook to fetch and manage flight data using TanStack Query
- * 
+ *
  * Features:
  * - Automatic caching
  * - Background refetching
@@ -96,10 +96,10 @@ export function useFlightData(options: UseFlightDataOptions = {}) {
 
   return useQuery<ProcessedFlight[], Error>({
     queryKey: ['flights', airport, bbox],
-    
+
     queryFn: async (): Promise<ProcessedFlight[]> => {
       console.log('🛫 Fetching flight data...');
-      
+
       // OpenSky Network API endpoint with bounding box
       const url = new URL('https://opensky-network.org/api/states/all');
       url.searchParams.append('lamin', bbox.minLat.toString());
@@ -155,14 +155,15 @@ export function useFlightData(options: UseFlightDataOptions = {}) {
     },
 
     // Caching and refetching configuration
-    staleTime: 20000, // Consider data fresh for 20 seconds
+    // Cache for 5 minutes in dev, 20 seconds in prod
+    staleTime: import.meta.env.DEV ? 300000 : 20000,
     gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes (formerly cacheTime)
-    
+
     // Auto-refetch configuration
     refetchInterval: enabled ? refetchInterval : false,
     refetchIntervalInBackground: true, // Continue refetching when tab is not focused
     refetchOnWindowFocus: true, // Refetch when user returns to tab
-    
+
     // Retry configuration for failed requests
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
