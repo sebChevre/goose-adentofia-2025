@@ -24,9 +24,9 @@ export function GestureIndicator({ gesture, handedness = 'Unknown' }: GestureInd
 
   if (!gesture || gesture === 'UNKNOWN') {
     return (
-      <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 text-center">
+      <div className="bg-card border border-border rounded-xl p-6 text-center">
         <div className="text-6xl mb-3 opacity-50 grayscale">👋</div>
-        <p className="text-gray-400 text-sm">Show a hand gesture to control the board</p>
+        <p className="text-muted-foreground text-sm">Show a hand gesture to control the board</p>
       </div>
     );
   }
@@ -63,12 +63,12 @@ export function GestureIndicator({ gesture, handedness = 'Unknown' }: GestureInd
       </h3>
 
       {/* Gesture Action */}
-      <p className="text-white/80 text-sm mb-3">
+      <p className="text-foreground/90 dark:text-white/80 text-sm mb-3">
         {gestureInfo.action}
       </p>
 
       {/* Hand Info */}
-      <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+      <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
         <span>{handedness === 'Left' ? '🤚' : '✋'}</span>
         <span>{handedness} Hand</span>
       </div>
@@ -91,9 +91,9 @@ function getGestureInfo(gesture: GestureType) {
         icon: '✊',
         name: 'Closed Fist',
         action: 'Scrolling to next flight',
-        bgGradient: 'from-orange-900/60 to-red-900/60',
+        bgGradient: 'from-orange-200/60 to-red-200/60 dark:from-orange-900/60 dark:to-red-900/60',
         borderColor: 'border-orange-500',
-        textColor: 'text-orange-200',
+        textColor: 'text-orange-800 dark:text-orange-200',
         pulseColor: 'bg-orange-500/50',
       };
     case 'OPEN_PALM':
@@ -101,9 +101,9 @@ function getGestureInfo(gesture: GestureType) {
         icon: '🖐️',
         name: 'Open Palm',
         action: 'Scrolling to previous flight',
-        bgGradient: 'from-blue-900/60 to-cyan-900/60',
+        bgGradient: 'from-blue-200/60 to-cyan-200/60 dark:from-blue-900/60 dark:to-cyan-900/60',
         borderColor: 'border-cyan-500',
-        textColor: 'text-cyan-200',
+        textColor: 'text-cyan-800 dark:text-cyan-200',
         pulseColor: 'bg-cyan-500/50',
       };
     case 'THUMBS_UP':
@@ -111,9 +111,9 @@ function getGestureInfo(gesture: GestureType) {
         icon: '👍',
         name: 'Thumbs Up',
         action: 'Opening flight details',
-        bgGradient: 'from-green-900/60 to-emerald-900/60',
+        bgGradient: 'from-green-200/60 to-emerald-200/60 dark:from-green-900/60 dark:to-emerald-900/60',
         borderColor: 'border-green-500',
-        textColor: 'text-green-200',
+        textColor: 'text-green-800 dark:text-green-200',
         pulseColor: 'bg-green-500/50',
       };
     case 'THUMBS_DOWN':
@@ -121,9 +121,9 @@ function getGestureInfo(gesture: GestureType) {
         icon: '👎',
         name: 'Thumbs Down',
         action: 'Closing flight details',
-        bgGradient: 'from-red-900/60 to-rose-900/60',
+        bgGradient: 'from-red-200/60 to-rose-200/60 dark:from-red-900/60 dark:to-rose-900/60',
         borderColor: 'border-red-500',
-        textColor: 'text-red-200',
+        textColor: 'text-red-800 dark:text-red-200',
         pulseColor: 'bg-red-500/50',
       };
     default:
@@ -131,10 +131,10 @@ function getGestureInfo(gesture: GestureType) {
         icon: '❓',
         name: 'Unknown',
         action: '',
-        bgGradient: 'from-slate-800 to-slate-900',
-        borderColor: 'border-slate-700',
-        textColor: 'text-gray-400',
-        pulseColor: 'bg-slate-500/50',
+        bgGradient: 'from-gray-200 to-gray-300 dark:from-slate-800 dark:to-slate-900',
+        borderColor: 'border-border',
+        textColor: 'text-muted-foreground',
+        pulseColor: 'bg-muted/50',
       };
   }
 }

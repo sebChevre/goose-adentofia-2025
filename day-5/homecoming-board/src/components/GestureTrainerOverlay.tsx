@@ -33,7 +33,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
   const [isWaitingForCorrection, setIsWaitingForCorrection] = useState(false);
   const [samples, setSamples] = useState<Map<GestureType, GestureSample[]>>(new Map());
   const [trainingMode, setTrainingMode] = useState(false);
-  
+
   // Calculate finger curls from hand results
   useEffect(() => {
     if (!handResults?.multiHandLandmarks?.[0]) {
@@ -56,11 +56,11 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
       const tip = keypoints[tipIdx];
       const mcp = keypoints[mcpIdx];
       const wrist = keypoints[0];
-      
+
       const tipToWrist = distance(tip, wrist);
       const mcpToWrist = distance(mcp, wrist);
       const ratio = tipToWrist / mcpToWrist;
-      
+
       return Math.max(0, Math.min(1, (1.3 - ratio) / 0.4));
     };
 
@@ -84,7 +84,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
 
     const keypoints = handResults.multiHandLandmarks[0];
     const thumbTip = keypoints[4];
-    
+
     const sample: GestureSample = {
       fingerCurls,
       thumbPosition: { x: thumbTip.x, y: thumbTip.y },
@@ -101,7 +101,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
     });
 
     setIsWaitingForCorrection(false);
-    
+
     // Don't auto-trigger learning - let user click "Finish Training" button when ready
   }, [fingerCurls, handResults, samples]);
 
@@ -123,7 +123,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
     // This helps us understand variance and set more robust thresholds
     const calcAvgCurls = (samples: GestureSample[]) => {
       if (samples.length === 0) return null;
-      
+
       const sums = { index: 0, middle: 0, ring: 0, pinky: 0, thumb: 0 };
       samples.forEach(s => {
         sums.index += s.fingerCurls.index;
@@ -132,7 +132,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
         sums.pinky += s.fingerCurls.pinky;
         sums.thumb += s.fingerCurls.thumb;
       });
-      
+
       const averages = {
         index: sums.index / samples.length,
         middle: sums.middle / samples.length,
@@ -141,7 +141,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
         thumb: sums.thumb / samples.length,
         avg: (sums.index + sums.middle + sums.ring + sums.pinky) / (4 * samples.length),
       };
-      
+
       // Calculate standard deviation for variance awareness
       const variances = { index: 0, middle: 0, ring: 0, pinky: 0, thumb: 0 };
       samples.forEach(s => {
@@ -151,7 +151,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
         variances.pinky += Math.pow(s.fingerCurls.pinky - averages.pinky, 2);
         variances.thumb += Math.pow(s.fingerCurls.thumb - averages.thumb, 2);
       });
-      
+
       const stdDevs = {
         index: Math.sqrt(variances.index / samples.length),
         middle: Math.sqrt(variances.middle / samples.length),
@@ -165,7 +165,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
           Math.sqrt(variances.pinky / samples.length)
         ) / 4,
       };
-      
+
       return { ...averages, stdDevs };
     };
 
@@ -179,30 +179,30 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
     // Use stdDev to add tolerance margins - more variance = more lenient thresholds
     const newThresholds = {
       // Fist detection: threshold between palm and fist
-      fistCurlThreshold: palmAvg && fistAvg 
+      fistCurlThreshold: palmAvg && fistAvg
         ? palmAvg.avg + (fistAvg.avg - palmAvg.avg) * 0.5
         : 0.4,
       fistMinFingers: 3,
-      
+
       // Palm detection: slightly above palm average + 1 stdDev for tolerance
-      palmExtendThreshold: palmAvg 
+      palmExtendThreshold: palmAvg
         ? Math.min(0.35, palmAvg.avg + 0.1 + (palmAvg.stdDevs?.avgStdDev || 0))
         : 0.3,
       palmThumbMultiplier: 1.5,
-      
+
       // Thumbs up: requires curled fingers but extended thumb
       // Subtract (0.15 + stdDev) to account for natural variance in hand positions
-      thumbsUpFingerCurl: thumbsUpAvg 
+      thumbsUpFingerCurl: thumbsUpAvg
         ? Math.max(0.45, thumbsUpAvg.avg - 0.15 - (thumbsUpAvg.stdDevs?.avgStdDev || 0) * 0.5)
         : 0.6,
       // Add (0.1 + stdDev) for thumb extension to be more permissive
-      thumbsUpThumbExtend: thumbsUpAvg 
+      thumbsUpThumbExtend: thumbsUpAvg
         ? Math.min(0.35, thumbsUpAvg.thumb + 0.1 + (thumbsUpAvg.stdDevs?.thumb || 0) * 0.5)
         : 0.25,
       thumbsUpMinFingers: 3,
       thumbsUpYThreshold: 0.05,
       thumbsUpXThreshold: 0.15,
-      
+
       // Store sample data for reference
       _samples: {
         fist: fistSamples.length,
@@ -213,7 +213,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
     };
 
     console.debug('🎓 Learned new thresholds:', newThresholds);
-    
+
     // Save to localStorage
     try {
       localStorage.setItem('gesture-thresholds', JSON.stringify(newThresholds));
@@ -227,9 +227,9 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
     } catch (e) {
       console.error('Failed to save to localStorage:', e);
     }
-    
+
     onThresholdsLearned?.(newThresholds);
-    
+
     alert(`Training complete! 🎉\n\nCollected samples:\n• Fist: ${fistSamples.length}\n• Palm: ${palmSamples.length}\n• Thumbs Up: ${thumbsUpSamples.length}\n• Thumbs Down: ${thumbsDownSamples.length}\n\nThresholds saved to localStorage!`);
   }, [samples, onThresholdsLearned]);
 
@@ -258,7 +258,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
           <div key={finger} className="flex items-center gap-2">
             <span className="w-12 text-gray-300 capitalize text-[10px]">{finger}</span>
             <div className="flex-1 h-3 bg-slate-700 rounded-full overflow-hidden w-20">
-              <div 
+              <div
                 className="h-full bg-gradient-to-r from-green-500 to-blue-500 transition-all duration-200"
                 style={{ width: `${value * 100}%` }}
               />
@@ -338,7 +338,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
                 Training Progress: {getTotalSamples()} / {SAMPLES_NEEDED * 3} samples
               </div>
               <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-                <div 
+                <div
                   className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300"
                   style={{ width: `${(getTotalSamples() / (SAMPLES_NEEDED * 3)) * 100}%` }}
                 />
@@ -378,7 +378,7 @@ export function GestureTrainerOverlay({ handResults, onThresholdsLearned }: Gest
 // Simple gesture detection (this is what gets improved by training)
 function detectGestureSimple(keypoints: any[], curls: FingerCurlData): GestureType {
   const avgCurl = (curls.index + curls.middle + curls.ring + curls.pinky) / 4;
-  
+
   // Very basic detection
   if (avgCurl > 0.5 && curls.thumb < 0.3) {
     return GestureType.THUMBS_UP;
@@ -389,6 +389,6 @@ function detectGestureSimple(keypoints: any[], curls: FingerCurlData): GestureTy
   if (avgCurl < 0.3) {
     return GestureType.OPEN_PALM;
   }
-  
+
   return GestureType.UNKNOWN;
 }

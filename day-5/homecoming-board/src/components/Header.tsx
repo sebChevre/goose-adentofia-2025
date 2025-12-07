@@ -7,8 +7,8 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const navLinks = [
-    { to: '/', label: 'Flight Board', emoji: '✈️' },
-    { to: '/gesture-training', label: 'Practice Gestures', emoji: '🎓' },
+    { to: '/', label: 'Flight Board' },
+    { to: '/gesture-training', label: 'Practice Gestures'},
   ]
 
   return (
@@ -31,12 +31,11 @@ export default function Header() {
               <Link
                 key={link.to}
                 to={link.to}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-foreground hover:bg-secondary transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg"
                 activeProps={{
-                  className: 'bg-secondary text-primary',
+                  className: 'border-secondary text-primary underline',
                 }}
               >
-                <span>{link.emoji}</span>
                 <span>{link.label}</span>
               </Link>
             ))}

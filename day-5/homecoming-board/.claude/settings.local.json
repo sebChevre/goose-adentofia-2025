@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/nicktaylor/dev/advent-of-ai-2025/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

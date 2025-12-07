@@ -130,18 +130,18 @@ export function FlightBoard({ onFlightSelect, onGestureNavigate, gesture, onGest
   // Loading State
   if (isLoading) {
     return (
-      <div className="w-full bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm rounded-xl border-2 border-slate-700 p-12">
+      <div className="w-full bg-card backdrop-blur-sm rounded-xl border-2 border-border p-12">
         <div className="flex flex-col items-center justify-center">
           <div className="relative">
-            <div className="animate-spin rounded-full h-20 w-20 border-4 border-cyan-500 border-t-transparent"></div>
+            <div className="animate-spin rounded-full h-20 w-20 border-4 border-primary border-t-transparent"></div>
             <div className="absolute inset-0 flex items-center justify-center text-4xl">
               ✈️
             </div>
           </div>
-          <p className="mt-6 text-xl text-gray-300 font-semibold">
+          <p className="mt-6 text-xl text-foreground font-semibold">
             Loading flight data...
           </p>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-muted-foreground">
             Fetching from OpenSky Network
           </p>
         </div>
@@ -152,16 +152,16 @@ export function FlightBoard({ onFlightSelect, onGestureNavigate, gesture, onGest
   // Error State
   if (error) {
     return (
-      <div className="w-full bg-gradient-to-br from-red-900/20 to-slate-900/50 backdrop-blur-sm rounded-xl border-2 border-red-700/50 p-8">
+      <div className="w-full bg-card backdrop-blur-sm rounded-xl border-2 border-destructive/50 p-8">
         <div className="text-center">
           <div className="text-6xl mb-4">❌</div>
-          <h3 className="text-2xl font-bold text-red-400 mb-2">
+          <h3 className="text-2xl font-bold text-destructive mb-2">
             Failed to Load Flight Data
           </h3>
-          <p className="text-gray-300 mb-4">{error.message}</p>
+          <p className="text-foreground mb-4">{error.message}</p>
           <button
             onClick={() => refetch()}
-            className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+            className="bg-destructive hover:bg-destructive/90 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
           >
             🔄 Retry
           </button>
@@ -173,18 +173,18 @@ export function FlightBoard({ onFlightSelect, onGestureNavigate, gesture, onGest
   // Empty State
   if (!flights || flights.length === 0) {
     return (
-      <div className="w-full bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm rounded-xl border-2 border-slate-700 p-12">
+      <div className="w-full bg-card backdrop-blur-sm rounded-xl border-2 border-border p-12">
         <div className="text-center">
           <div className="text-6xl mb-4">✈️</div>
-          <h3 className="text-2xl font-bold text-gray-300 mb-2">
+          <h3 className="text-2xl font-bold text-foreground mb-2">
             No Flights in Area
           </h3>
-          <p className="text-gray-500 mb-4">
+          <p className="text-muted-foreground mb-4">
             No aircraft detected in the JFK area at this time
           </p>
           <button
             onClick={() => refetch()}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-3 rounded-lg transition-colors"
           >
             🔄 Refresh
           </button>
@@ -197,31 +197,31 @@ export function FlightBoard({ onFlightSelect, onGestureNavigate, gesture, onGest
   return (
     <div className="w-full">
       {/* Header */}
-      <div className="mb-6 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm rounded-xl border-2 border-slate-700 p-4">
+      <div className="mb-6 bg-card backdrop-blur-sm rounded-xl border-2 border-border p-4">
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-2xl font-bold text-white mb-1 flex items-center gap-2">
+            <h2 className="text-2xl font-bold text-foreground mb-1 flex items-center gap-2">
               <span>✈️</span>
               <span>Live Flights</span>
               {isFetching && (
-                <span className="text-sm text-cyan-400 animate-pulse">
+                <span className="text-sm text-primary animate-pulse">
                   (updating...)
                 </span>
               )}
             </h2>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-muted-foreground">
               {flights.length} {flights.length === 1 ? 'flight' : 'flights'} detected near JFK
             </p>
           </div>
 
           <div className="text-right">
-            <p className="text-xs text-gray-500">Last Updated</p>
-            <p className="text-sm text-gray-300 font-mono">
+            <p className="text-xs text-muted-foreground">Last Updated</p>
+            <p className="text-sm text-foreground font-mono">
               {dataUpdatedAt ? new Date(dataUpdatedAt).toLocaleTimeString() : 'Never'}
             </p>
             <button
               onClick={() => refetch()}
-              className="mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+              className="mt-2 bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
             >
               🔄 Refresh
             </button>
@@ -229,24 +229,24 @@ export function FlightBoard({ onFlightSelect, onGestureNavigate, gesture, onGest
         </div>
 
         {/* Navigation Hint */}
-        <div className="mt-4 pt-4 border-t border-slate-700/50 flex flex-wrap items-center gap-4 text-xs text-gray-400">
+        <div className="mt-4 pt-4 border-t border-border flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
-            <kbd className="px-2 py-1 bg-slate-700 rounded border border-slate-600">↑</kbd>
-            <kbd className="px-2 py-1 bg-slate-700 rounded border border-slate-600">↓</kbd>
+            <kbd className="px-2 py-1 bg-secondary rounded border border-border">↑</kbd>
+            <kbd className="px-2 py-1 bg-secondary rounded border border-border">↓</kbd>
             <span>Navigate</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-cyan-400">✋ Open Palm</span>
+            <span className="text-primary">✋ Open Palm</span>
             <span>/</span>
-            <span className="text-cyan-400">✊ Closed Fist</span>
+            <span className="text-primary">✊ Closed Fist</span>
             <span>Navigate</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-green-400">👍 Thumbs Up</span>
+            <span className="text-green-600 dark:text-green-400">👍 Thumbs Up</span>
             <span>View Details</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-red-400">👎 Thumbs Down</span>
+            <span className="text-red-600 dark:text-red-400">👎 Thumbs Down</span>
             <span>Close Details</span>
           </div>
         </div>
@@ -270,7 +270,7 @@ export function FlightBoard({ onFlightSelect, onGestureNavigate, gesture, onGest
 
       {/* Flight Counter */}
       <div className="mt-6 text-center">
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           Showing flight {selectedIndex + 1} of {flights.length}
         </p>
       </div>
