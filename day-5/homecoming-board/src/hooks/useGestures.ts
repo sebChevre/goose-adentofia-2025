@@ -29,7 +29,7 @@ export function useGestures(
   const [currentGesture, setCurrentGesture] = useState<GestureResult | null>(null);
   const [allGestures, setAllGestures] = useState<GestureResult[]>([]);
   const [gestureHistory, setGestureHistory] = useState<GestureResult[]>([]);
-  
+
   // Separate debouncers for left and right hands
   const leftDebouncerRef = useRef(new GestureDebouncer(debounceMs));
   const rightDebouncerRef = useRef(new GestureDebouncer(debounceMs));
@@ -58,14 +58,14 @@ export function useGestures(
 
     // Detect gestures for all hands
     const detectedGestures: GestureResult[] = [];
-    
+
     for (let i = 0; i < multiHandLandmarks.length; i++) {
       const keypoints = multiHandLandmarks[i];
       const handedness = (multiHandedness?.[i]?.label || 'Unknown') as 'Left' | 'Right' | 'Unknown';
 
       // Detect gesture for this hand
       const gesture = detectGesture(keypoints, handedness);
-      
+
       // Use appropriate debouncer based on hand
       const debouncer = handedness === 'Left' ? leftDebouncerRef.current : rightDebouncerRef.current;
       const debouncedGesture = debouncer.process(gesture);
@@ -73,10 +73,10 @@ export function useGestures(
       if (debouncedGesture) {
         console.log(`✨ Gesture confirmed: ${debouncedGesture.type} (${debouncedGesture.hand} hand)`);
         detectedGestures.push(debouncedGesture);
-        
+
         // Play sound for gesture change
         playGestureSound(debouncedGesture.type);
-        
+
         // Add to history (keep last 10)
         setGestureHistory(prev => [...prev, debouncedGesture].slice(-10));
 
@@ -85,7 +85,7 @@ export function useGestures(
           onGesture(debouncedGesture);
         }
       }
-      
+
       // Also add non-debounced gestures if they're not UNKNOWN
       if (!debouncedGesture && gesture.type !== GestureType.UNKNOWN) {
         detectedGestures.push(gesture);
@@ -94,10 +94,10 @@ export function useGestures(
 
     // Update state
     setAllGestures(detectedGestures);
-    
+
     // Set currentGesture to first detected gesture (for backwards compatibility)
     setCurrentGesture(detectedGestures.length > 0 ? detectedGestures[0] : null);
-    
+
   }, [handResults, enabled, onGesture]);
 
   return {
