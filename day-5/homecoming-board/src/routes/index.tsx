@@ -31,7 +31,7 @@ function App() {
   const { canvasRef, results, isReady, error, fps } = useMediaPipe(videoElement)
 
   // Gesture detection with callback
-  const handleGesture = useCallback((gesture) => {
+  const handleGesture = useCallback((gesture: GestureResult) => {
     console.log(`✨ Gesture detected: ${gesture.type} - ${gesture.hand} hand`)
     setCurrentGestureForBoard(gesture.type)
   }, [])
