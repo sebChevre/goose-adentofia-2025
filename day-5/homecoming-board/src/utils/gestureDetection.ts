@@ -50,7 +50,7 @@ const DEFAULT_THRESHOLDS: GestureThresholds = {
   thumbsUpThumbExtend: 0.25,
   thumbsUpMinFingers: 3,
   thumbsUpYThreshold: 0.05,
-  thumbsUpXThreshold: 0.15,
+  thumbsUpXThreshold: 0.25,  // Increased from 0.15 - more lenient horizontal thumb position
 };
 
 // Load thresholds from localStorage or use defaults
@@ -61,19 +61,27 @@ let currentThresholds: GestureThresholds = { ...DEFAULT_THRESHOLDS };
  */
 export function loadTrainedThresholds(): GestureThresholds {
   if (typeof window === 'undefined') return DEFAULT_THRESHOLDS;
-  
+
   try {
     const stored = localStorage.getItem('gesture-thresholds');
     if (stored) {
       const parsed = JSON.parse(stored);
       console.log('✅ Loaded trained thresholds from localStorage:', parsed);
+      console.log('📊 Comparing to defaults:', {
+        fistCurl: `${DEFAULT_THRESHOLDS.fistCurlThreshold} → ${parsed.fistCurlThreshold || DEFAULT_THRESHOLDS.fistCurlThreshold}`,
+        thumbsUpFingerCurl: `${DEFAULT_THRESHOLDS.thumbsUpFingerCurl} → ${parsed.thumbsUpFingerCurl || DEFAULT_THRESHOLDS.thumbsUpFingerCurl}`,
+        thumbsUpThumbExtend: `${DEFAULT_THRESHOLDS.thumbsUpThumbExtend} → ${parsed.thumbsUpThumbExtend || DEFAULT_THRESHOLDS.thumbsUpThumbExtend}`,
+      });
       currentThresholds = { ...DEFAULT_THRESHOLDS, ...parsed };
       return currentThresholds;
+    } else {
+      console.log('📝 No trained thresholds found - using defaults');
     }
   } catch (e) {
-    console.warn('Failed to load trained thresholds:', e);
+    console.warn('❌ Failed to load trained thresholds:', e);
   }
-  
+
+  console.log('📝 Using default thresholds');
   return DEFAULT_THRESHOLDS;
 }
 
@@ -102,6 +110,14 @@ export function resetThresholds() {
     localStorage.removeItem('gesture-samples');
   }
   console.log('♻️ Reset to default thresholds');
+}
+
+// Auto-load trained thresholds when module initializes (browser only)
+if (typeof window !== 'undefined') {
+  // Use a small delay to ensure localStorage is available
+  setTimeout(() => {
+    loadTrainedThresholds();
+  }, 0);
 }
 
 // Hand landmark indices (MediaPipe standard)
@@ -331,25 +347,36 @@ export function detectGesture(
   const thumbMcp = keypoints[LANDMARK_INDICES.THUMB_MCP];
   const wrist = keypoints[LANDMARK_INDICES.WRIST];
   const indexMcp = keypoints[LANDMARK_INDICES.INDEX_MCP];
-  
+
   const thumbPointingUp = thumbTip.y < thumbMcp.y && thumbTip.y < wrist.y;
   const thumbPointingDown = thumbTip.y > thumbMcp.y && thumbTip.y > wrist.y;
   
   // Thumbs up detection with trained thresholds
   const fingersCurledCount = fingerCurls.filter(c => c > thresholds.thumbsUpFingerCurl).length;
   const thumbExtended = thumbCurl < thresholds.thumbsUpThumbExtend;
-  const thumbPointingUpStrict = 
-    thumbTip.y < thumbMcp.y - 0.03 && 
-    thumbTip.y < wrist.y - thresholds.thumbsUpYThreshold &&
+
+  // Normalize Y coordinate differences (in case coords are in pixel space)
+  // Get the range of Y coordinates to determine if we need normalization
+  const allYCoords = keypoints.map(p => p.y);
+  const maxY = Math.max(...allYCoords);
+  const yScale = maxY > 2 ? maxY : 1; // If max > 2, assume pixel coordinates
+  const xScale = Math.max(...keypoints.map(p => p.x)) > 2 ? Math.max(...keypoints.map(p => p.x)) : 1;
+
+  const thumbPointingUpStrict =
+    thumbTip.y < thumbMcp.y - (thresholds.thumbsUpYThreshold * yScale) &&
+    thumbTip.y < wrist.y - (thresholds.thumbsUpYThreshold * yScale) &&
     thumbTip.y < indexMcp.y;
-  const thumbNotTooExtended = Math.abs(thumbTip.x - thumbMcp.x) < thresholds.thumbsUpXThreshold;
+
+  // Normalize X distance to 0-1 range if coordinates are in pixels
+  const thumbXDistance = Math.abs(thumbTip.x - thumbMcp.x) / xScale;
+  const thumbNotTooExtended = thumbXDistance < thresholds.thumbsUpXThreshold;
   
-  const isThumbsUp = fingersCurledCount >= thresholds.thumbsUpMinFingers && 
-                     thumbExtended && 
-                     thumbPointingUpStrict && 
+  const isThumbsUp = fingersCurledCount >= thresholds.thumbsUpMinFingers &&
+                     thumbExtended &&
+                     thumbPointingUpStrict &&
                      thumbNotTooExtended;
-  
-  console.log('👍 Is thumbs up?', isThumbsUp, 
+
+  console.log('👍 Is thumbs up?', isThumbsUp,
     `(fingers > ${thresholds.thumbsUpFingerCurl}: ${fingersCurledCount}/${thresholds.thumbsUpMinFingers}, thumb < ${thresholds.thumbsUpThumbExtend}: ${thumbCurl < thresholds.thumbsUpThumbExtend}, pointing up: ${thumbPointingUpStrict})`);
   
   if (isThumbsUp) {
@@ -374,12 +401,14 @@ export function detectGesture(
   }
 
   // Check for closed fist (at least N out of 4 fingers curled) with trained thresholds
+  // IMPORTANT: Also check that thumb is NOT extended (to distinguish from thumbs up)
   const fistCurledCount = fingerCurls.filter(c => c > thresholds.fistCurlThreshold).length;
-  const isFist = fistCurledCount >= thresholds.fistMinFingers;
-  
-  console.log('✊ Is fist?', isFist, 
-    `(${fistCurledCount}/4 fingers curled > ${thresholds.fistCurlThreshold}, threshold: at least ${thresholds.fistMinFingers})`);
-  
+  const thumbNotExtended = thumbCurl > 0.3; // Thumb should be curled or neutral, not extended
+  const isFist = fistCurledCount >= thresholds.fistMinFingers && thumbNotExtended;
+
+  console.log('✊ Is fist?', isFist,
+    `(${fistCurledCount}/4 fingers curled > ${thresholds.fistCurlThreshold}, threshold: at least ${thresholds.fistMinFingers}, thumb not extended: ${thumbNotExtended})`);
+
   if (isFist) {
     return {
       type: GestureType.CLOSED_FIST,

@@ -399,8 +399,8 @@ function detectGestureWithThresholds(keypoints: any[], thresholds: GestureThresh
   // Check thumbs up (most specific first)
   const fingersCurledCount = fingerCurls.filter(c => c > thresholds.thumbsUpFingerCurl).length;
   const thumbExtended = thumbCurl < thresholds.thumbsUpThumbExtend;
-  const thumbPointingUp = 
-    thumbTip.y < thumbMcp.y - 0.03 && 
+  const thumbPointingUp =
+    thumbTip.y < thumbMcp.y - thresholds.thumbsUpYThreshold &&
     thumbTip.y < wrist.y - thresholds.thumbsUpYThreshold &&
     thumbTip.y < indexMcp.y;
   const thumbNotTooExtended = Math.abs(thumbTip.x - thumbMcp.x) < thresholds.thumbsUpXThreshold;
