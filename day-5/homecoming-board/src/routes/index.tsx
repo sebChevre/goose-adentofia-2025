@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import { HandTracker } from '../components/HandTracker'
 import { FlightBoard } from '../components/FlightBoard'
 import { SettingsButton } from '../components/SettingsButton'
@@ -7,13 +7,14 @@ import { useMediaPipe } from '../hooks/useMediaPipe'
 import { useGestures } from '../hooks/useGestures'
 import { useSettings } from '../contexts/SettingsContext'
 import { setSoundEnabled } from '../utils/gestureAudio'
-import { GestureResult, loadTrainedThresholds, type GestureType } from '../utils/gestureDetection'
+import { GestureResult, loadTrainedThresholds, GestureType } from '../utils/gestureDetection'
 
 export const Route = createFileRoute('/')({ component: App })
 
 function App() {
   const [videoElement, setVideoElement] = useState<HTMLVideoElement | null>(null)
   const [currentGestureForBoard, setCurrentGestureForBoard] = useState<GestureType | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const { soundEnabled } = useSettings()
 
   // Load trained thresholds on mount
@@ -30,6 +31,18 @@ function App() {
   // MediaPipe hand tracking
   const { canvasRef, results, isReady, error, fps } = useMediaPipe(videoElement)
 
+  // Create ignored gestures set when modal is open
+  const ignoredGestures = useMemo(() => {
+    if (isModalOpen) {
+      return new Set([
+        GestureType.THUMBS_UP,
+        GestureType.OPEN_PALM,
+        GestureType.CLOSED_FIST,
+      ]);
+    }
+    return undefined;
+  }, [isModalOpen]);
+
   // Gesture detection with callback
   const handleGesture = useCallback((gesture: GestureResult) => {
     console.log(`✨ Gesture detected: ${gesture.type} - ${gesture.hand} hand`)
@@ -39,11 +52,16 @@ function App() {
   const { currentGesture, allGestures } = useGestures(results, {
     onGesture: handleGesture,
     debounceMs: 300,
+    ignoredGestures,
   })
 
   const handleGestureProcessed = useCallback(() => {
     // Clear the gesture after it's been processed by FlightBoard
     setCurrentGestureForBoard(null)
+  }, [])
+
+  const handleModalStateChange = useCallback((isOpen: boolean) => {
+    setIsModalOpen(isOpen)
   }, [])
 
   const handsDetected = results?.multiHandLandmarks?.length || 0
@@ -122,9 +140,10 @@ function App() {
 
           {/* Flight Board - Full Width */}
           <div className="bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
-            <FlightBoard 
+            <FlightBoard
               gesture={currentGestureForBoard}
               onGestureProcessed={handleGestureProcessed}
+              onModalStateChange={handleModalStateChange}
             />
           </div>
 

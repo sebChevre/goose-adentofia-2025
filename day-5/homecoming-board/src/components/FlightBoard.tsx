@@ -9,9 +9,10 @@ interface FlightBoardProps {
   onGestureNavigate?: (direction: 'up' | 'down') => void;
   gesture?: GestureType | null;
   onGestureProcessed?: () => void;
+  onModalStateChange?: (isOpen: boolean) => void;
 }
 
-export function FlightBoard({ onFlightSelect, onGestureNavigate, gesture, onGestureProcessed }: FlightBoardProps) {
+export function FlightBoard({ onFlightSelect, onGestureNavigate, gesture, onGestureProcessed, onModalStateChange }: FlightBoardProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -25,6 +26,11 @@ export function FlightBoard({ onFlightSelect, onGestureNavigate, gesture, onGest
   } = useFlightData({
     refetchInterval: 30000, // 30 seconds
   });
+
+  // Notify parent when modal state changes
+  useEffect(() => {
+    onModalStateChange?.(isModalOpen);
+  }, [isModalOpen, onModalStateChange]);
 
   // Reset selected index if flights change
   useEffect(() => {
