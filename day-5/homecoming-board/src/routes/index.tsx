@@ -7,7 +7,7 @@ import { useMediaPipe } from '../hooks/useMediaPipe'
 import { useGestures } from '../hooks/useGestures'
 import { useSettings } from '../contexts/SettingsContext'
 import { setSoundEnabled } from '../utils/gestureAudio'
-import { loadTrainedThresholds, type GestureType } from '../utils/gestureDetection'
+import { GestureResult, loadTrainedThresholds, type GestureType } from '../utils/gestureDetection'
 
 export const Route = createFileRoute('/')({ component: App })
 
