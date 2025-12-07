@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import type { ProcessedFlight } from '../hooks/useFlightData';
 
 interface FlightCardProps {
@@ -7,8 +8,22 @@ interface FlightCardProps {
 }
 
 export function FlightCard({ flight, isSelected = false, onClick }: FlightCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Scroll into view when the card becomes selected
+  useEffect(() => {
+    if (isSelected && cardRef.current) {
+      cardRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest'
+      });
+    }
+  }, [isSelected]);
+
   return (
     <div
+      ref={cardRef}
       onClick={onClick}
       className={`
         relative overflow-hidden
