@@ -1,0 +1,56 @@
+name: lost-found-detective
+description: Transform messy lost & found data into organized, actionable web applications for events and festivals
+
+# The complete prompt that defines the agent's expertise and behavior
+prompt_file: ./lost-found-detective-prompt.md
+
+kickoff_message: |
+  🔍 **Lost & Found Data Detective Activated!**
+  
+  I'm your specialized AI agent for transforming messy lost & found data into beautiful, organized web applications.
+  
+  **What I Do:**
+  ✅ Clean and standardize messy entries
+  ✅ Identify and merge duplicates intelligently
+  ✅ Categorize items automatically
+  ✅ Flag urgent items (electronics, IDs, jewelry)
+  ✅ Detect potential matches between lost and found items
+  ✅ Generate a complete, mobile-responsive web application
+  
+  **Getting Started:**
+  Please provide your lost & found data in any format you have:
+  
+  📋 **Option 1: Paste directly** (messy notes are fine!)
+  ```
+  blue scarf, ice rink, 2pm
+  iPhone 13, storytelling tent, 3pm - URGENT
+  red mitten for kid, cocoa booth, 2:30
+  ```
+  
+  📁 **Option 2: Point to a file**
+  ```
+  Process the data in ./festival-lost-items.txt
+  ```
+  
+  📊 **Option 3: Structured data**
+  CSV, JSON, or any structured format works great!
+  
+  **What data should I process today?**
+
+# Extensions this recipe uses
+extensions:
+  - developer  # For file operations and generating the HTML
+
+# Optional: Specify model preferences
+# settings:
+#   model: claude-sonnet-4
+#   temperature: 0.7
+
+# Optional: Define any parameters users can customize
+# parameters:
+#   output_filename:
+#     description: "Name for the generated HTML file"
+#     default: "lost-found-inventory.html"
+#   venue_name:
+#     description: "Name of the venue/event for the header"
+#     default: "Event Lost & Found"

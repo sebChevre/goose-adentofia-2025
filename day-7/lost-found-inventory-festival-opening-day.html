@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found Inventory - Festival Opening Day</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d3748;
+        }
+
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1em;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .header .subtitle {
+            color: #718096;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .search-filter-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            font-size: 1.1em;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3em;
+            color: #cbd5e0;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .clear-filters {
+            padding: 12px 24px;
+            background: #e2e8f0;
+            color: #2d3748;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .clear-filters:hover {
+            background: #cbd5e0;
+        }
+
+        .urgent-section {
+            background: linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(252, 92, 125, 0.4);
+            color: white;
+        }
+
+        .urgent-section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h2 {
+            color: #2d3748;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .section h2:hover {
+            color: #667eea;
+        }
+
+        .toggle-icon {
+            font-size: 0.7em;
+            transition: transform 0.3s;
+        }
+
+        .toggle-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .item-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .urgent-section .item-card {
+            background: white;
+            color: #2d3748;
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .item-icon {
+            font-size: 2em;
+        }
+
+        .item-description {
+            flex: 1;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+            font-size: 0.95em;
+            color: #4a5568;
+        }
+
+        .item-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .badge-urgent {
+            background: #fc5c7d;
+            color: white;
+        }
+
+        .badge-duplicate {
+            background: #48bb78;
+            color: white;
+        }
+
+        .category-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .category-content.collapsed {
+            max-height: 0;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #718096;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .header {
+                padding: 25px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .item-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .search-filter-section,
+            .snowflakes {
+                display: none;
+            }
+
+            .section,
+            .header {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="snowflakes" id="snowflakes"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>❄️ Lost & Found Inventory</h1>
+            <p class="subtitle">Festival Opening Day - December 15, 2024</p>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="number">20</div>
+                    <div class="label">Total Entries</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">16</div>
+                    <div class="label">Unique Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">4</div>
+                    <div class="label">Duplicates Merged</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">4</div>
+                    <div class="label">Urgent Items</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-filter-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search items, locations, or descriptions...">
+                <span class="search-icon">🔍</span>
+            </div>
+
+            <div class="filters">
+                <div class="filter-group">
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="Electronics">📱 Electronics</option>
+                        <option value="Clothing">👔 Clothing & Accessories</option>
+                        <option value="Keys">🔑 Keys & Wallets</option>
+                        <option value="Jewelry">💍 Jewelry & Valuables</option>
+                        <option value="Personal">👓 Personal Items</option>
+                        <option value="Bags">🎒 Bags & Containers</option>
+                        <option value="Children">🧸 Children's Items</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <select id="urgencyFilter">
+                        <option value="">All Urgency Levels</option>
+                        <option value="urgent">🚨 Urgent Only</option>
+                        <option value="standard">📋 Standard Only</option>
+                    </select>
+                </div>
+
+                <button class="clear-filters" onclick="clearFilters()">Clear Filters</button>
+            </div>
+        </div>
+
+        <div class="urgent-section" id="urgentSection">
+            <h2>🚨 URGENT ITEMS - IMMEDIATE ATTENTION REQUIRED</h2>
+            <div class="item-grid" id="urgentItems">
+                <div class="item-card" data-category="Electronics" data-urgency="urgent" data-searchtext="iphone 13 pro black case storytelling tent 3:00pm electronics urgent">
+                    <div class="item-header">
+                        <span class="item-icon">📱</span>
+                        <span class="item-description">iPhone 13 Pro</span>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-detail">📝 Black case</div>
+                        <div class="item-detail">📍 Storytelling Tent</div>
+                        <div class="item-detail">🕐 3:00 PM</div>
+                    </div>
+                    <span class="badge badge-urgent">🚨 URGENT</span>
+                </div>
+
+                <div class="item-card" data-category="Keys" data-urgency="urgent" data-searchtext="black leather wallet main entrance 2:45pm keys wallets urgent">
+                    <div class="item-header">
+                        <span class="item-icon">👛</span>
+                        <span class="item-description">Black Leather Wallet</span>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-detail">📍 Main Entrance</div>
+                        <div class="item-detail">🕐 2:45 PM</div>
+                    </div>
+                    <span class="badge badge-urgent">🚨 URGENT</span>
+                </div>
+
+                <div class="item-card" data-category="Electronics" data-urgency="urgent" data-searchtext="airpods white case near main stage 4:30pm electronics urgent">
+                    <div class="item-header">
+                        <span class="item-icon">🎧</span>
+                        <span class="item-description">AirPods</span>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-detail">📝 White case</div>
+                        <div class="item-detail">📍 Near Main Stage</div>
+                        <div class="item-detail">🕐 4:30 PM</div>
+                    </div>
+                    <span class="badge badge-urgent">🚨 URGENT</span>
+                </div>
+
+                <div class="item-card" data-category="Jewelry" data-urgency="urgent" data-searchtext="silver watch bathroom area 3:45pm jewelry valuables urgent">
+                    <div class="item-header">
+                        <span class="item-icon">⌚</span>
+                        <span class="item-description">Silver Watch</span>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-detail">📍 Bathroom Area</div>
+                        <div class="item-detail">🕐 3:45 PM</div>
+                    </div>
+                    <span class="badge badge-urgent">🚨 URGENT</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleSection('clothing')">
+                <span class="toggle-icon" id="toggle-clothing">▼</span>
+                👔 Clothing & Accessories <span style="color: #718096; font-size: 0.7em; font-weight: normal;">(5 items)</span>
+            </h2>
+            <div class="category-content" id="content-clothing">
+                <div class="item-grid">
+                    <div class="item-card" data-category="Clothing" data-urgency="standard" data-searchtext="blue scarf ice rink 2:00pm clothing accessories">
+                        <div class="item-header">
+                            <span class="item-icon">🧣</span>
+                            <span class="item-description">Blue Scarf</span>
+                        </div>
+                        <div class="item-details">
+                            <div class="item-detail">📍 Ice Rink Area</div>
+                            <div class="item-detail">🕐 2:00-2:15 PM</div>
+                        </div>
+                        <span class="badge badge-duplicate">✓ 2 Reports Merged</span>
+                    </div>
+
+                    <div class="item-card" data-category="Clothing" data-urgency="standard" data-searchtext="red mitten child size cocoa booth 2:30pm clothing accessories">
+                        <div class="item-header">
+                            <span class="item-icon">🧤</span>
+                            <span class="item-description">Red Mitten (Child Size)</span>
+                        </div>
+                        <div class="item-details">
+                            <div class="item-detail">📍 Cocoa Booth</div>
+                            <div class="item-detail">🕐 2:30-2:35 PM</div>
+                        </div>
+                        <span class="badge badge-duplicate">✓ 2 Reports Merged</span>
+                    </div>
+
+                    <div class="item-card" data-category="Clothing" data-urgency="standard" data-searchtext="green puffy jacket coat check area 5:00pm clothing accessories">
+                        <div class="item-header">
+                            <span class="item-icon">🧥</span>
+                            <span class="item-description">Green Puffy Jacket</span>
+                        </div>
+                        <div class="item-details">
+                            <div class="item-detail">📍 Coat Check Area</div>
+                            <div class="item-detail">🕐 5:00 PM</div>
+                        </div>
+                    </div>
+
+                    <div class="item-card" data-category="Clothing" data-urgency="standard" data-searchtext="red white striped scarf ice rink entrance 2:05pm clothing accessories">
+                        <div class="item-header">
+                            <span class="item-icon">🧣</span>
+                            <span class="item-description">Red and White Striped Scarf</span>
+                        </div>
+                        <div class="item-details">
+                            <div class="item-detail">📍 Ice Rink Entrance</div>
+                            <div class="item-detail">🕐 2:05 PM</div>
+                        </div>
+                    </div>
+
+                    <div class="item-card" data-category="Clothing" data-urgency="standard" data-searchtext="pink knitted hat kids play area 1:45pm clothing accessories">
+                        <div class="item-header">
+                            <span class="item-icon">🧢</span>
+                            <span class="item-description">Pink Knitted Hat</span>
+                        </div>
+                        <div class="item-details">
+                            <div class="item-detail">📍 Kids Play Area</div>
+                            <div class="item-detail">🕐 1:45 PM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleSection('keys')">
+                <span class="toggle-icon" id="toggle-keys">▼</span>
+                🔑 Keys & Wallets <span style="color: #718096; font-size: 0.7em; font-weight: normal;">(2 items)</span>
+            </h2>
+            <div class="category-content" id="content-keys">
+                <div class="item-grid">
+                    <div class="item-card" data-category="Keys" data-urgency="standard" data-searchtext="toyota car keys parking lot b 4:00pm keys wallets">
+                        <div class="item-header">
+                            <span class="item-icon">🔑</span>
+                            <span class="item-description">Toyota Car Keys</span>
+                        </div>
+                        <div class="item-details">
+                            <div class="item-detail">📝 With remote</div>
+                            <div class="item-detail">📍 Parking Lot B</div>
+                            <div class="item-detail">🕐 4:00-4:10 PM</div>
+                        </div>
+                        <span class="badge badge-duplicate">✓ 2 Reports Merged</span>
+                    </div>
+
+                    <div class="item-card" data-category="Keys" data-urgency="standard" data-searchtext="house keys 3 keys ring parking lot 4:15pm keys wallets">
+                        <div class="item-header">
+                            <span class="item-icon">🔑</span>
+                            <span class="item-description">House Keys</span>
+                        </div>
+                        <div class="item-details">
+                            <div class="item-detail">📝 3 keys on ring</div>
+                            <div class="item-detail">📍 Parking Lot</div>
+                            <div class="item-detail">🕐 4:15 PM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleSection('electronics')">
+                <span class="toggle-icon" id="toggle-electronics">▼</span>
+                📱 Electronics <span style="color: #718096; font-size: 0.7em; font-weight: normal;">(1 item)</span>
+            </h2>
+            <div class="category-content" id="content-electronics">
+                <div class="item-grid">
+                    <div class="item-card" data-category="Electronics" data-urgency="standard" data-searchtext="smartphone charger iphone food court table 7 3:15pm electronics">
+                        <div class="item-header">
+                            <span class="item-icon">🔌</span>
+                            <span class="item-description">Smartphone Charger (iPhone)</span>
+                        </div>
+                        <div class="item-details">
+                            <div class="item-detail">📍 Food Court Table 7</div>
+                            <div class="item-detail">🕐 3:15 PM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleSection('personal')">
+                <span class="toggle-icon" id="toggle-personal">▼</span>
+                👓 Personal Items <span style="color: #718096; font-size: 0.7em; font-weight: normal;">(1 item)</span>
+            </h2>
+            <div class="category-content" id="content-personal">
+                <div class="item-grid">
+                    <div class="item-card" data-category="Personal" data-urgency="standard" data-searchtext="reading glasses food court 3:30pm personal items">
+                        <div class="item-header">
+                            <span class="item-icon">👓</span>
+                            <span class="item-description">Reading Glasses</span>
+                        </div>
+                        <div class="item-details">
+                            <div class="item-detail">📍 Food Court</div>
+                            <div class="item-detail">🕐 3:30 PM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleSection('bags')">
+                <span class="toggle-icon" id="toggle-bags">▼</span>
+                🎒 Bags & Containers <span style="color: #718096; font-size: 0.7em; font-weight: normal;">(2 items)</span>
+            </h2>
+            <div class="category-content" id="content-bags">
+                <div class="item-grid">
+                    <div class="item-card" data-category="Bags" data-urgency="standard" data-searchtext="blue metal water bottle vendor booth 3 2:20pm bags containers">
+                        <div class="item-header">
+                            <span class="item-icon">🧴</span>
+                            <span class="item-description">Blue Water Bottle (Metal)</span>
+                        </div>
+                        <div class="item-details">
+                            <div class="item-detail">📍 Vendor Booth 3</div>
+                            <div class="item-detail">🕐 2:20 PM</div>
+                        </div>
+                    </div>
+
+                    <div class="item-card" data-category="Bags" data-urgency="standard" data-searchtext="purple backpack storytelling tent 3:00pm bags containers">
+                        <div class="item-header">
+                            <span class="item-icon">🎒</span>
+                            <span class="item-description">Purple Backpack</span>
+                        </div>
+                        <div class="item-details">
+                            <div class="item-detail">📍 Storytelling Tent</div>
+                            <div class="item-detail">🕐 3:00 PM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleSection('children')">
+                <span class="toggle-icon" id="toggle-children">▼</span>
+                🧸 Children's Items <span style="color: #718096; font-size: 0.7em; font-weight: normal;">(1 item)</span>
+            </h2>
+            <div class="category-content" id="content-children">
+                <div class="item-grid">
+                    <div class="item-card" data-category="Children" data-urgency="standard" data-searchtext="brown teddy bear kids zone 1:00pm children items">
+                        <div class="item-header">
+                            <span class="item-icon">🧸</span>
+                            <span class="item-description">Brown Teddy Bear</span>
+                        </div>
+                        <div class="item-details">
+                            <div class="item-detail">📍 Kids Zone</div>
+                            <div class="item-detail">🕐 1:00-1:15 PM</div>
+                        </div>
+                        <span class="badge badge-duplicate">✓ 2 Reports Merged</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create snowflakes
+        function createSnowflakes() {
+            const snowflakesContainer = document.getElementById('snowflakes');
+            const snowflakeCount = 50;
+
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = '❄';
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                snowflake.style.opacity = Math.random() * 0.6 + 0.3;
+                snowflakesContainer.appendChild(snowflake);
+            }
+        }
+
+        createSnowflakes();
+
+        // Toggle section
+        function toggleSection(sectionId) {
+            const content = document.getElementById('content-' + sectionId);
+            const toggle = document.getElementById('toggle-' + sectionId);
+
+            if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                content.style.maxHeight = '0px';
+                toggle.classList.add('collapsed');
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                toggle.classList.remove('collapsed');
+            }
+        }
+
+        // Initialize all sections as open
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = ['clothing', 'keys', 'electronics', 'personal', 'bags', 'children'];
+            sections.forEach(section => {
+                const content = document.getElementById('content-' + section);
+                content.style.maxHeight = content.scrollHeight + 'px';
+            });
+        });
+
+        // Search and filter functionality
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const urgencyFilter = document.getElementById('urgencyFilter');
+
+        function filterItems() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const categoryValue = categoryFilter.value;
+            const urgencyValue = urgencyFilter.value;
+
+            const allCards = document.querySelectorAll('.item-card');
+            let visibleCount = 0;
+
+            allCards.forEach(card => {
+                const searchText = card.getAttribute('data-searchtext');
+                const category = card.getAttribute('data-category');
+                const urgency = card.getAttribute('data-urgency');
+
+                const matchesSearch = !searchTerm || searchText.includes(searchTerm);
+                const matchesCategory = !categoryValue || category === categoryValue;
+                const matchesUrgency = !urgencyValue || urgency === urgencyValue;
+
+                if (matchesSearch && matchesCategory && matchesUrgency) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Show/hide sections based on visible items
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const visibleItems = section.querySelectorAll('.item-card[style="display: block;"]');
+                if (visibleItems.length === 0) {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = 'block';
+                }
+            });
+
+            // Handle urgent section visibility
+            const urgentSection = document.getElementById('urgentSection');
+            const urgentVisibleItems = urgentSection.querySelectorAll('.item-card[style="display: block;"]');
+            if (urgentVisibleItems.length === 0) {
+                urgentSection.style.display = 'none';
+            } else {
+                urgentSection.style.display = 'block';
+            }
+
+            // Show no results message if nothing visible
+            if (visibleCount === 0) {
+                showNoResults();
+            } else {
+                hideNoResults();
+            }
+        }
+
+        function clearFilters() {
+            searchInput.value = '';
+            categoryFilter.value = '';
+            urgencyFilter.value = '';
+            filterItems();
+        }
+
+        function showNoResults() {
+            let noResultsDiv = document.getElementById('noResults');
+            if (!noResultsDiv) {
+                noResultsDiv = document.createElement('div');
+                noResultsDiv.id = 'noResults';
+                noResultsDiv.className = 'no-results';
+                noResultsDiv.innerHTML = '<h3>No items found</h3><p>Try adjusting your search or filters</p>';
+                document.querySelector('.container').appendChild(noResultsDiv);
+            }
+        }
+
+        function hideNoResults() {
+            const noResultsDiv = document.getElementById('noResults');
+            if (noResultsDiv) {
+                noResultsDiv.remove();
+            }
+        }
+
+        searchInput.addEventListener('input', filterItems);
+        categoryFilter.addEventListener('change', filterItems);
+        urgencyFilter.addEventListener('change', filterItems);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found Inventory - December 16, 2024</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d3748;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 1.2em;
+        }
+
+        .summary {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .summary h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .search-filter-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px;
+            font-size: 1em;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .clear-btn {
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        .clear-btn:hover {
+            background: #764ba2;
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .section.urgent {
+            border: 3px solid #e53e3e;
+            background: linear-gradient(to right, #fff5f5 0%, white 100%);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section.urgent .section-title {
+            color: #e53e3e;
+        }
+
+        .item-count {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .section.urgent .item-count {
+            background: #e53e3e;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .item-card {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .item-card.urgent {
+            border-color: #e53e3e;
+            background: #fff5f5;
+        }
+
+        .item-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .item-icon {
+            font-size: 2em;
+            flex-shrink: 0;
+        }
+
+        .item-description {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2d3748;
+            flex: 1;
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95em;
+            color: #4a5568;
+        }
+
+        .detail-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        .urgent-badge {
+            background: #e53e3e;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .duplicate-badge {
+            background: #48bb78;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .collapse-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s;
+        }
+
+        .collapsed .collapse-icon {
+            transform: rotate(-90deg);
+        }
+
+        .collapsed .items-grid {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-row {
+                flex-direction: column;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .search-filter-section,
+            .clear-btn {
+                display: none;
+            }
+
+            .section {
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #e2e8f0;
+            }
+
+            .item-card {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>❄️ Lost & Found Inventory</h1>
+            <div class="subtitle">Peak Crowd Day - December 16, 2024</div>
+        </header>
+
+        <div class="summary">
+            <h2>📊 Summary of Findings</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">35</div>
+                    <div class="stat-label">Total Entries</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">28</div>
+                    <div class="stat-label">Unique Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">7</div>
+                    <div class="stat-label">Duplicates Merged</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">7</div>
+                    <div class="stat-label">Urgent Items</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-filter-section">
+            <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search items by description, location, or time...">
+            <div class="filter-row">
+                <select class="filter-select" id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="electronics">📱 Electronics</option>
+                    <option value="clothing">👔 Clothing & Accessories</option>
+                    <option value="keys-wallets">🔑 Keys & Wallets</option>
+                    <option value="jewelry">💍 Jewelry & Valuables</option>
+                    <option value="personal">👓 Personal Items</option>
+                    <option value="bags">🎒 Bags & Containers</option>
+                    <option value="children">🧸 Children's Items</option>
+                    <option value="documents">📚 Documents & Cards</option>
+                </select>
+                <select class="filter-select" id="urgencyFilter">
+                    <option value="">All Urgency Levels</option>
+                    <option value="urgent">🚨 Urgent Only</option>
+                    <option value="standard">📋 Standard Only</option>
+                </select>
+                <button class="clear-btn" onclick="clearFilters()">Clear Filters</button>
+            </div>
+        </div>
+
+        <div class="section urgent" id="urgent-section">
+            <div class="section-header" onclick="toggleSection('urgent-section')">
+                <h2 class="section-title">
+                    🚨 URGENT ITEMS - IMMEDIATE ATTENTION REQUIRED
+                </h2>
+                <div>
+                    <span class="item-count">7 items</span>
+                    <span class="collapse-icon">▼</span>
+                </div>
+            </div>
+            <div class="items-grid">
+                <div class="item-card urgent" data-category="electronics" data-urgency="urgent" data-search="samsung galaxy s23 cracked screen ice rink 1:30pm">
+                    <div class="item-header">
+                        <div class="item-icon">📱</div>
+                        <div class="item-description">Samsung Galaxy S23</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Ice rink</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>1:30 PM</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">📝</span>
+                            <span>Cracked screen</span>
+                        </div>
+                    </div>
+                    <div class="urgent-badge">🚨 URGENT</div>
+                </div>
+
+                <div class="item-card urgent" data-category="jewelry" data-urgency="urgent" data-search="gold wedding ring storytelling tent 3:15pm">
+                    <div class="item-header">
+                        <div class="item-icon">💍</div>
+                        <div class="item-description">Gold Wedding Ring</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Storytelling tent</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>3:15 PM</span>
+                        </div>
+                    </div>
+                    <div class="urgent-badge">🚨 URGENT</div>
+                </div>
+
+                <div class="item-card urgent" data-category="documents" data-urgency="urgent" data-search="driver's license credit cards main entrance 11am">
+                    <div class="item-header">
+                        <div class="item-icon">📚</div>
+                        <div class="item-description">Driver's License and Credit Cards</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Main entrance</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>11:00 AM</span>
+                        </div>
+                    </div>
+                    <div class="urgent-badge">🚨 URGENT</div>
+                </div>
+
+                <div class="item-card urgent" data-category="electronics" data-urgency="urgent" data-search="nintendo switch black case vendor area 3pm">
+                    <div class="item-header">
+                        <div class="item-icon">🎮</div>
+                        <div class="item-description">Nintendo Switch</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Vendor area</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>3:00 PM</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">📝</span>
+                            <span>Black case</span>
+                        </div>
+                    </div>
+                    <div class="urgent-badge">🚨 URGENT</div>
+                </div>
+
+                <div class="item-card urgent" data-category="electronics" data-urgency="urgent" data-search="macbook air silver storytelling tent 2pm">
+                    <div class="item-header">
+                        <div class="item-icon">💻</div>
+                        <div class="item-description">MacBook Air (Silver)</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Storytelling tent</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>2:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="urgent-badge">🚨 URGENT</div>
+                </div>
+
+                <div class="item-card urgent" data-category="electronics" data-urgency="urgent" data-search="smartwatch apple watch ice rink 4pm">
+                    <div class="item-header">
+                        <div class="item-icon">⌚</div>
+                        <div class="item-description">Apple Watch</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Ice rink</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>4:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="urgent-badge">🚨 URGENT</div>
+                </div>
+
+                <div class="item-card urgent" data-category="electronics" data-urgency="urgent" data-search="digital camera canon main stage 5pm">
+                    <div class="item-header">
+                        <div class="item-icon">📷</div>
+                        <div class="item-description">Canon Digital Camera</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Main stage area</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>5:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="urgent-badge">🚨 URGENT</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="electronics-section">
+            <div class="section-header" onclick="toggleSection('electronics-section')">
+                <h2 class="section-title">
+                    📱 Electronics
+                </h2>
+                <div>
+                    <span class="item-count">1 item</span>
+                    <span class="collapse-icon">▼</span>
+                </div>
+            </div>
+            <div class="items-grid">
+                <div class="item-card" data-category="electronics" data-urgency="standard" data-search="iphone charger cable white food court 12pm">
+                    <div class="item-header">
+                        <div class="item-icon">🔌</div>
+                        <div class="item-description">iPhone Charger Cable (White)</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Food court</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>12:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="duplicate-badge">✓ 2 reports merged</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="clothing-section">
+            <div class="section-header" onclick="toggleSection('clothing-section')">
+                <h2 class="section-title">
+                    👔 Clothing & Accessories
+                </h2>
+                <div>
+                    <span class="item-count">7 items</span>
+                    <span class="collapse-icon">▼</span>
+                </div>
+            </div>
+            <div class="items-grid">
+                <div class="item-card" data-category="clothing" data-urgency="standard" data-search="black leather gloves cocoa booth 2pm">
+                    <div class="item-header">
+                        <div class="item-icon">🧤</div>
+                        <div class="item-description">Black Leather Gloves</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Cocoa booth</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>2:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="duplicate-badge">✓ 2 reports merged</div>
+                </div>
+
+                <div class="item-card" data-category="clothing" data-urgency="standard" data-search="grey wool scarf ice skating 2:30pm">
+                    <div class="item-header">
+                        <div class="item-icon">🧣</div>
+                        <div class="item-description">Grey Wool Scarf</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Ice skating area</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>2:30 PM</span>
+                        </div>
+                    </div>
+                    <div class="duplicate-badge">✓ 2 reports merged</div>
+                </div>
+
+                <div class="item-card" data-category="clothing" data-urgency="standard" data-search="red north face winter coat jacket coat check 6pm">
+                    <div class="item-header">
+                        <div class="item-icon">🧥</div>
+                        <div class="item-description">Red Winter Coat (North Face)</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Coat check</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>6:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="duplicate-badge">✓ 2 reports merged</div>
+                </div>
+
+                <div class="item-card" data-category="clothing" data-urgency="standard" data-search="green beanie hat ice rink 3:15pm">
+                    <div class="item-header">
+                        <div class="item-icon">🎩</div>
+                        <div class="item-description">Green Beanie Hat</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Ice rink</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>3:15 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card" data-category="clothing" data-urgency="standard" data-search="yellow rain jacket main entrance 5:30pm">
+                    <div class="item-header">
+                        <div class="item-icon">🧥</div>
+                        <div class="item-description">Yellow Rain Jacket</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Main entrance</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>5:30 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card" data-category="clothing" data-urgency="standard" data-search="red scarf white stripes ice skating rink 2pm">
+                    <div class="item-header">
+                        <div class="item-icon">🧣</div>
+                        <div class="item-description">Red Scarf with White Stripes</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Ice skating rink</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>2:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card" data-category="clothing" data-urgency="standard" data-search="grey wool mittens coat check 4:30pm">
+                    <div class="item-header">
+                        <div class="item-icon">🧤</div>
+                        <div class="item-description">Grey Wool Mittens</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Coat check</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>4:30 PM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="keys-wallets-section">
+            <div class="section-header" onclick="toggleSection('keys-wallets-section')">
+                <h2 class="section-title">
+                    🔑 Keys & Wallets
+                </h2>
+                <div>
+                    <span class="item-count">5 items</span>
+                    <span class="collapse-icon">▼</span>
+                </div>
+            </div>
+            <div class="items-grid">
+                <div class="item-card" data-category="keys-wallets" data-urgency="standard" data-search="honda civic car keys parking lot c 4:45pm">
+                    <div class="item-header">
+                        <div class="item-icon">🔑</div>
+                        <div class="item-description">Car Keys (Honda Civic)</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Parking lot C</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>4:45 PM</span>
+                        </div>
+                    </div>
+                    <div class="duplicate-badge">✓ 2 reports merged</div>
+                </div>
+
+                <div class="item-card" data-category="keys-wallets" data-urgency="standard" data-search="house keys pink keychain bathroom 1:45pm">
+                    <div class="item-header">
+                        <div class="item-icon">🔑</div>
+                        <div class="item-description">House Keys with Pink Keychain</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Bathroom</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>1:45 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card urgent" data-category="keys-wallets" data-urgency="urgent" data-search="black crossbody purse vendor booth 5 2:30pm">
+                    <div class="item-header">
+                        <div class="item-icon">👛</div>
+                        <div class="item-description">Black Crossbody Purse</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Vendor booth 5</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>2:30 PM</span>
+                        </div>
+                    </div>
+                    <div class="urgent-badge">🚨 URGENT</div>
+                </div>
+
+                <div class="item-card" data-category="keys-wallets" data-urgency="standard" data-search="brown wallet men's parking lot entrance 4pm">
+                    <div class="item-header">
+                        <div class="item-icon">👛</div>
+                        <div class="item-description">Brown Wallet (Men's)</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Parking lot entrance</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>4:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card" data-category="keys-wallets" data-urgency="standard" data-search="subaru car keys parking lot b 3:30pm">
+                    <div class="item-header">
+                        <div class="item-icon">🔑</div>
+                        <div class="item-description">Car Keys (Subaru)</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Parking lot B</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>3:30 PM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="jewelry-section">
+            <div class="section-header" onclick="toggleSection('jewelry-section')">
+                <h2 class="section-title">
+                    💍 Jewelry & Valuables
+                </h2>
+                <div>
+                    <span class="item-count">1 item</span>
+                    <span class="collapse-icon">▼</span>
+                </div>
+            </div>
+            <div class="items-grid">
+                <div class="item-card" data-category="jewelry" data-urgency="standard" data-search="silver hoop earrings bathroom 2:15pm valuable">
+                    <div class="item-header">
+                        <div class="item-icon">💎</div>
+                        <div class="item-description">Silver Hoop Earrings</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Bathroom area</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>2:15 PM</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">⭐</span>
+                            <span>Valuable</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="personal-section">
+            <div class="section-header" onclick="toggleSection('personal-section')">
+                <h2 class="section-title">
+                    👓 Personal Items
+                </h2>
+                <div>
+                    <span class="item-count">2 items</span>
+                    <span class="collapse-icon">▼</span>
+                </div>
+            </div>
+            <div class="items-grid">
+                <div class="item-card" data-category="personal" data-urgency="standard" data-search="prescription sunglasses ray-ban food court 1pm">
+                    <div class="item-header">
+                        <div class="item-icon">🕶️</div>
+                        <div class="item-description">Prescription Sunglasses (Ray-Ban)</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Food court</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>1:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card" data-category="personal" data-urgency="standard" data-search="prescription glasses reading glasses brown frames cocoa booth 3pm">
+                    <div class="item-header">
+                        <div class="item-icon">👓</div>
+                        <div class="item-description">Prescription Glasses (Brown Frames)</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Cocoa booth</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>3:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="duplicate-badge">✓ 2 reports merged</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="bags-section">
+            <div class="section-header" onclick="toggleSection('bags-section')">
+                <h2 class="section-title">
+                    🎒 Bags & Containers
+                </h2>
+                <div>
+                    <span class="item-count">2 items</span>
+                    <span class="collapse-icon">▼</span>
+                </div>
+            </div>
+            <div class="items-grid">
+                <div class="item-card" data-category="bags" data-urgency="standard" data-search="blue jansport backpack storytelling area 1:30pm">
+                    <div class="item-header">
+                        <div class="item-icon">🎒</div>
+                        <div class="item-description">Blue Backpack (Jansport)</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Storytelling area</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>1:30 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card" data-category="bags" data-urgency="standard" data-search="green hydro flask water bottle vendor area 11am">
+                    <div class="item-header">
+                        <div class="item-icon">💧</div>
+                        <div class="item-description">Green Water Bottle (Hydro Flask)</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Vendor area</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>11:00 AM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="children-section">
+            <div class="section-header" onclick="toggleSection('children-section')">
+                <h2 class="section-title">
+                    🧸 Children's Items
+                </h2>
+                <div>
+                    <span class="item-count">3 items</span>
+                    <span class="collapse-icon">▼</span>
+                </div>
+            </div>
+            <div class="items-grid">
+                <div class="item-card" data-category="children" data-urgency="standard" data-search="child's blue mittens pair kids zone 12:30pm">
+                    <div class="item-header">
+                        <div class="item-icon">🧤</div>
+                        <div class="item-description">Child's Blue Mittens (Pair)</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Kids zone</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>12:30 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card" data-category="children" data-urgency="standard" data-search="white stuffed bunny rabbit plush toy children's play area 11:30am">
+                    <div class="item-header">
+                        <div class="item-icon">🐰</div>
+                        <div class="item-description">White Stuffed Bunny</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Children's play area</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>11:30 AM</span>
+                        </div>
+                    </div>
+                    <div class="duplicate-badge">✓ 2 reports merged</div>
+                </div>
+
+                <div class="item-card" data-category="children" data-urgency="standard" data-search="child's pink snow boots size 2 kids area 1pm">
+                    <div class="item-header">
+                        <div class="item-icon">👢</div>
+                        <div class="item-description">Child's Pink Snow Boots (Size 2)</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="detail-row">
+                            <span class="detail-icon">📍</span>
+                            <span>Kids area</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-icon">🕐</span>
+                            <span>1:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.classList.toggle('collapsed');
+        }
+
+        function clearFilters() {
+            document.getElementById('searchBox').value = '';
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('urgencyFilter').value = '';
+            filterItems();
+        }
+
+        function filterItems() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const urgencyFilter = document.getElementById('urgencyFilter').value;
+
+            const items = document.querySelectorAll('.item-card');
+            
+            items.forEach(item => {
+                const searchData = item.getAttribute('data-search') || '';
+                const category = item.getAttribute('data-category') || '';
+                const urgency = item.getAttribute('data-urgency') || '';
+
+                const matchesSearch = searchData.includes(searchTerm);
+                const matchesCategory = !categoryFilter || category === categoryFilter;
+                const matchesUrgency = !urgencyFilter || urgency === urgencyFilter;
+
+                if (matchesSearch && matchesCategory && matchesUrgency) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+
+            // Update section visibility and counts
+            updateSectionVisibility();
+        }
+
+        function updateSectionVisibility() {
+            const sections = document.querySelectorAll('.section');
+            
+            sections.forEach(section => {
+                const visibleItems = section.querySelectorAll('.item-card:not(.hidden)');
+                const countBadge = section.querySelector('.item-count');
+                
+                if (visibleItems.length === 0) {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = 'block';
+                    if (countBadge) {
+                        const totalItems = section.querySelectorAll('.item-card').length;
+                        if (visibleItems.length === totalItems) {
+                            countBadge.textContent = `${totalItems} ${totalItems === 1 ? 'item' : 'items'}`;
+                        } else {
+                            countBadge.textContent = `${visibleItems.length} of ${totalItems} ${totalItems === 1 ? 'item' : 'items'}`;
+                        }
+                    }
+                }
+            });
+        }
+
+        // Event listeners
+        document.getElementById('searchBox').addEventListener('input', filterItems);
+        document.getElementById('categoryFilter').addEventListener('change', filterItems);
+        document.getElementById('urgencyFilter').addEventListener('change', filterItems);
+    </script>
+</body>
+</html>
