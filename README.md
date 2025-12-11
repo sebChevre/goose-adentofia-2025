@@ -1,29 +1,29 @@
-# Fortune Teller Output
+# Fortune Generator Output
 
 ```
-╔══════════════════════════════════════════════════════════════════════════════╗
-║                                                                              ║
-║ 🔮 FORTUNE TELLER EXTRAORDINAIRE 🔮                                            ║
-║                                                                              ║
-║ Your sarcastic fortune awaits...                                             ║
-║                                                                              ║
-║ "A mysterious stranger will enter your life soon. They'll probably want to borrow money." ║
-║                                                                              ║
-║                                                                              ║
-║ ╠══════════════════════════════════════════════════════════════════════════════╣ ║
-║                                                                              ║
-║            ╭─╮                                                               ║
-║           (◔_◔)                                                              ║
-║          ╱     ╲                                                             ║
-║         ╱  ~~~  ╲                                                            ║
-║        ╱    🎩   ╲                                                            ║
-║       ╱___________╲                                                          ║
-║          │ │ │ │                                                             ║
-║         ╱╱ ╱╱ ╱╱ ╱╱                                                          ║
-║                                                                              ║
-║     "Honk honk, here's your                                                  ║
-║      'wonderful' fortune..."                                                 ║
-║                                                                              ║
-║                                                                              ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════╗
+║             🔮 FORTUNE TELLER (SARCASTIC) 🔮             ║
+║                                                        ║
+║ You will find true love... with your reflection in the ║
+║                        mirror.                         ║
+║────────────────────────────────────────────────────────║
+║                 ,---.           .---.                  ║
+║                   / /"`.\.--'''--./,'"\ \              ║
+║                   \ \    _       _    / /              ║
+║                     `./  / __   __ \  \,'              ║
+║                      /    /_O)_(_O_\    \              ║
+║                      |  .-'  ___  `-.  |               ║
+║                     \ /   .'"   "'.   \ /              ║
+║                      /'.-.__.--.__.-.'\\               ║
+║                     /`             `'\\                ║
+║                    /  \    HONK!    /  \\              ║
+║                   | \  \    /|\    /  / |              ║
+║                    \ `--'   \|/   '--' /               ║
+║                     `-.               ,-'              ║
+║                       `'''''---------'''''             ║
+║                           *SASSY GOOSE*                ║
+╚════════════════════════════════════════════════════════╝
 ```
+
+Generated with mood: **sarcastic**
+Fortune: *You will find true love... with your reflection in the mirror.*
