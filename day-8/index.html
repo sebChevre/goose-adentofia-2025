@@ -1,21 +1,17 @@
-import { readFileSync, writeFileSync } from 'fs';
-
-interface Vendor {
-  name: string;
-  location: string;
-  cuisine?: string;
-}
-
-interface VendorData {
-  vendors: Vendor[];
-}
-
-const data: VendorData = JSON.parse(
-  readFileSync('./vendors.json', 'utf-8')
-);
-
-// Generate structured data for SEO
-const structuredData = {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover amazing food vendors at the Winter Festival 2025. From hot cocoa to tacos, waffles to sushi - there's something for everyone!">
+    <title>❄️ Winter Festival Food Vendors 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
   "@context": "https://schema.org",
   "@type": "Event",
   "name": "Winter Festival 2025 - Food Vendors",
@@ -31,28 +27,69 @@ const structuredData = {
       "addressLocality": "Downtown Winter Village"
     }
   },
-  "offers": data.vendors.map(vendor => ({
-    "@type": "Offer",
-    "name": vendor.name,
-    "description": vendor.cuisine || "Food vendor",
-    "availability": "https://schema.org/InStock"
-  }))
-};
-
-const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Discover amazing food vendors at the Winter Festival 2025. From hot cocoa to tacos, waffles to sushi - there's something for everyone!">
-    <title>❄️ Winter Festival Food Vendors 2025</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    ${JSON.stringify(structuredData, null, 2)}
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Joe's Hot Cocoa",
+      "description": "Hot drinks & pastries",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Taco Truck Del Fuego",
+      "description": "Mexican food",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Sweet Treats Bakery",
+      "description": "Cookies",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pierogi Palace",
+      "description": "Polish food",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Waffle Wonderland",
+      "description": "Waffles",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Mama's Meatballs",
+      "description": "Italian",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "The Pretzel Pretender",
+      "description": "Pretzels",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Curry in a Hurry",
+      "description": "Food vendor",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Sushi on Ice",
+      "description": "Sushi",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pizza Palace",
+      "description": "Pizza slices",
+      "availability": "https://schema.org/InStock"
+    }
+  ]
+}
     </script>
     
     <style>
@@ -566,32 +603,86 @@ const html = `<!DOCTYPE html>
         <h2 class="section-title">Our Featured Vendors</h2>
         
         <div class="vendors-grid">
-${data.vendors.map(vendor => {
-    // Map cuisine to icon class
-    let iconClass = 'icon-default';
-    if (vendor.cuisine) {
-        const cuisineLower = vendor.cuisine.toLowerCase();
-        if (cuisineLower.includes('cocoa') || cuisineLower.includes('drinks')) iconClass = 'icon-cocoa';
-        else if (cuisineLower.includes('mexican') || cuisineLower.includes('taco')) iconClass = 'icon-mexican';
-        else if (cuisineLower.includes('cookie')) iconClass = 'icon-cookies';
-        else if (cuisineLower.includes('polish') || cuisineLower.includes('pierogi')) iconClass = 'icon-polish';
-        else if (cuisineLower.includes('waffle')) iconClass = 'icon-waffles';
-        else if (cuisineLower.includes('italian') || cuisineLower.includes('meatball')) iconClass = 'icon-italian';
-        else if (cuisineLower.includes('pretzel')) iconClass = 'icon-pretzels';
-        else if (cuisineLower.includes('curry')) iconClass = 'icon-curry';
-        else if (cuisineLower.includes('sushi')) iconClass = 'icon-sushi';
-        else if (cuisineLower.includes('pizza')) iconClass = 'icon-pizza';
-    }
-    
-    return `            <div class="vendor-card">
-                <span class="icon ${iconClass}"></span>
-                <h3>${vendor.name}</h3>
+            <div class="vendor-card">
+                <span class="icon icon-cocoa"></span>
+                <h3>Joe's Hot Cocoa</h3>
                 <div class="vendor-info">
-                    <p><span class="label">📍 Location:</span> ${vendor.location}</p>
-                    ${vendor.cuisine ? `<span class="cuisine-tag">${vendor.cuisine}</span>` : ''}
+                    <p><span class="label">📍 Location:</span> Main Plaza</p>
+                    <span class="cuisine-tag">Hot drinks & pastries</span>
                 </div>
-            </div>`;
-}).join('\n')}
+            </div>
+            <div class="vendor-card">
+                <span class="icon icon-mexican"></span>
+                <h3>Taco Truck Del Fuego</h3>
+                <div class="vendor-info">
+                    <p><span class="label">📍 Location:</span> North Entrance</p>
+                    <span class="cuisine-tag">Mexican food</span>
+                </div>
+            </div>
+            <div class="vendor-card">
+                <span class="icon icon-cookies"></span>
+                <h3>Sweet Treats Bakery</h3>
+                <div class="vendor-info">
+                    <p><span class="label">📍 Location:</span> Near the Ice Rink</p>
+                    <span class="cuisine-tag">Cookies</span>
+                </div>
+            </div>
+            <div class="vendor-card">
+                <span class="icon icon-polish"></span>
+                <h3>Pierogi Palace</h3>
+                <div class="vendor-info">
+                    <p><span class="label">📍 Location:</span> East Side</p>
+                    <span class="cuisine-tag">Polish food</span>
+                </div>
+            </div>
+            <div class="vendor-card">
+                <span class="icon icon-waffles"></span>
+                <h3>Waffle Wonderland</h3>
+                <div class="vendor-info">
+                    <p><span class="label">📍 Location:</span> Next to Storytelling Tent</p>
+                    <span class="cuisine-tag">Waffles</span>
+                </div>
+            </div>
+            <div class="vendor-card">
+                <span class="icon icon-italian"></span>
+                <h3>Mama's Meatballs</h3>
+                <div class="vendor-info">
+                    <p><span class="label">📍 Location:</span> Food Court Area</p>
+                    <span class="cuisine-tag">Italian</span>
+                </div>
+            </div>
+            <div class="vendor-card">
+                <span class="icon icon-pretzels"></span>
+                <h3>The Pretzel Pretender</h3>
+                <div class="vendor-info">
+                    <p><span class="label">📍 Location:</span> West Plaza</p>
+                    <span class="cuisine-tag">Pretzels</span>
+                </div>
+            </div>
+            <div class="vendor-card">
+                <span class="icon icon-default"></span>
+                <h3>Curry in a Hurry</h3>
+                <div class="vendor-info">
+                    <p><span class="label">📍 Location:</span> Mobile cart roams around</p>
+                    
+                </div>
+            </div>
+            <div class="vendor-card">
+                <span class="icon icon-sushi"></span>
+                <h3>Sushi on Ice</h3>
+                <div class="vendor-info">
+                    <p><span class="label">📍 Location:</span> Near Skating Rink</p>
+                    <span class="cuisine-tag">Sushi</span>
+                </div>
+            </div>
+            <div class="vendor-card">
+                <span class="icon icon-pizza"></span>
+                <h3>Pizza Palace</h3>
+                <div class="vendor-info">
+                    <p><span class="label">📍 Location:</span> Main Stage Area</p>
+                    <span class="cuisine-tag">Pizza slices</span>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -734,10 +825,4 @@ ${data.vendors.map(vendor => {
         });
     </script>
 </body>
-</html>`;
-
-// Write HTML file
-writeFileSync('./index.html', html, 'utf-8');
-console.log('✅ Generated index.html with structured data and theme toggle!');
-console.log(`📊 Created page with ${data.vendors.length} food vendors`);
-console.log('🎨 Features: Light/Dark theme toggle, animations, structured SEO data');
+</html>
