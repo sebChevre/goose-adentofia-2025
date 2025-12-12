@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gift Tag - Sarah Chen</title>
+  <style>
+    /* Design inspired by Jhey Tompkins' festive CSS art: https://codepen.io/jh3y/pen/poQxYMd */
+    
+    /* CSS Variables for theming */
+    :root {
+      --primary-color: #DC143C; /* Crimson red */
+      --accent-color: #228B22; /* Forest green - festive complement */
+      --gold-accent: #FFD700;
+      --text-color: #2C1810; /* Warm dark brown */
+      --background-color: #FFFEF9; /* Warm white */
+      --border-color: #DC143C;
+      --shadow-color: rgba(220, 20, 60, 0.2);
+    }
+
+    /* Print specifications */
+    @page {
+      size: 4in 3in;
+      margin: 0;
+    }
+
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
+      }
+    }
+
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      color: var(--text-color);
+      background-color: #F5F5F5;
+      width: 4in;
+      height: 3in;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 0.25in;
+    }
+
+    .gift-tag {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #FFFEF9 0%, #FFF8F0 100%);
+      border: 3px solid var(--primary-color);
+      border-radius: 12px;
+      padding: 0.35in;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        inset 0 0 0 2px var(--gold-accent),
+        0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Decorative corner snowflakes */
+    .gift-tag::before {
+      content: '❄';
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      font-size: 24px;
+      color: var(--accent-color);
+      opacity: 0.6;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    }
+
+    .gift-tag::after {
+      content: '❄';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 24px;
+      color: var(--primary-color);
+      opacity: 0.6;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    }
+
+    /* Bottom snowflakes */
+    .snowflake-bottom-left {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      font-size: 20px;
+      color: var(--gold-accent);
+      opacity: 0.7;
+    }
+
+    .snowflake-bottom-right {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      font-size: 20px;
+      color: var(--accent-color);
+      opacity: 0.7;
+    }
+
+    /* Header section */
+    .header {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .greeting {
+      font-size: 11px;
+      font-weight: bold;
+      color: var(--accent-color);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 4px;
+    }
+
+    .recipient {
+      font-size: 26px;
+      font-weight: bold;
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 2px;
+      text-shadow: 1px 1px 2px var(--shadow-color);
+      line-height: 1.1;
+    }
+
+    /* Star decorations around name */
+    .stars {
+      text-align: center;
+      font-size: 14px;
+      color: var(--gold-accent);
+      letter-spacing: 8px;
+      margin-bottom: 6px;
+    }
+
+    /* Gift description */
+    .gift-description {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-color);
+      font-style: italic;
+      margin-bottom: 8px;
+      padding: 0 8px;
+    }
+
+    /* Poem section */
+    .poem {
+      background: linear-gradient(to right, 
+        transparent 0%, 
+        rgba(220, 20, 60, 0.05) 20%, 
+        rgba(220, 20, 60, 0.05) 80%, 
+        transparent 100%);
+      padding: 8px 12px;
+      margin: 6px 0;
+      border-left: 2px solid var(--accent-color);
+      border-right: 2px solid var(--accent-color);
+      font-size: 10px;
+      line-height: 1.5;
+      text-align: center;
+      color: var(--text-color);
+      font-style: italic;
+    }
+
+    /* Footer section */
+    .footer {
+      text-align: center;
+      margin-top: auto;
+    }
+
+    .with-love {
+      font-size: 9px;
+      color: var(--accent-color);
+      margin-bottom: 2px;
+      font-style: italic;
+    }
+
+    .sender {
+      font-size: 11px;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    /* Decorative holly divider */
+    .holly-divider {
+      text-align: center;
+      font-size: 16px;
+      margin: 4px 0;
+      color: var(--accent-color);
+    }
+
+    /* Festive sparkles */
+    .sparkles {
+      position: absolute;
+      font-size: 10px;
+      color: var(--gold-accent);
+      opacity: 0.8;
+    }
+
+    .sparkle-1 {
+      top: 35%;
+      left: 5%;
+    }
+
+    .sparkle-2 {
+      top: 35%;
+      right: 5%;
+    }
+
+    .sparkle-3 {
+      top: 65%;
+      left: 8%;
+    }
+
+    .sparkle-4 {
+      top: 65%;
+      right: 8%;
+    }
+  </style>
+</head>
+<body>
+  <!-- Design inspired by Jhey Tompkins' festive holiday designs: https://codepen.io/jh3y/pen/poQxYMd -->
+  <!-- Color scheme and playful elements inspired by: https://codepen.io/jh3y/pen/KKVBMeK -->
+  
+  <div class="gift-tag">
+    <!-- Decorative snowflakes -->
+    <span class="snowflake-bottom-left">❄</span>
+    <span class="snowflake-bottom-right">❄</span>
+    
+    <!-- Sparkle decorations -->
+    <span class="sparkles sparkle-1">✨</span>
+    <span class="sparkles sparkle-2">✨</span>
+    <span class="sparkles sparkle-3">✨</span>
+    <span class="sparkles sparkle-4">✨</span>
+    
+    <!-- Header -->
+    <div class="header">
+      <div class="greeting">Season's Greetings</div>
+      <div class="recipient">Sarah Chen</div>
+      <div class="stars">★ ★ ★</div>
+    </div>
+    
+    <!-- Gift description -->
+    <div class="gift-description">
+      A handmade scarf, crafted with care
+    </div>
+    
+    <!-- Decorative divider -->
+    <div class="holly-divider">🎄 ❄ 🎄</div>
+    
+    <!-- Poem -->
+    <div class="poem">
+      Wrapped in warmth from threads so fine,<br>
+      This handmade scarf is yours to wear.<br>
+      May winter's chill be kept at bay,<br>
+      With love we send this gift your way,<br>
+      To warm your heart this holiday.
+    </div>
+    
+    <!-- Decorative divider -->
+    <div class="holly-divider">🎄 ❄ 🎄</div>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <div class="with-love">With Love & Warm Wishes</div>
+      <div class="sender">Festival Committee</div>
+    </div>
+  </div>
+</body>
+</html>

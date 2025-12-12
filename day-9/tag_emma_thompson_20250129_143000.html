@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Étiquette Cadeau - Emma Thompson</title>
+  <style>
+    /* Design inspired by Adam Argyle's minimalist precision and clean geometric layouts */
+    /* Reference: https://codepen.io/argyleink - Swiss design principles with modern CSS */
+    
+    /* CSS Variables for theming */
+    :root {
+      --primary-color: #D4AF37; /* Gold */
+      --accent-color: #2C2C2C; /* Deep charcoal */
+      --text-color: #1A1A1A; /* Almost black */
+      --background-color: #FAFAFA; /* Soft white */
+      --border-color: #E8E8E8; /* Subtle gray */
+      --gold-muted: #C9A961; /* Softer gold for accents */
+    }
+
+    /* Print specifications */
+    @page {
+      size: 3in 2in;
+      margin: 0;
+    }
+
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
+      }
+      
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Arial', sans-serif;
+      color: var(--text-color);
+      background-color: white;
+      width: 3in;
+      height: 2in;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 0.25in;
+    }
+
+    /* Main container with precise grid layout */
+    .gift-tag {
+      width: 100%;
+      height: 100%;
+      background-color: var(--background-color);
+      border: 1px solid var(--border-color);
+      position: relative;
+      display: grid;
+      grid-template-rows: auto 1fr auto auto;
+      gap: 0.08in;
+      padding: 0.18in;
+      overflow: hidden;
+    }
+
+    /* Gold accent line - minimalist touch */
+    .gift-tag::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--primary-color) 50%, 
+        transparent 100%);
+    }
+
+    /* Recipient name - clean typography */
+    .recipient {
+      font-size: 16pt;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+      color: var(--text-color);
+      text-align: left;
+      line-height: 1.1;
+      margin-bottom: 0.02in;
+    }
+
+    .recipient-label {
+      font-size: 6pt;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary-color);
+      font-weight: 500;
+      margin-bottom: 0.03in;
+    }
+
+    /* Gift description - subtle and refined */
+    .gift-description {
+      font-size: 7pt;
+      font-weight: 400;
+      color: var(--accent-color);
+      letter-spacing: 0.3px;
+      line-height: 1.3;
+      text-align: left;
+    }
+
+    /* Poem - compact for small size */
+    .poem {
+      font-size: 6.5pt;
+      line-height: 1.4;
+      color: var(--accent-color);
+      font-style: italic;
+      font-weight: 300;
+      text-align: left;
+      margin-top: 0.05in;
+      padding-left: 0.08in;
+      border-left: 1px solid var(--primary-color);
+    }
+
+    /* Bottom section with sender and QR */
+    .footer {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 0.08in;
+      margin-top: 0.05in;
+    }
+
+    /* Sender name - clean and small */
+    .sender {
+      font-size: 6pt;
+      font-weight: 400;
+      color: var(--accent-color);
+      letter-spacing: 0.3px;
+      text-align: left;
+      line-height: 1.2;
+    }
+
+    .sender-label {
+      font-size: 5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary-color);
+      font-weight: 500;
+      display: block;
+      margin-bottom: 0.02in;
+    }
+
+    /* QR code - corner placement for small tag */
+    .qr-container {
+      width: 0.55in;
+      height: 0.55in;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.02in;
+    }
+
+    .qr-code {
+      width: 0.5in;
+      height: 0.5in;
+      border: 1px solid var(--border-color);
+      background: white;
+      padding: 0.02in;
+    }
+
+    .qr-code img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .qr-label {
+      font-size: 4pt;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--gold-muted);
+      text-align: center;
+      line-height: 1;
+    }
+
+    /* Geometric accent - minimal decoration */
+    .accent-square {
+      position: absolute;
+      bottom: 0.15in;
+      right: 0.15in;
+      width: 3px;
+      height: 3px;
+      background-color: var(--primary-color);
+      opacity: 0.5;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Design inspired by Adam Argyle's clean minimalist precision -->
+  <!-- https://codepen.io/argyleink - Swiss typography and grid-based layouts -->
+  
+  <div class="gift-tag">
+    <div class="accent-square"></div>
+    
+    <div>
+      <div class="recipient-label">Pour</div>
+      <div class="recipient">Emma Thompson</div>
+    </div>
+    
+    <div class="gift-description">
+      Collection de chocolats artisanaux
+    </div>
+    
+    <div class="poem">
+      Doux chocolats, plaisir raffiné,<br>
+      Offerts avec tendresse et amitié.
+    </div>
+    
+    <div class="footer">
+      <div class="sender">
+        <span class="sender-label">De</span>
+        Mayor's Office
+      </div>
+      
+      <div class="qr-container">
+        <div class="qr-code">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://example.com/special-message" alt="QR Code">
+        </div>
+        <div class="qr-label">Message</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
