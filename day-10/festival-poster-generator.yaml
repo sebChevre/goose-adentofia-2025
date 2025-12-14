@@ -1,0 +1,174 @@
+version: 1.0.0
+title: Festival Poster Generator
+description: |
+  Generate beautiful, themed HTML posters for festival events with conditional styling
+  based on event type. Supports required and optional parameters for maximum flexibility.
+  
+  Perfect for creating eye-catching posters that match your event type and mood.
+  Output is production-ready HTML optimized for printing and digital display.
+
+parameters:
+  - key: event_name
+    input_type: string
+    requirement: required
+    description: Name of the festival event
+
+  - key: event_datetime
+    input_type: string
+    requirement: required
+    description: Date and time of the event (e.g., "December 15, 2pm–4pm")
+
+  - key: location
+    input_type: string
+    requirement: required
+    description: Event location or venue
+
+  - key: event_type
+    input_type: select
+    requirement: required
+    description: Type of event - determines the theme and styling
+    default: food
+    options:
+      - food
+      - kids
+      - performance
+      - competition
+      - workshop
+
+  - key: tagline
+    input_type: string
+    requirement: optional
+    description: Optional tagline or subtitle for the event
+    default: ""
+
+  - key: description
+    input_type: string
+    requirement: optional
+    description: Optional detailed description of the event
+    default: ""
+
+  - key: organizer
+    input_type: string
+    requirement: optional
+    description: Optional event organizer name
+    default: ""
+
+  - key: ticket_info
+    input_type: string
+    requirement: optional
+    description: Optional ticket or admission information
+    default: ""
+
+instructions: |
+  You are a festival poster generator. Create a beautiful, themed HTML poster based on the event details provided.
+  
+  **Event Details:**
+  - Event Name: {{ event_name }}
+  - Date & Time: {{ event_datetime }}
+  - Location: {{ location }}
+  - Event Type: {{ event_type }}
+  {% if tagline %}- Tagline: {{ tagline }}{% endif %}
+  {% if description %}- Description: {{ description }}{% endif %}
+  {% if organizer %}- Organizer: {{ organizer }}{% endif %}
+  {% if ticket_info %}- Ticket Info: {{ ticket_info }}{% endif %}
+  
+  **Conditional Styling Requirements:**
+  
+  {% if event_type == "food" %}
+  ## Food Event Theme
+  - Use warm, inviting colors (burgundy, warm orange, cream, brown tones)
+  - Include food-related emojis (🍴, 🍷, 🥘, ☕, 🍰)
+  - Typography: Friendly, rounded fonts
+  - Background: Warm gradients or textures
+  - Mood: Cozy, appetizing, welcoming
+  {% endif %}
+  
+  {% if event_type == "kids" %}
+  ## Kids Event Theme
+  - Use bright, playful colors (rainbow palette, pastels, vibrant primary colors)
+  - Include lots of fun emojis (🎈, 🎨, 🎪, ⭐, 🌈, 🎉, 🧸)
+  - Typography: Playful, bold, easy-to-read fonts
+  - Background: Colorful patterns or illustrations
+  - Mood: Fun, energetic, joyful, safe
+  {% endif %}
+  
+  {% if event_type == "performance" %}
+  ## Performance Event Theme
+  - Use elegant, refined colors (deep purple, gold, black, navy, silver)
+  - Include performance emojis (🎭, 🎵, 🎼, 🎤, 🎸)
+  - Typography: Sophisticated serif or elegant script fonts
+  - Background: Dramatic gradients, subtle patterns
+  - Mood: Classy, artistic, refined, captivating
+  {% endif %}
+  
+  {% if event_type == "competition" %}
+  ## Competition Event Theme
+  - Use bold, energetic colors (red, electric blue, bright yellow, neon accents)
+  - Include competitive emojis (🏆, 🥇, ⚡, 🔥, 💪, 🎯)
+  - Typography: Strong, bold, impactful fonts
+  - Background: Dynamic patterns, sharp angles
+  - Mood: Intense, motivating, exciting, powerful
+  {% endif %}
+  
+  {% if event_type == "workshop" %}
+  ## Workshop Event Theme
+  - Use creative, instructional colors (teal, coral, sage green, warm gray)
+  - Include learning emojis (📚, ✏️, 💡, 🎨, 🛠️, 👩‍🎨)
+  - Typography: Clean, modern, readable fonts
+  - Background: Organized, inspiring layouts
+  - Mood: Educational, inspiring, hands-on, creative
+  {% endif %}
+  
+  **Your Task:**
+  
+  1. Create a complete, self-contained HTML file with embedded CSS
+  2. Apply the appropriate theme styling based on the event_type
+  3. Include all required information prominently
+  4. Add optional information only if provided
+  5. Make it visually stunning and print-ready
+  6. Use responsive design (looks good on screen and when printed)
+  7. Include appropriate emojis for visual appeal
+  8. Ensure the poster is production-ready with professional quality
+  
+  **CRITICAL: File Creation Instructions**
+  
+  You MUST use the text_editor tool with the write command to save the HTML file.
+  
+  **File Naming:**
+  Save to: `/Users/nicktaylor/dev/advent-of-ai-2025/day-10/poster_{{ event_type }}_{{ event_name | lower | replace(" ", "_") | replace("'", "") }}.html`
+  
+  Example: `/Users/nicktaylor/dev/advent-of-ai-2025/day-10/poster_food_hot_cocoa_tasting.html`
+  
+  **Output Requirements:**
+  - Generate the complete HTML poster code
+  - Use text_editor tool to WRITE the file (command: write, file_text: <complete HTML>)
+  - The file must contain ONLY valid HTML from <!DOCTYPE html> to </html>
+  - NO markdown code blocks, NO explanations in the file
+  - After saving, confirm the file was created successfully
+  - Provide a brief summary of the design choices
+  
+  **HTML Structure Guidelines:**
+  - Use modern HTML5 semantic elements
+  - Embed all CSS in a <style> tag in the <head>
+  - Create a centered poster design (max-width: 800px recommended)
+  - Use flexbox or grid for layout
+  - Include @media print styles for optimal printing
+  - Add box-shadow and border for poster frame effect
+  - Use appropriate padding and margins
+  - Make text readable with good contrast
+  - Include the Winter Festival branding
+  
+  **Design Best Practices:**
+  - Header section with event name (large, prominent)
+  - Emoji integration throughout (not just at the end)
+  - Date/time section (clear, easy to read)
+  - Location section (visible, well-placed)
+  - Optional sections (tagline, description, organizer, tickets) conditionally displayed
+  - Footer with festive message or call-to-action
+  - Use CSS gradients, shadows, and modern effects
+  - Ensure print-friendly colors (avoid pure black backgrounds)
+  
+  Begin by creating the HTML poster now using the text_editor tool.
+
+prompt: |
+  Create a beautiful festival poster based on the event details below.

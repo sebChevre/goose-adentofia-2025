@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids' Storytelling Hour - Winter Festival</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .poster {
+            background: linear-gradient(135deg, #FFF9C4 0%, #FFE082 50%, #FFEB3B 100%);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 12px solid #FF6B6B;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .poster::before {
+            content: '🌈 ⭐ 🎈 🎪 🎨 ✨ 🎉 🧸 📚 ❄️';
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 24px;
+            opacity: 0.6;
+        }
+
+        .poster::after {
+            content: '🎈 ⭐ 🌈 🎪 🎨 ✨ 🎉 🧸 📚 ❄️';
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 24px;
+            opacity: 0.6;
+        }
+
+        .festival-brand {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        .festival-brand h3 {
+            color: #4A90E2;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .event-header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+            transform: rotate(-1deg);
+        }
+
+        .event-header h1 {
+            color: white;
+            font-size: 56px;
+            margin-bottom: 10px;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+            line-height: 1.2;
+            font-weight: bold;
+        }
+
+        .emoji-line {
+            font-size: 36px;
+            margin: 15px 0;
+        }
+
+        .info-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            border: 4px solid #4ECDC4;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            font-size: 28px;
+            color: #2C3E50;
+        }
+
+        .info-row .emoji {
+            font-size: 40px;
+            margin-right: 15px;
+            min-width: 50px;
+        }
+
+        .info-row .label {
+            font-weight: bold;
+            color: #E74C3C;
+            margin-right: 10px;
+        }
+
+        .info-row .value {
+            color: #2C3E50;
+            font-weight: bold;
+        }
+
+        .decorative-divider {
+            text-align: center;
+            font-size: 32px;
+            margin: 20px 0;
+            letter-spacing: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            background: linear-gradient(135deg, #A8E6CF 0%, #FFD3B6 100%);
+            padding: 25px;
+            border-radius: 20px;
+            border: 4px dashed #FF6B6B;
+        }
+
+        .footer h2 {
+            color: #E74C3C;
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer p {
+            color: #2C3E50;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .fun-pattern {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .pattern-1 {
+            background: #FF6B6B;
+            top: 100px;
+            left: -30px;
+        }
+
+        .pattern-2 {
+            background: #4ECDC4;
+            top: 200px;
+            right: -30px;
+        }
+
+        .pattern-3 {
+            background: #95E1D3;
+            bottom: 150px;
+            left: -20px;
+        }
+
+        .pattern-4 {
+            background: #FFD93D;
+            bottom: 100px;
+            right: -20px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .poster {
+                max-width: 100%;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .poster {
+                padding: 20px;
+            }
+
+            .event-header h1 {
+                font-size: 36px;
+            }
+
+            .info-row {
+                font-size: 20px;
+            }
+
+            .info-row .emoji {
+                font-size: 28px;
+            }
+
+            .footer h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <div class="fun-pattern pattern-1"></div>
+        <div class="fun-pattern pattern-2"></div>
+        <div class="fun-pattern pattern-3"></div>
+        <div class="fun-pattern pattern-4"></div>
+
+        <div class="festival-brand">
+            <h3>❄️ Winter Festival ❄️</h3>
+        </div>
+
+        <div class="event-header">
+            <div class="emoji-line">📚 ✨ 🎪 ✨ 📚</div>
+            <h1>Kids' Storytelling Hour</h1>
+            <div class="emoji-line">⭐ 🌈 🎈 🌈 ⭐</div>
+        </div>
+
+        <div class="decorative-divider">🎨 🎪 🎨 🎪 🎨</div>
+
+        <div class="info-section">
+            <div class="info-row">
+                <span class="emoji">📅</span>
+                <span class="label">When:</span>
+                <span class="value">December 17, 3pm–4pm</span>
+            </div>
+
+            <div class="info-row">
+                <span class="emoji">📍</span>
+                <span class="label">Where:</span>
+                <span class="value">Storytelling Tent</span>
+            </div>
+
+            <div class="info-row">
+                <span class="emoji">🎉</span>
+                <span class="label">Event:</span>
+                <span class="value">Fun for Kids!</span>
+            </div>
+        </div>
+
+        <div class="decorative-divider">🧸 ⭐ 🎈 ⭐ 🧸</div>
+
+        <div class="footer">
+            <h2>Join the Magic! 🌟</h2>
+            <p>Bring your imagination & get ready for amazing stories! 📖✨</p>
+            <div style="margin-top: 15px; font-size: 28px;">
+                🎪 🎨 🎈 🌈 ⭐ 🎉
+            </div>
+        </div>
+    </div>
+</body>
+</html>
