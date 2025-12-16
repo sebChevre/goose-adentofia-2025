@@ -1,0 +1,724 @@
+/* Winter Photo Booth Styles */
+
+.app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #F8FEFF 0%, #E1F5FE 100%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #2C3E50;
+}
+
+.app-header {
+  text-align: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #4A90E2 0%, #3A7BD5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.app-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.camera-container {
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 3/4;
+  position: relative;
+}
+
+.camera-view {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.camera-view__container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-view__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1); /* Mirror the video horizontally for selfie mode */
+}
+
+.camera-view__video.camera-view__video--rear {
+  transform: none; /* Don't mirror rear cameras */
+}
+
+.camera-view__canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  transform: scaleX(-1); /* Mirror the canvas to match video */
+}
+
+.camera-view__canvas.camera-view__canvas--rear {
+  transform: none; /* Don't mirror rear cameras */
+}
+
+.camera-view__loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 12px;
+  z-index: 20;
+}
+
+.camera-view__message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 24px;
+  border-radius: 12px;
+  z-index: 20;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.brightness-control,
+.contrast-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.brightness-control label,
+.contrast-control label {
+  font-weight: 500;
+  color: #2C3E50;
+}
+
+.brightness-control input,
+.contrast-control input {
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(90deg, #E3F2FD 0%, #4A90E2 100%);
+  border-radius: 4px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.brightness-control input::-webkit-slider-thumb,
+.contrast-control input::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4A90E2;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+.brightness-control input::-moz-range-thumb,
+.contrast-control input::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4A90E2;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+.mirror-toggle {
+  padding: 12px 24px;
+  border: 2px solid #4A90E2;
+  border-radius: 12px;
+  background: transparent;
+  color: #4A90E2;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mirror-toggle:hover {
+  background: rgba(74, 144, 226, 0.1);
+  transform: translateY(-2px);
+}
+
+.mirror-toggle.active {
+  background: #4A90E2;
+  color: white;
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.no-face-message {
+  text-align: center;
+  padding: 1rem;
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 8px;
+  color: #F57C00;
+  font-weight: 500;
+}
+
+.debug-info {
+  background: rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 0.875rem;
+  min-width: 200px;
+}
+
+.debug-info p {
+  margin: 0.25rem 0;
+}
+
+.camera-controls {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0 0 16px 16px;
+}
+
+.camera-controls__row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.camera-controls__row:last-child {
+  margin-bottom: 0;
+}
+
+.camera-controls__button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.camera-controls__button--start {
+  background: #4CAF50;
+  color: white;
+}
+
+.camera-controls__button--stop {
+  background: #f44336;
+  color: white;
+}
+
+.camera-controls__button--refresh {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  font-size: 18px;
+}
+
+.camera-controls__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.camera-controls__select {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 14px;
+}
+
+.camera-controls__error {
+  color: #ff6b6b;
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .app-main {
+    padding: 1rem 0.5rem;
+    gap: 1rem;
+  }
+
+  .app-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .camera-view {
+    border-radius: 12px;
+  }
+
+  .controls {
+    padding: 1rem;
+  }
+
+  .camera-controls__button {
+    padding: 16px 20px;
+    font-size: 16px;
+  }
+
+  .camera-controls__select {
+    padding: 16px 12px;
+    font-size: 16px;
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-overflow-scrolling: touch) {
+  .camera-view__video {
+    -webkit-transform: translateZ(0) scaleX(-1);
+  }
+  
+  .camera-view__video.camera-view__video--rear {
+    -webkit-transform: translateZ(0);
+  }
+}
+
+/* Winter theme background animation */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+    radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+  background-size: 50px 50px, 80px 80px;
+  animation: snowfall 20s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes snowfall {
+  0% { transform: translateY(-100vh) rotate(0deg); }
+  100% { transform: translateY(100vh) rotate(360deg); }
+}
+
+/* Filter Selector Styles */
+.filter-selector {
+  width: 100%;
+  max-width: 500px;
+}
+
+.filter-selector h3 {
+  color: #2C3E50 !important;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 16px 0 !important;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.filter-selector__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.filter-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 8px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  color: #2C3E50;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.filter-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.filter-button--active {
+  border-color: #4A90E2;
+  background: rgba(74, 144, 226, 0.2);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.filter-button__preview {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.filter-button__icon {
+  font-size: 24px;
+}
+
+.filter-button__name {
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Capture Button Styles */
+.capture-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.capture-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.capture-button__ring {
+  width: 80px;
+  height: 80px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.capture-button:hover:not(:disabled) .capture-button__ring {
+  border-color: #4A90E2;
+  box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);
+}
+
+.capture-button--capturing .capture-button__ring {
+  border-color: #f44336;
+  animation: pulse 1s infinite;
+}
+
+.capture-button__inner {
+  width: 64px;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.capture-button__spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(74, 144, 226, 0.3);
+  border-top: 3px solid #4A90E2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.capture-button__label {
+  color: #2C3E50;
+  font-weight: 700;
+  font-size: 16px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Photo Preview Styles */
+.photo-preview-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.photo-preview {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-preview__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.photo-preview__header h3 {
+  margin: 0;
+  color: #2C3E50;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.photo-preview__close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #666;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.photo-preview__close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.photo-preview__image-container {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.photo-preview__image {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.photo-preview__actions {
+  display: flex;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.photo-preview__button {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.photo-preview__button--secondary {
+  background: rgba(108, 117, 125, 0.1);
+  color: #6c757d;
+  border: 1px solid rgba(108, 117, 125, 0.3);
+}
+
+.photo-preview__button--secondary:hover {
+  background: rgba(108, 117, 125, 0.2);
+}
+
+.photo-preview__button--primary {
+  background: #4A90E2;
+  color: white;
+}
+
+.photo-preview__button--primary:hover {
+  background: #357ABD;
+  transform: translateY(-1px);
+}
+
+.photo-preview__button--accent {
+  background: #28a745;
+  color: white;
+}
+
+.photo-preview__button--accent:hover {
+  background: #218838;
+  transform: translateY(-1px);
+}
+
+.photo-preview__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* App Layout Updates */
+.app-filters {
+  margin-top: 20px;
+}
+
+.app-capture {
+  margin-top: 20px;
+}
+
+.app-error {
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  color: #d32f2f;
+  text-align: center;
+}
+
+.app-error button {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.2s ease;
+}
+
+.app-error button:hover {
+  background: #b71c1c;
+}
+
+/* Mobile optimizations for new components */
+@media (max-width: 768px) {
+  .filter-selector__grid {
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .filter-button {
+    padding: 8px 4px;
+    gap: 4px;
+    font-size: 11px;
+  }
+
+  .filter-button__preview {
+    width: 40px;
+    height: 40px;
+  }
+
+  .filter-button__icon {
+    font-size: 20px;
+  }
+
+  .capture-button__ring {
+    width: 70px;
+    height: 70px;
+  }
+
+  .capture-button__inner {
+    width: 56px;
+    height: 56px;
+    font-size: 20px;
+  }
+
+  .photo-preview {
+    margin: 10px;
+    max-width: calc(100% - 20px);
+  }
+
+  .photo-preview__actions {
+    flex-direction: column;
+  }
+
+  .photo-preview__button {
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+}
