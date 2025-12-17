@@ -31,7 +31,10 @@ export class SnowflakeCrownFilter implements FilterRenderer {
     const deltaTime = timestamp - this.lastUpdate;
     this.lastUpdate = timestamp;
     
-    faces.forEach(face => {
+    console.log('👑 SnowflakeCrownFilter render called with', faces.length, 'faces');
+    
+    faces.forEach((face, index) => {
+      console.log(`👑 Rendering crown for face ${index}:`, face.boundingBox);
       this.renderCrown(ctx, face, coordinateSystem, deltaTime);
     });
   }
@@ -62,11 +65,14 @@ export class SnowflakeCrownFilter implements FilterRenderer {
     const faceWidth = bounds.width * coordinateSystem.canvas.width;
     const faceHeight = bounds.height * coordinateSystem.canvas.height;
     
-    return {
+    const headTop = {
       x: (bounds.x + bounds.width / 2) * coordinateSystem.canvas.width,
       y: bounds.y * coordinateSystem.canvas.height - faceHeight * 0.2, // Above forehead
       width: faceWidth
     };
+    
+    console.log('👑 Head position calculated:', headTop, 'from bounds:', bounds);
+    return headTop;
   }
   
   private createCrownSnowflakes(headPosition: { x: number; y: number; width: number }) {
@@ -103,10 +109,10 @@ export class SnowflakeCrownFilter implements FilterRenderer {
     });
   }
   
-  private drawSnowflakes(ctx: CanvasRenderingContext2D, _headPosition: { x: number; y: number }) {
+  private drawSnowflakes(ctx: CanvasRenderingContext2D, headPosition: { x: number; y: number }) {
     ctx.save();
     
-    this.snowflakes.forEach(snowflake => {
+    this.snowflakes.forEach((snowflake) => {
       ctx.save();
       ctx.translate(snowflake.x, snowflake.y);
       ctx.rotate(snowflake.rotation);

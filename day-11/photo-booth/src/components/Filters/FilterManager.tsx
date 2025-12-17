@@ -92,26 +92,70 @@ export function FilterManager({
     const video = videoRef.current;
     
     if (!canvas || !video || !coordinateSystem || !isActive) {
+      console.log('🎨 Filter render skipped:', {
+        hasCanvas: !!canvas,
+        hasVideo: !!video,
+        hasCoordinateSystem: !!coordinateSystem,
+        isActive
+      });
+      if (isActive && selectedFilter) {
+        animationFrameRef.current = requestAnimationFrame(renderFrame);
+      }
       return;
     }
     
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     
-    // Set canvas size to match video
-    if (canvas.width !== coordinateSystem.canvas.width || 
-        canvas.height !== coordinateSystem.canvas.height) {
-      canvas.width = coordinateSystem.canvas.width;
-      canvas.height = coordinateSystem.canvas.height;
+    // Set canvas size to match coordinate system
+    const logicalWidth = coordinateSystem.canvas.width;
+    const logicalHeight = coordinateSystem.canvas.height;
+    const devicePixelRatio = coordinateSystem.devicePixelRatio;
+    
+    // Set the display size (CSS pixels)
+    canvas.style.width = logicalWidth + 'px';
+    canvas.style.height = logicalHeight + 'px';
+    
+    // Set the actual size in memory (physical pixels)
+    if (canvas.width !== logicalWidth * devicePixelRatio || 
+        canvas.height !== logicalHeight * devicePixelRatio) {
+      canvas.width = logicalWidth * devicePixelRatio;
+      canvas.height = logicalHeight * devicePixelRatio;
+      
+      // Scale the context back to logical pixels
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+      
+      console.log('📏 Canvas resized to:', canvas.width, 'x', canvas.height, 'physical pixels,', logicalWidth, 'x', logicalHeight, 'logical pixels');
     }
     
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Clear canvas (use logical dimensions)
+    ctx.clearRect(0, 0, logicalWidth, logicalHeight);
+    
+    // Debug info (can be removed in production)
+    if (process.env.NODE_ENV === 'development') {
+      ctx.save();
+      ctx.fillStyle = 'rgba(0, 0, 255, 0.1)';
+      ctx.fillRect(5, 5, 250, 30);
+      ctx.fillStyle = 'white';
+      ctx.font = '12px Arial';
+      ctx.fillText(`Filter: ${selectedFilter || 'none'} | Faces: ${detectedFaces.length}`, 10, 25);
+      ctx.restore();
+    }
     
     // Render selected filter if any
     if (selectedFilter && filtersRef.current.has(selectedFilter)) {
       const filter = filtersRef.current.get(selectedFilter)!;
+      console.log('🎨 Rendering filter:', selectedFilter, 'with', detectedFaces.length, 'faces');
       filter.render(ctx, detectedFaces, coordinateSystem, performance.now());
+    } else if (selectedFilter) {
+      // Draw a test shape to verify filter rendering is being called
+      ctx.save();
+      ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+      ctx.fillRect(50, 50, 100, 100);
+      ctx.fillStyle = 'white';
+      ctx.font = '16px Arial';
+      ctx.fillText('FILTER AREA', 60, 100);
+      ctx.restore();
     }
     
     // Continue animation
@@ -120,9 +164,13 @@ export function FilterManager({
   
   // Start/stop rendering
   useEffect(() => {
-    if (isActive && selectedFilter) {
+    console.log('🔄 FilterManager effect triggered:', { isActive, selectedFilter, hasCoordinateSystem: !!coordinateSystem });
+    
+    if (isActive && selectedFilter && coordinateSystem) {
+      console.log('🎨 Starting filter rendering...');
       renderFrame();
     } else {
+      console.log('🛑 Stopping filter rendering');
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -139,7 +187,7 @@ export function FilterManager({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [isActive, selectedFilter, renderFrame]);
+  }, [isActive, selectedFilter, coordinateSystem, renderFrame]);
   
   return null; // This component only manages rendering, no UI
 }

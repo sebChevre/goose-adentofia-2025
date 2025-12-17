@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { 
-  FaceDetectionState, 
+import type {
+  FaceDetectionState,
   FaceDetectionOptions
 } from '../types/detection';
 import type { CoordinateSystem } from '../types/camera';
 import type { DetectedFace } from '../types/filters';
-import { FaceDetection } from '@mediapipe/face_detection';
+import { FaceDetector, FilesetResolver } from '@mediapipe/tasks-vision';
 
 export interface UseFaceDetectionResult {
   state: FaceDetectionState;
@@ -23,14 +23,22 @@ export interface UseFaceDetectionResult {
 }
 
 interface MediaPipeFaceResults {
-  detections?: Array<{
+  detections: Array<{
     boundingBox: {
-      xCenter: number;
-      yCenter: number;
+      originX: number;
+      originY: number;
       width: number;
       height: number;
     };
-    score: number[];
+    keypoints: Array<{
+      x: number;
+      y: number;
+      score?: number;
+    }>;
+    categories: Array<{
+      score: number;
+      categoryName?: string;
+    }>;
   }>;
 }
 
@@ -47,112 +55,143 @@ export function useFaceDetection(
   });
 
   const [detectedFaces, setDetectedFaces] = useState<DetectedFace[]>([]);
-  const faceDetectionRef = useRef<FaceDetection | null>(null);
+  const faceDetectorRef = useRef<FaceDetector | null>(null);
   const animationFrameRef = useRef<number>();
-  
+  const lastFrameTimeRef = useRef<number>(0);
+
   const updateState = useCallback((updates: Partial<FaceDetectionState>) => {
     setState(prev => ({ ...prev, ...updates }));
   }, []);
 
   // Initialize MediaPipe Face Detection
   useEffect(() => {
+    let cancelled = false;
+
     const initializeFaceDetection = async () => {
       try {
         updateState({ modelLoadProgress: 20 });
-        
-        const faceDetection = new FaceDetection({
-          locateFile: (file: string) => {
-            return `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`;
-          }
-        });
 
-        updateState({ modelLoadProgress: 50 });
+        // Load WASM fileset for vision tasks
+        const filesetResolver = await FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
+        );
 
-        faceDetection.setOptions({
-          model: 'short',
+        updateState({ modelLoadProgress: 40 });
+
+        // Create face detector with options
+        const faceDetector = await FaceDetector.createFromOptions(filesetResolver, {
+          baseOptions: {
+            modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite',
+            delegate: "GPU"
+          },
+          runningMode: "VIDEO",
           minDetectionConfidence: 0.5,
+          minSuppressionThreshold: 0.3
         });
 
         updateState({ modelLoadProgress: 80 });
 
-        faceDetection.onResults((results: MediaPipeFaceResults) => {
-          if (results.detections) {
-            const faces: DetectedFace[] = results.detections.map(detection => {
-              // Convert MediaPipe format (center + width/height) to corner format
-              const centerX = detection.boundingBox.xCenter;
-              const centerY = detection.boundingBox.yCenter;
-              const width = detection.boundingBox.width;
-              const height = detection.boundingBox.height;
-              
-              return {
-                boundingBox: {
-                  x: centerX - width / 2,
-                  y: centerY - height / 2,
-                  width,
-                  height
-                },
-                confidence: detection.score[0] || 0.5
-              };
-            });
-            
-            setDetectedFaces(faces);
-            console.log('Faces detected:', faces.length);
-          } else {
-            setDetectedFaces([]);
-          }
-        });
+        if (cancelled) {
+          faceDetector.close();
+          return;
+        }
 
-        await faceDetection.initialize();
-        
-        faceDetectionRef.current = faceDetection;
-        updateState({ 
-          isModelLoaded: true, 
+        faceDetectorRef.current = faceDetector;
+        updateState({
+          isModelLoaded: true,
           modelLoadProgress: 100,
           error: null
         });
-        
+
         console.log('✅ Face detection initialized');
-        
+
       } catch (error) {
         console.error('❌ Face detection initialization failed:', error);
-        updateState({ 
-          error: error instanceof Error ? error.message : 'Failed to initialize face detection',
-          modelLoadProgress: 0
-        });
-        
-        // Fallback to mock face for demo
-        setDetectedFaces([{
-          boundingBox: {
-            x: 0.3,
-            y: 0.2,
-            width: 0.4,
-            height: 0.6
-          },
-          confidence: 0.95
-        }]);
+        if (!cancelled) {
+          updateState({
+            error: error instanceof Error ? error.message : 'Failed to initialize face detection',
+            modelLoadProgress: 0
+          });
+        }
       }
     };
 
     initializeFaceDetection();
 
     return () => {
-      if (faceDetectionRef.current) {
-        faceDetectionRef.current.close();
+      cancelled = true;
+      if (faceDetectorRef.current) {
+        faceDetectorRef.current.close();
+        faceDetectorRef.current = null;
       }
     };
   }, [updateState]);
 
-  const detectFaces = useCallback(async () => {
+  const detectFaces = useCallback(() => {
     const video = videoRef.current;
-    const faceDetection = faceDetectionRef.current;
-    
-    if (!video || !faceDetection || !state.isDetecting || !coordinateSystem) {
+    const faceDetector = faceDetectorRef.current;
+
+    if (!video || !faceDetector || !state.isDetecting || !coordinateSystem) {
+      console.log('🚫 Face detection skipped:', { 
+        hasVideo: !!video, 
+        hasFaceDetector: !!faceDetector, 
+        isDetecting: state.isDetecting, 
+        hasCoordinateSystem: !!coordinateSystem 
+      });
+      if (state.isDetecting) {
+        animationFrameRef.current = requestAnimationFrame(detectFaces);
+      }
       return;
     }
 
     if (video.readyState === 4) {
       try {
-        await faceDetection.send({ image: video });
+        const now = performance.now();
+
+        // Detect faces in the video frame
+        const detections = faceDetector.detectForVideo(video, now);
+
+        if (detections.detections && detections.detections.length > 0) {
+          console.log(`🎯 Found ${detections.detections.length} face(s)`);
+          const faces: DetectedFace[] = detections.detections.map(detection => {
+            // MediaPipe uses normalized coordinates (0-1)
+            const bbox = detection.boundingBox;
+
+            // Extract keypoints if available
+            // MediaPipe FaceDetector provides 6 keypoints:
+            // 0: right eye, 1: left eye, 2: nose tip, 3: mouth center, 4: right eye tragion, 5: left eye tragion
+            let landmarks = undefined;
+            if (detection.keypoints && detection.keypoints.length >= 4) {
+              const kp = detection.keypoints;
+              landmarks = {
+                rightEye: { x: kp[0].x, y: kp[0].y },
+                leftEye: { x: kp[1].x, y: kp[1].y },
+                nose: { x: kp[2].x, y: kp[2].y },
+                mouth: { x: kp[3].x, y: kp[3].y },
+                // Estimate chin and forehead based on bounding box
+                chin: { x: bbox.originX + bbox.width / 2, y: bbox.originY + bbox.height },
+                forehead: { x: bbox.originX + bbox.width / 2, y: bbox.originY }
+              };
+            }
+
+            return {
+              boundingBox: {
+                x: bbox.originX,
+                y: bbox.originY,
+                width: bbox.width,
+                height: bbox.height
+              },
+              landmarks,
+              confidence: detection.categories[0]?.score || 0.5
+            };
+          });
+
+          setDetectedFaces(faces);
+        } else {
+          setDetectedFaces([]);
+        }
+
+        lastFrameTimeRef.current = now;
       } catch (error) {
         console.error('Face detection error:', error);
       }
@@ -187,12 +226,13 @@ export function useFaceDetection(
   }, []);
 
   const updateOptions = useCallback(async (newOptions: Partial<FaceDetectionOptions>) => {
-    const faceDetection = faceDetectionRef.current;
-    if (!faceDetection) return;
-    
+    const faceDetector = faceDetectorRef.current;
+    if (!faceDetector) return;
+
     try {
-      await faceDetection.setOptions({
+      faceDetector.setOptions({
         minDetectionConfidence: newOptions.minDetectionConfidence || 0.5,
+        minSuppressionThreshold: newOptions.minTrackingConfidence || 0.3
       });
       console.log('Updated face detection options:', newOptions);
     } catch (error) {
@@ -229,19 +269,66 @@ export function useFaceDetection(
   }, [detectedFaces]);
 
   const drawKeypoints = useCallback((
-    _canvas: HTMLCanvasElement, 
-    _coordinateSystem: CoordinateSystem
+    canvas: HTMLCanvasElement,
+    coordinateSystem: CoordinateSystem
   ) => {
-    // Face detection doesn't provide keypoints, only bounding boxes
-    // Could implement facial landmark detection separately if needed
-  }, []);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.save();
+    ctx.fillStyle = '#ff0000';
+
+    detectedFaces.forEach(face => {
+      if (!face.landmarks) return;
+
+      // Draw facial landmark points
+      Object.entries(face.landmarks).forEach(([key, point]) => {
+        const x = point.x * coordinateSystem.canvas.width;
+        const y = point.y * coordinateSystem.canvas.height;
+
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Label the keypoint
+        ctx.fillStyle = '#ffff00';
+        ctx.font = '10px Arial';
+        ctx.fillText(key, x + 6, y + 3);
+        ctx.fillStyle = '#ff0000';
+      });
+    });
+
+    ctx.restore();
+  }, [detectedFaces]);
 
   // Auto-start detection when model loads and video is ready
   useEffect(() => {
-    if (state.isModelLoaded && !state.isDetecting && videoRef.current?.readyState === 4) {
-      startDetection();
+    const video = videoRef.current;
+    if (!video || !state.isModelLoaded || state.isDetecting) {
+      return;
     }
-  }, [state.isModelLoaded, state.isDetecting, startDetection]);
+
+    const tryStartDetection = () => {
+      if (video.readyState >= 3 && state.isModelLoaded && !state.isDetecting) {
+        console.log('🎬 Video ready, starting face detection...');
+        startDetection();
+      }
+    };
+
+    // If video is already ready, start immediately
+    if (video.readyState >= 3) {
+      tryStartDetection();
+    }
+
+    // Otherwise, wait for video to be ready
+    video.addEventListener('canplay', tryStartDetection);
+    video.addEventListener('loadeddata', tryStartDetection);
+
+    return () => {
+      video.removeEventListener('canplay', tryStartDetection);
+      video.removeEventListener('loadeddata', tryStartDetection);
+    };
+  }, [state.isModelLoaded, state.isDetecting, startDetection, videoRef]);
 
   // Cleanup on unmount
   useEffect(() => {

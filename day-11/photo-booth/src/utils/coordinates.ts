@@ -7,6 +7,7 @@ export function calculateCoordinateSystem(
   const canvasRect = canvas.getBoundingClientRect();
   const devicePixelRatio = window.devicePixelRatio || 1;
   
+  // Use the logical size for coordinate system calculations
   const canvasWidth = canvasRect.width;
   const canvasHeight = canvasRect.height;
   const videoWidth = video.videoWidth;
@@ -29,7 +30,7 @@ export function calculateCoordinateSystem(
     videoWidth,
     videoHeight,
     canvas: {
-      width: canvasWidth,
+      width: canvasWidth, // Use logical size for calculations
       height: canvasHeight
     },
     devicePixelRatio,

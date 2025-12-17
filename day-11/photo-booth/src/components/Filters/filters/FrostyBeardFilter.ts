@@ -33,11 +33,17 @@ export class FrostyBeardFilter implements FilterRenderer {
     timestamp: number
   ): void {
     const beardArea = this.getBeardArea(face, coordinateSystem);
-    if (!beardArea) return;
+    if (!beardArea) {
+      console.log('❌ No beard area calculated');
+      return;
+    }
+    
+    console.log('🧔‍♂️ Rendering beard area:', beardArea);
     
     // Generate beard particles if needed
     if (this.beardParticles.length < 100) {
       this.generateBeardParticles(beardArea);
+      console.log('✨ Generated', this.beardParticles.length, 'beard particles');
     }
     
     this.drawBeard(ctx, beardArea, timestamp);
@@ -52,12 +58,15 @@ export class FrostyBeardFilter implements FilterRenderer {
     const chinY = (bounds.y + bounds.height * 0.7) * coordinateSystem.canvas.height;
     const beardHeight = faceHeight * 0.6;
     
-    return {
+    const beardArea = {
       x: (bounds.x + bounds.width / 2) * coordinateSystem.canvas.width,
       y: chinY,
       width: faceWidth * 0.7,
       height: beardHeight
     };
+    
+    console.log('🧔‍♂️ Beard area calculated:', beardArea, 'from bounds:', bounds);
+    return beardArea;
   }
   
   private generateBeardParticles(beardArea: { x: number; y: number; width: number; height: number }) {

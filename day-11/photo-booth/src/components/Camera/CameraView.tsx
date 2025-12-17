@@ -25,11 +25,56 @@ export function CameraView({
   const updateCoordinateSystem = React.useCallback(() => {
     const video = refs.videoRef.current;
     const canvas = refs.canvasRef.current;
-    
+
+    console.log('🎯 Updating coordinate system:', {
+      hasVideo: !!video,
+      hasCanvas: !!canvas,
+      videoSize: video ? `${video.videoWidth}x${video.videoHeight}` : 'none',
+      canvasSize: canvas ? `${canvas.width}x${canvas.height}` : 'none',
+      canvasBounds: canvas?.getBoundingClientRect(),
+      videoReadyState: video?.readyState,
+      onCoordinateSystemChangeExists: !!onCoordinateSystemChange
+    });
+
     if (video && canvas && video.videoWidth && video.videoHeight) {
+      // Set canvas size to match container  
+      const canvasRect = canvas.getBoundingClientRect();
+      const devicePixelRatio = window.devicePixelRatio || 1;
+      
+      console.log('📐 Canvas rect:', canvasRect);
+      
+      // Set logical size
+      canvas.style.width = canvasRect.width + 'px';
+      canvas.style.height = canvasRect.height + 'px';
+      
+      // Set actual size in memory (scaled for high-DPI displays)
+      canvas.width = canvasRect.width * devicePixelRatio;
+      canvas.height = canvasRect.height * devicePixelRatio;
+      
+      // Scale the context to ensure correct drawing operations
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.scale(devicePixelRatio, devicePixelRatio);
+      }
+      
       const system = calculateCoordinateSystem(video, canvas);
+      console.log('✅ Coordinate system calculated:', system);
+      console.log('📤 Setting coordinate system in local state and calling onCoordinateSystemChange');
+      
       setCoordinateSystem(system);
-      onCoordinateSystemChange?.(system);
+      if (onCoordinateSystemChange) {
+        onCoordinateSystemChange(system);
+        console.log('📤 onCoordinateSystemChange called');
+      } else {
+        console.warn('⚠️ onCoordinateSystemChange is undefined!');
+      }
+    } else {
+      console.log('❌ Cannot calculate coordinate system - missing requirements:', {
+        hasVideo: !!video,
+        hasCanvas: !!canvas,
+        videoWidth: video?.videoWidth,
+        videoHeight: video?.videoHeight
+      });
     }
   }, [refs.videoRef, refs.canvasRef, onCoordinateSystemChange]);
   
@@ -55,19 +100,35 @@ export function CameraView({
     if (!video) return;
     
     const handleLoadedMetadata = () => {
+      console.log('📹 Video loadedmetadata event fired');
       updateCoordinateSystem();
     };
     
     const handleResize = () => {
+      console.log('🔄 Window resize event fired');
+      requestAnimationFrame(updateCoordinateSystem);
+    };
+    
+    // Also try to update when video can play
+    const handleCanPlay = () => {
+      console.log('🎬 Video canplay event fired');
       requestAnimationFrame(updateCoordinateSystem);
     };
     
     video.addEventListener('loadedmetadata', handleLoadedMetadata);
+    video.addEventListener('canplay', handleCanPlay);
     window.addEventListener('orientationchange', handleResize);
     window.addEventListener('resize', handleResize);
     
+    // Try to update immediately if video is already loaded
+    if (video.readyState >= 2) {
+      console.log('📹 Video already has metadata, updating coordinate system');
+      requestAnimationFrame(updateCoordinateSystem);
+    }
+    
     return () => {
       video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      video.removeEventListener('canplay', handleCanPlay);
       window.removeEventListener('orientationchange', handleResize);
       window.removeEventListener('resize', handleResize);
     };
@@ -94,6 +155,31 @@ export function CameraView({
       actions.startCamera();
     }
   }, [state.permission.state, state.devices.length, state.isActive, state.isLoading, actions]);
+
+  // Force coordinate system update when camera becomes active
+  useEffect(() => {
+    if (state.isActive) {
+      console.log('📹 Camera is now active, forcing coordinate system update');
+      // Give the video a moment to be ready, then update multiple times to ensure it works
+      const timeoutId1 = setTimeout(() => {
+        updateCoordinateSystem();
+      }, 500);
+      
+      const timeoutId2 = setTimeout(() => {
+        updateCoordinateSystem();
+      }, 1000);
+      
+      const timeoutId3 = setTimeout(() => {
+        updateCoordinateSystem();
+      }, 2000);
+      
+      return () => {
+        clearTimeout(timeoutId1);
+        clearTimeout(timeoutId2);
+        clearTimeout(timeoutId3);
+      };
+    }
+  }, [state.isActive, updateCoordinateSystem]);
   
   if (state.permission.state === 'denied') {
     return (

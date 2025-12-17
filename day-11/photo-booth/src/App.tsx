@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CameraView } from './components/Camera/CameraView';
 import { FilterSelector } from './components/Filters/FilterSelector';
 import { FilterManager, WINTER_FILTERS } from './components/Filters/FilterManager';
@@ -14,12 +14,25 @@ function App() {
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
   const [coordinateSystem, setCoordinateSystem] = useState<CoordinateSystem | null>(null);
   
+  // Debug coordinate system changes
+  useEffect(() => {
+    console.log('🎯 App coordinateSystem changed:', coordinateSystem);
+  }, [coordinateSystem]);
+  
   const camera = useCamera();
   const faceDetection = useFaceDetection(camera.refs.videoRef, coordinateSystem);
   const photoCapture = usePhotoCapture();
   
   // Debug: Log filter changes
   console.log('Selected filter:', selectedFilter);
+  console.log('App state:', {
+    selectedFilter,
+    coordinateSystem: !!coordinateSystem,
+    coordinateSystemDetails: coordinateSystem,
+    cameraActive: camera.state.isActive,
+    faceDetectionState: faceDetection.state,
+    detectedFacesCount: faceDetection.detectedFaces.length
+  });
   
   const handleCapture = async () => {
     await photoCapture.capturePhoto(
@@ -36,7 +49,7 @@ function App() {
       </header>
       
       <main className="app-main">
-        <div className="camera-container">
+        <div className="camera-container" style={{ position: 'relative' }}>
           <CameraView 
             camera={camera}
             onCoordinateSystemChange={setCoordinateSystem}
@@ -51,6 +64,8 @@ function App() {
             coordinateSystem={coordinateSystem}
             isActive={camera.state.isActive}
           />
+          
+
         </div>
         
         {camera.state.isActive && (
