@@ -1,0 +1,1002 @@
+/* ===========================
+   Festival Staff Scheduling - Styles
+   =========================== */
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+/* Header */
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+header h2 {
+    font-size: 1.3em;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+
+/* Navigation */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+nav a {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    border: 2px solid transparent;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+nav a.active {
+    background: white;
+    color: #667eea;
+    border: 2px solid white;
+}
+
+/* Main Content */
+main {
+    padding: 30px;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+h3 {
+    color: #667eea;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #667eea;
+}
+
+h4 {
+    color: #764ba2;
+    font-size: 1.4em;
+    margin: 20px 0 15px 0;
+    padding: 10px;
+    background: #f8f9ff;
+    border-left: 4px solid #764ba2;
+}
+
+/* Festival Info */
+.festival-info {
+    background: #f8f9ff;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.festival-info p {
+    flex: 1;
+    min-width: 200px;
+}
+
+.festival-info strong {
+    color: #667eea;
+}
+
+/* Schedule Tables */
+.day-section {
+    margin-bottom: 40px;
+    page-break-inside: avoid;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-table th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.95em;
+    position: sticky;
+    top: 0;
+}
+
+.schedule-table td {
+    padding: 12px 10px;
+    border: 1px solid #e0e0e0;
+    font-size: 0.9em;
+}
+
+.schedule-table tbody tr:nth-child(even) {
+    background-color: #f8f9ff;
+}
+
+.schedule-table tbody tr:hover {
+    background-color: #eef1ff;
+}
+
+/* Time column styling */
+.schedule-table td:first-child {
+    font-weight: 600;
+    color: #667eea;
+    white-space: nowrap;
+    background-color: #f0f2ff;
+}
+
+/* Cell Color Coding */
+.assigned {
+    background-color: #d4edda;
+    color: #155724;
+    font-weight: 500;
+}
+
+.critical {
+    background-color: #fff3cd;
+    color: #856404;
+    font-weight: 600;
+    border-left: 4px solid #ffc107;
+}
+
+.unavailable {
+    background-color: #f8d7da;
+    color: #721c24;
+    text-align: center;
+}
+
+.lunch {
+    background-color: #cfe2ff;
+    color: #084298;
+    font-style: italic;
+}
+
+.early-setup {
+    background-color: #e7d4f8;
+    color: #5a1a7a;
+}
+
+.training {
+    background-color: #fff9e6;
+    color: #856404;
+    font-style: italic;
+}
+
+.available {
+    background-color: #e7f5e9;
+    color: #2d5f3a;
+}
+
+/* Staff List Styles */
+.staff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.staff-card {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.staff-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+    border-color: #667eea;
+}
+
+.staff-card h4 {
+    background: none;
+    border: none;
+    margin: 0 0 10px 0;
+    padding: 0;
+    color: #667eea;
+    font-size: 1.3em;
+}
+
+.staff-card .role {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    margin-bottom: 15px;
+}
+
+.staff-card .info-section {
+    margin-bottom: 15px;
+}
+
+.staff-card .info-section strong {
+    color: #764ba2;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.staff-card .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.staff-card .skill-tag {
+    background: #f8f9ff;
+    color: #667eea;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    border: 1px solid #e0e0e0;
+}
+
+/* Critical Notes */
+.critical-notes ul {
+    list-style: none;
+    padding: 0;
+}
+
+.critical-notes li {
+    background: #fff9e6;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-left: 5px solid #ffc107;
+    border-radius: 4px;
+}
+
+.critical-notes strong {
+    color: #856404;
+}
+
+/* Summary Table */
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.summary-table th {
+    background: #667eea;
+    color: white;
+    padding: 15px;
+    text-align: left;
+}
+
+.summary-table td {
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+}
+
+.summary-table tbody tr:nth-child(even) {
+    background-color: #f8f9ff;
+}
+
+/* Footer */
+footer {
+    background: #f8f9ff;
+    padding: 20px;
+    text-align: center;
+    border-top: 3px solid #667eea;
+    color: #666;
+}
+
+/* Print Styles */
+.print-only {
+    display: none;
+}
+
+@media print {
+    body {
+        background: white;
+        padding: 0;
+    }
+
+    .container {
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    header {
+        background: white;
+        color: #333;
+        border-bottom: 3px solid #667eea;
+    }
+
+    header h1 {
+        text-shadow: none;
+    }
+
+    nav {
+        display: none;
+    }
+
+    .no-print {
+        display: none;
+    }
+
+    .print-only {
+        display: block;
+        padding: 10px;
+        background: #f8f9ff;
+        margin-bottom: 20px;
+        border: 1px solid #667eea;
+    }
+
+    .schedule-table th {
+        background: #667eea;
+        color: white;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .assigned,
+    .critical,
+    .unavailable,
+    .lunch,
+    .early-setup,
+    .training {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .day-section {
+        page-break-after: always;
+    }
+
+    .day-section:last-child {
+        page-break-after: auto;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    header h2 {
+        font-size: 1.1em;
+    }
+
+    main {
+        padding: 15px;
+    }
+
+    .schedule-table {
+        font-size: 0.75em;
+    }
+
+    .schedule-table th,
+    .schedule-table td {
+        padding: 8px 5px;
+    }
+
+    .festival-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .staff-grid {
+        grid-template-columns: 1fr;
+    }
+
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav a {
+        width: 80%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    /* For very small screens, make tables scrollable */
+    .schedule-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* ===========================
+   INTERMEDIATE PHASE STYLES
+   =========================== */
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease;
+    position: relative;
+}
+
+.modal-large {
+    max-width: 900px;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #999;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.modal-close:hover {
+    background: #f0f0f0;
+    color: #333;
+    transform: rotate(90deg);
+}
+
+.modal-header {
+    padding: 30px;
+    border-bottom: 2px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #667eea;
+    border: none;
+    padding: 0;
+}
+
+.modal-header p {
+    margin: 5px 0 0 0;
+    color: #666;
+}
+
+.role-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.modal-section {
+    margin-bottom: 25px;
+}
+
+.modal-section h4 {
+    color: #764ba2;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    background: none;
+    padding: 0;
+    border: none;
+}
+
+.modal-section p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.skill-badge {
+    background: #f0f2ff;
+    color: #667eea;
+    padding: 6px 14px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    border: 1px solid #dde1ff;
+}
+
+.modal-footer {
+    padding: 20px 30px;
+    border-top: 2px solid #eee;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* Button Styles */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 44px;
+    min-height: 44px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background: #d0d0d0;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #218838;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 0.9em;
+}
+
+.btn-install {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    cursor: pointer;
+}
+
+/* Form Styles */
+.shift-change-form {
+    max-width: 100%;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+/* Shift Change Interface */
+.shift-changes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.shift-change-section h4 {
+    background: none;
+    border: none;
+    padding: 0 0 10px 0;
+    margin-bottom: 15px;
+    color: #667eea;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.shift-request-card {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.shift-request-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.shift-request-card.status-pending {
+    border-left: 4px solid #ffc107;
+}
+
+.shift-request-card.status-pending_approval {
+    border-left: 4px solid #17a2b8;
+}
+
+.shift-request-card.status-approved {
+    border-left: 4px solid #28a745;
+    background: #f8fff9;
+}
+
+.shift-request-card.status-denied {
+    border-left: 4px solid #dc3545;
+    background: #fff8f8;
+}
+
+.request-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.request-header strong {
+    font-size: 1.1em;
+    color: #333;
+}
+
+.badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.badge-pending_approval {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.badge-approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge-denied {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.request-details {
+    margin-bottom: 15px;
+}
+
+.request-details p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.request-time {
+    font-size: 0.85em;
+    color: #999;
+    margin-top: 10px !important;
+}
+
+.request-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* Toast Notifications */
+.toast {
+    position: fixed;
+    bottom: -100px;
+    right: 20px;
+    background: #333;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 10001;
+    transition: bottom 0.3s ease;
+    max-width: 400px;
+}
+
+.toast-show {
+    bottom: 20px;
+}
+
+.toast-success {
+    background: #28a745;
+}
+
+.toast-error {
+    background: #dc3545;
+}
+
+/* Reminder Preview Styles */
+.reminder-preview {
+    margin-top: 20px;
+}
+
+.reminder-preview h4 {
+    background: none;
+    border: none;
+    padding: 10px 0 5px 0;
+    margin-bottom: 10px;
+    color: #764ba2;
+}
+
+.email-preview,
+.sms-preview {
+    background: #f8f9ff;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.email-preview p,
+.sms-preview p {
+    margin: 8px 0;
+}
+
+.email-preview hr {
+    margin: 15px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+.email-preview ul {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+
+/* Enhanced Mobile Responsive */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+    }
+
+    .staff-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .shift-request-card {
+        padding: 15px;
+    }
+
+    .request-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .request-actions {
+        flex-direction: column;
+    }
+
+    .request-actions .btn {
+        width: 100%;
+    }
+}
+
+/* Touch-friendly enhancements */
+@media (hover: none) and (pointer: coarse) {
+    /* Mobile/touch devices */
+    .btn {
+        min-width: 48px;
+        min-height: 48px;
+    }
+
+    nav a {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .schedule-table td,
+    .schedule-table th {
+        min-height: 48px;
+    }
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+    flex-direction: column;
+    position: relative;
+}
+
+/* PWA Styles */
+@media (display-mode: standalone) {
+    /* Styles when app is installed as PWA */
+    header {
+        padding-top: env(safe-area-inset-top);
+    }
+    
+    .container {
+        margin-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+/* Loading States */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .schedule-table th {
+        border: 2px solid black;
+    }
+
+    .schedule-table td {
+        border: 1px solid black;
+    }
+    
+    .modal-content {
+        border: 3px solid black;
+    }
+}
+
+/* Dark Mode Support (Future) */
+@media (prefers-color-scheme: dark) {
+    /* Dark mode styles would go here in future enhancement */
+}

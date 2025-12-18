@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conflict Report - Winter Festival 2025</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎉 Winter Festival 2025</h1>
+            <h2>Scheduling Conflict Report</h2>
+            <nav>
+                <a href="index.html">Master Schedule</a>
+                <a href="staff-list.html">Staff List</a>
+                <a href="conflicts.html" class="active">Conflicts</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="schedule-overview">
+                <h3>Overall Schedule Health</h3>
+                <div class="festival-info">
+                    <p><strong>Total Conflicts:</strong> 0 ✅</p>
+                    <p><strong>Coverage Gaps:</strong> 3 ⚠️</p>
+                    <p><strong>Critical Roles:</strong> All covered during festival hours</p>
+                    <p><strong>Status:</strong> <span style="color: #28a745; font-weight: bold;">READY FOR FESTIVAL</span></p>
+                </div>
+            </section>
+
+            <section>
+                <h3>✅ No Scheduling Conflicts Detected</h3>
+                <div class="critical-notes">
+                    <ul>
+                        <li><strong>Double Bookings:</strong> None - No staff member assigned to multiple stations simultaneously</li>
+                        <li><strong>Availability Violations:</strong> None - All assignments respect staff availability windows</li>
+                        <li><strong>Constraint Violations:</strong> None - All staff constraints honored (lunch breaks, training needs, etc.)</li>
+                        <li><strong>Overlapping Shifts:</strong> None - Clean handoffs between all staff transitions</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h3>⚠️ Coverage Gaps Identified</h3>
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Time Period</th>
+                            <th>Gap Type</th>
+                            <th>Impact</th>
+                            <th>Recommended Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Monday</td>
+                            <td>5:00 PM - 8:00 PM</td>
+                            <td>First Aid Coverage</td>
+                            <td class="unavailable">HIGH</td>
+                            <td>
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    <li>Emma's availability ends at 5:00 PM</li>
+                                    <li>Festival continues until 8:00 PM</li>
+                                    <li><strong>Solution:</strong> Request Emma extend hours OR hire backup first aid staff OR end festival at 5:00 PM</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tuesday</td>
+                            <td>5:00 PM - 8:00 PM</td>
+                            <td>First Aid Coverage</td>
+                            <td class="unavailable">HIGH</td>
+                            <td>
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    <li>Emma's availability ends at 5:00 PM</li>
+                                    <li>Festival continues until 8:00 PM</li>
+                                    <li><strong>Solution:</strong> Request Emma extend hours OR hire backup first aid staff OR end festival at 5:00 PM</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Wednesday</td>
+                            <td>5:00 PM - 8:00 PM</td>
+                            <td>First Aid Coverage</td>
+                            <td class="unavailable">HIGH</td>
+                            <td>
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    <li>Emma's availability ends at 5:00 PM</li>
+                                    <li>Festival continues until 8:00 PM</li>
+                                    <li><strong>Solution:</strong> Request Emma extend hours OR hire backup first aid staff OR end festival at 5:00 PM</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h3>📊 Coverage Analysis by Role</h3>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th>Required?</th>
+                            <th>Monday Coverage</th>
+                            <th>Tuesday Coverage</th>
+                            <th>Wednesday Coverage</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>First Aid</td>
+                            <td class="critical">YES - Festival Requirement</td>
+                            <td>9:00 AM - 5:00 PM</td>
+                            <td>9:00 AM - 5:00 PM</td>
+                            <td>9:00 AM - 5:00 PM</td>
+                            <td class="unavailable">⚠️ Gap 5-8pm</td>
+                        </tr>
+                        <tr>
+                            <td>Security</td>
+                            <td class="assigned">Recommended</td>
+                            <td>6:00 AM - 6:00 PM</td>
+                            <td>6:00 AM - 6:00 PM</td>
+                            <td>6:00 AM - 6:00 PM</td>
+                            <td class="assigned">✅ Full Coverage</td>
+                        </tr>
+                        <tr>
+                            <td>Coordination</td>
+                            <td class="assigned">Essential</td>
+                            <td>8:00 AM - 8:00 PM</td>
+                            <td>8:00 AM - 8:00 PM</td>
+                            <td>8:00 AM - 8:00 PM</td>
+                            <td class="assigned">✅ Full Coverage</td>
+                        </tr>
+                        <tr>
+                            <td>Photo Booth</td>
+                            <td class="critical">YES - Specialized</td>
+                            <td>10:00 AM - 10:00 PM</td>
+                            <td>10:00 AM - 10:00 PM</td>
+                            <td>10:00 AM - 10:00 PM</td>
+                            <td class="assigned">✅ Full Coverage</td>
+                        </tr>
+                        <tr>
+                            <td>Sound/Main Stage</td>
+                            <td class="critical">YES - Specialized</td>
+                            <td>7:00 AM - 11:00 PM</td>
+                            <td>7:00 AM - 11:00 PM</td>
+                            <td>7:00 AM - 11:00 PM</td>
+                            <td class="assigned">✅ Full Coverage</td>
+                        </tr>
+                        <tr>
+                            <td>Marketing</td>
+                            <td class="assigned">Recommended</td>
+                            <td>Not Available</td>
+                            <td>9:00 AM - 9:00 PM</td>
+                            <td>9:00 AM - 9:00 PM</td>
+                            <td class="assigned">✅ Covered Tue-Wed</td>
+                        </tr>
+                        <tr>
+                            <td>Setup Crew</td>
+                            <td class="assigned">Important</td>
+                            <td>5:00 AM - 3:00 PM</td>
+                            <td>Not Available</td>
+                            <td>Not Available</td>
+                            <td class="assigned">✅ Monday Setup</td>
+                        </tr>
+                        <tr>
+                            <td>General Support</td>
+                            <td>Optional</td>
+                            <td>Not Available</td>
+                            <td>Not Available</td>
+                            <td>12:00 PM - 8:00 PM</td>
+                            <td class="assigned">✅ Wednesday</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="critical-notes">
+                <h3>🎯 Key Recommendations</h3>
+                <ul>
+                    <li>
+                        <strong>CRITICAL - First Aid Coverage Gap:</strong><br>
+                        Emma (First Aid) is only available until 5:00 PM, but festival runs until 8:00 PM all three days.
+                        <br><strong>Options:</strong>
+                        <ol>
+                            <li>Request Emma extend availability to 8:00 PM (3 extra hours/day)</li>
+                            <li>Hire a second certified first aid staff member for 5:00-8:00 PM shifts</li>
+                            <li>Reduce festival hours to 10:00 AM - 5:00 PM</li>
+                            <li>Check local regulations - may be able to operate without on-site first aid if proper signage/emergency plans in place</li>
+                        </ol>
+                    </li>
+                    <li>
+                        <strong>Backup for Critical Roles:</strong><br>
+                        David (Photo Booth) and Jake (Sound) are single points of failure. Consider:
+                        <ul>
+                            <li>Cross-training Sarah or Elena on basic photo booth operation</li>
+                            <li>Having Jake train someone on basic sound troubleshooting</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Lisa's Training Success:</strong><br>
+                        Ensure Sarah and Elena dedicate time Wednesday 12:00-5:00 PM to properly train Lisa.
+                        Create a training checklist for consistency.
+                    </li>
+                    <li>
+                        <strong>Marcus Security Gap:</strong><br>
+                        Security ends at 6:00 PM but festival continues until 8:00 PM.
+                        Consider if security is needed for final 2 hours or if Sarah can handle closing security.
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>📈 Staff Utilization Summary</h3>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Staff Member</th>
+                            <th>Total Hours</th>
+                            <th>Days Working</th>
+                            <th>Utilization</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Marcus Thompson</td>
+                            <td>36 hours (12h × 3 days)</td>
+                            <td>Mon, Tue, Wed</td>
+                            <td class="assigned">High</td>
+                        </tr>
+                        <tr>
+                            <td>Emma Davis</td>
+                            <td>24 hours (8h × 3 days)</td>
+                            <td>Mon, Tue, Wed</td>
+                            <td class="assigned">Medium</td>
+                        </tr>
+                        <tr>
+                            <td>Sarah Chen</td>
+                            <td>36 hours (12h × 3 days)</td>
+                            <td>Mon, Tue, Wed</td>
+                            <td class="critical">Very High</td>
+                        </tr>
+                        <tr>
+                            <td>David Rodriguez</td>
+                            <td>36 hours (12h × 3 days)</td>
+                            <td>Mon, Tue, Wed</td>
+                            <td class="assigned">High</td>
+                        </tr>
+                        <tr>
+                            <td>Lisa Johnson</td>
+                            <td>8 hours (8h × 1 day)</td>
+                            <td>Wed</td>
+                            <td class="available">Low</td>
+                        </tr>
+                        <tr>
+                            <td>Tom Wilson</td>
+                            <td>10 hours (10h × 1 day)</td>
+                            <td>Mon</td>
+                            <td class="available">Low</td>
+                        </tr>
+                        <tr>
+                            <td>Elena Martinez</td>
+                            <td>24 hours (12h × 2 days)</td>
+                            <td>Tue, Wed</td>
+                            <td class="assigned">Medium</td>
+                        </tr>
+                        <tr>
+                            <td>Jake Anderson</td>
+                            <td>48 hours (16h × 3 days)</td>
+                            <td>Mon, Tue, Wed</td>
+                            <td class="unavailable">Very High</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 20px;"><strong>Note:</strong> Jake (48 hours) and Sarah (36 hours with no real breaks) may experience fatigue. Monitor closely and provide adequate breaks.</p>
+            </section>
+
+            <section>
+                <h3>✅ Final Validation Checklist</h3>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Validation Check</th>
+                            <th>Status</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>All staff within availability windows</td>
+                            <td class="assigned">✅ Pass</td>
+                            <td>No violations detected</td>
+                        </tr>
+                        <tr>
+                            <td>No double-booking conflicts</td>
+                            <td class="assigned">✅ Pass</td>
+                            <td>Clean schedule</td>
+                        </tr>
+                        <tr>
+                            <td>Required break times honored</td>
+                            <td class="assigned">✅ Pass</td>
+                            <td>Sarah's lunch break scheduled</td>
+                        </tr>
+                        <tr>
+                            <td>Critical roles covered during festival hours</td>
+                            <td class="unavailable">⚠️ Partial</td>
+                            <td>First Aid gap 5-8pm</td>
+                        </tr>
+                        <tr>
+                            <td>Specialized staff constraints met</td>
+                            <td class="assigned">✅ Pass</td>
+                            <td>David photo booth, Jake main stage only</td>
+                        </tr>
+                        <tr>
+                            <td>Training time allocated</td>
+                            <td class="assigned">✅ Pass</td>
+                            <td>Lisa: 5 hours Wednesday</td>
+                        </tr>
+                        <tr>
+                            <td>Setup/breakdown staffed</td>
+                            <td class="assigned">✅ Pass</td>
+                            <td>Tom and Jake handle Monday setup</td>
+                        </tr>
+                        <tr>
+                            <td>Overall festival readiness</td>
+                            <td class="assigned">✅ Ready</td>
+                            <td>Pending first aid resolution</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+
+        <footer>
+            <p>Winter Festival 2025 | Staff Scheduling System v1.0</p>
+            <p>Report Generated: <script>document.write(new Date().toLocaleString());</script></p>
+        </footer>
+    </div>
+</body>
+</html>
