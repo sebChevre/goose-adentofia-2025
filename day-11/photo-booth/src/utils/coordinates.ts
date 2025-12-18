@@ -16,7 +16,7 @@ export function calculateCoordinateSystem(
   // Calculate scale to maintain aspect ratio
   const scaleX = canvasWidth / videoWidth;
   const scaleY = canvasHeight / videoHeight;
-  const scale = Math.min(scaleX, scaleY);
+  const scale = Math.max(scaleX, scaleY);
   
   // Calculate centering offsets
   const scaledWidth = videoWidth * scale;

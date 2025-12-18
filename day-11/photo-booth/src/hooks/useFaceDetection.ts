@@ -72,9 +72,7 @@ export function useFaceDetection(
         updateState({ modelLoadProgress: 20 });
 
         // Load WASM fileset for vision tasks
-        const filesetResolver = await FilesetResolver.forVisionTasks(
-          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
-        );
+        const filesetResolver = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/wasm");
 
         updateState({ modelLoadProgress: 40 });
 

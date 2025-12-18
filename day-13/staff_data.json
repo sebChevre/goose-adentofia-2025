@@ -1,0 +1,142 @@
+{
+  "staff": [
+    {
+      "id": 1,
+      "name": "Marcus Thompson",
+      "role": "Security",
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday"],
+        "hours": {
+          "start": "06:00",
+          "end": "18:00"
+        }
+      },
+      "preferences": "Prefers morning shifts",
+      "constraints": "",
+      "skills": ["Security", "Crowd Control"]
+    },
+    {
+      "id": 2,
+      "name": "Elena Martinez",
+      "role": "Marketing",
+      "availability": {
+        "days": ["Tuesday", "Wednesday", "Thursday"],
+        "hours": {
+          "start": "09:00",
+          "end": "21:00"
+        }
+      },
+      "preferences": "Absolutely no weekends",
+      "constraints": "No weekend work",
+      "skills": ["Marketing", "Social Media", "Photography"]
+    },
+    {
+      "id": 3,
+      "name": "Sarah Chen",
+      "role": "Coordinator",
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "hours": {
+          "start": "08:00",
+          "end": "20:00"
+        }
+      },
+      "preferences": "Needs lunch break",
+      "constraints": "Requires lunch break 12:00-13:00",
+      "skills": ["Coordination", "Management", "Problem Solving"]
+    },
+    {
+      "id": 4,
+      "name": "David Rodriguez",
+      "role": "Tech Specialist",
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday"],
+        "hours": {
+          "start": "10:00",
+          "end": "22:00"
+        }
+      },
+      "preferences": "",
+      "constraints": "Only person who knows photo booth",
+      "skills": ["Technology", "Photo Booth", "Equipment Setup", "Troubleshooting"]
+    },
+    {
+      "id": 5,
+      "name": "Lisa Johnson",
+      "role": "Volunteer",
+      "availability": {
+        "days": ["Wednesday", "Thursday", "Friday"],
+        "hours": {
+          "start": "12:00",
+          "end": "20:00"
+        }
+      },
+      "preferences": "",
+      "constraints": "New volunteer - needs training",
+      "skills": ["Learning", "Enthusiastic"]
+    },
+    {
+      "id": 6,
+      "name": "Tom Wilson",
+      "role": "Setup Crew",
+      "availability": {
+        "days": ["Sunday", "Monday", "Tuesday"],
+        "hours": {
+          "start": "05:00",
+          "end": "15:00"
+        }
+      },
+      "preferences": "",
+      "constraints": "Heavy lifting specialist",
+      "skills": ["Setup", "Heavy Lifting", "Equipment Moving", "Construction"]
+    },
+    {
+      "id": 7,
+      "name": "Emma Davis",
+      "role": "First Aid",
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "hours": {
+          "start": "09:00",
+          "end": "17:00"
+        }
+      },
+      "preferences": "",
+      "constraints": "Required at every event - festival safety requirement",
+      "skills": ["First Aid", "CPR", "Medical Response", "Emergency Care"]
+    },
+    {
+      "id": 8,
+      "name": "Jake Anderson",
+      "role": "Sound Tech",
+      "availability": {
+        "days": ["Monday", "Tuesday", "Wednesday"],
+        "hours": {
+          "start": "07:00",
+          "end": "23:00"
+        }
+      },
+      "preferences": "",
+      "constraints": "Only does main stage work",
+      "skills": ["Sound Engineering", "Audio Equipment", "Main Stage", "Mixing"]
+    }
+  ],
+  "festival": {
+    "name": "Winter Festival 2025",
+    "dates": ["Monday", "Tuesday", "Wednesday"],
+    "hours": {
+      "start": "10:00",
+      "end": "20:00"
+    },
+    "stations": [
+      "Security",
+      "Marketing/Photography", 
+      "Coordination Desk",
+      "Photo Booth",
+      "General Support",
+      "Setup/Breakdown",
+      "First Aid Station",
+      "Main Stage Sound"
+    ]
+  }
+}
