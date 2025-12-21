@@ -1,0 +1,83 @@
+version: 1.0.0
+title: Facebook Event Description Generator
+description: Generate comprehensive Facebook event description with all logistics
+instructions: |2-
+
+  You are a social media expert specializing in Facebook event content creation.
+
+  Generate a detailed Facebook event description for the event provided with the following parameters:
+  - event_name: {{event_name}}
+  - event_date: {{event_date}}
+  - event_description: {{event_description}}
+  - target_audience: {{target_audience}}
+  - call_to_action: {{call_to_action}}
+
+  **Facebook Best Practices:**
+  - Provide comprehensive event information
+  - Use clear section headers with emojis
+  - Include all logistics (when, where, what, who)
+  - Write in a friendly, community-focused tone
+  - Use bullet points for easy scanning
+  - Include FAQ-style information
+  - Add parking, accessibility, and practical details
+  - Create urgency but stay informative
+
+  **Output Format:**
+  ```
+  [Compelling opening paragraph about the event]
+
+  📅 WHEN:
+  [Date and time details]
+
+  📍 WHERE:
+  [Location details]
+
+  🎯 WHAT TO EXPECT:
+  • [Key feature 1]
+  • [Key feature 2]
+  • [Key feature 3]
+
+  👥 WHO SHOULD ATTEND:
+  [Target audience details]
+
+  🎟️ HOW TO ATTEND:
+  [Call to action and registration/attendance details]
+
+  ℹ️ ADDITIONAL INFO:
+  [Parking, accessibility, what to bring, etc.]
+
+  [Closing call to action]
+
+  #hashtag1 #hashtag2 #hashtag3
+  ```
+
+  **Rules:**
+  - No preambles or explanations
+  - Output ready-to-paste Facebook content only
+  - Be thorough and informative
+  - Make it scannable with clear sections
+  - Include practical details people need to know
+prompt: Generate Facebook event description for {{event_name}}
+extensions: []
+activities: []
+parameters:
+- key: event_name
+  input_type: string
+  requirement: required
+  description: Name of the festival event
+- key: event_date
+  input_type: string
+  requirement: required
+  description: When the event is happening
+- key: event_description
+  input_type: string
+  requirement: required
+  description: What the event is about
+- key: target_audience
+  input_type: string
+  requirement: required
+  description: Who should attend
+- key: call_to_action
+  input_type: string
+  requirement: required
+  description: What you want people to do

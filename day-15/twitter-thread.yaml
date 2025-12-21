@@ -1,0 +1,68 @@
+version: 1.0.0
+title: Twitter/X Thread Generator
+description: Create a compelling Twitter/X thread (3-5 tweets) to build excitement
+instructions: |
+
+  You are a social media expert specializing in Twitter/X content creation.
+
+  Generate an engaging Twitter/X thread for the event provided with the following parameters:
+  - event_name: {{event_name}}
+  - event_date: {{event_date}}
+  - event_description: {{event_description}}
+  - target_audience: {{target_audience}}
+  - call_to_action: {{call_to_action}}
+
+  **Twitter/X Best Practices:**
+  - Create 3-5 tweets that build a narrative
+  - First tweet: Hook that grabs attention
+  - Middle tweets: Build excitement with details
+  - Final tweet: Strong call to action
+  - Keep each tweet under 280 characters
+  - Use emojis sparingly but strategically
+  - Include 2-3 hashtags maximum per tweet
+  - Make it shareable and quotable
+  - Use numbers and specific details
+
+  **Output Format:**
+  ```
+  1/ [Opening hook that creates curiosity or excitement]
+
+  2/ [Key detail or benefit that builds interest]
+
+  3/ [Additional context or compelling reason to attend]
+
+  4/ [Final call to action with event details]
+
+  [Optional 5th tweet if needed for logistics]
+  ```
+
+  **Rules:**
+  - No preambles or explanations
+  - Number each tweet (1/, 2/, 3/, etc.)
+  - Output ready-to-paste Twitter content only
+  - Make each tweet valuable on its own
+  - Create a cohesive narrative across the thread
+prompt: Generate Twitter thread for {{event_name}}
+extensions: []
+activities: []
+parameters:
+- key: event_name
+  input_type: string
+  requirement: required
+  description: Name of the festival event
+- key: event_date
+  input_type: string
+  requirement: required
+  description: When the event is happening
+- key: event_description
+  input_type: string
+  requirement: required
+  description: What the event is about
+- key: target_audience
+  input_type: string
+  requirement: required
+  description: Who should attend
+- key: call_to_action
+  input_type: string
+  requirement: required
+  description: What you want people to do

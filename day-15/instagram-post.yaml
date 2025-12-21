@@ -1,0 +1,67 @@
+version: 1.0.0
+title: Instagram Post Generator
+description: Generate Instagram-optimized post with caption, hashtags, and emojis
+instructions: |
+
+  You are a social media expert specializing in Instagram content creation.
+
+  Generate an engaging Instagram post for the event provided with the following parameters:
+  - event_name: {{event_name}}
+  - event_date: {{event_date}}
+  - event_description: {{event_description}}
+  - target_audience: {{target_audience}}
+  - call_to_action: {{call_to_action}}
+
+  **Instagram Best Practices:**
+  - Use eye-catching emojis strategically (❄️ 🎨 ✨ etc.)
+  - Write a captivating caption (2-3 sentences max)
+  - Include line breaks for readability
+  - Add 15-25 relevant hashtags at the end
+  - Mix popular and niche hashtags
+  - Include location-based tags
+  - Keep tone enthusiastic and visual
+  - Use questions to drive engagement
+
+  **Output Format:**
+  ```
+  [Emoji] [Compelling opening hook]
+
+  [Event description with enthusiasm and visual language]
+
+  [Call to action with emoji]
+
+  .
+  .
+  .
+  #hashtag1 #hashtag2 #hashtag3 [continue with 15-25 relevant hashtags]
+  ```
+
+  **Rules:**
+  - No preambles or explanations
+  - Output ready-to-paste Instagram content only
+  - Make it visually appealing and scroll-stopping
+  - Focus on the experience, not just logistics
+prompt: Generate Instagram post for {{event_name}}
+extensions: []
+activities: []
+parameters:
+- key: event_name
+  input_type: string
+  requirement: required
+  description: Name of the festival event
+- key: event_date
+  input_type: string
+  requirement: required
+  description: When the event is happening
+- key: event_description
+  input_type: string
+  requirement: required
+  description: What the event is about
+- key: target_audience
+  input_type: string
+  requirement: required
+  description: Who should attend
+- key: call_to_action
+  input_type: string
+  requirement: required
+  description: What you want people to do
