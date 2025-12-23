@@ -1,0 +1,122 @@
+# Winter Festival Countdown App - Goose Hints
+
+## Project Overview
+A festive countdown timer web application for the Winter Festival with rotating facts and email signup.
+
+## Technology Stack
+- **Frontend**: Vanilla HTML5, CSS3, JavaScript (ES6+)
+- **No frameworks**: Keep it simple and performant
+- **Storage**: localStorage for email signups (Stage 1-8)
+- **Deployment**: Static hosting (Netlify, Vercel, GitHub Pages)
+
+## Code Style & Conventions
+
+### JavaScript
+- Use ES6+ features (const/let, arrow functions, template literals)
+- Prefer functional programming patterns
+- Use meaningful variable names (e.g., `countdownTimer`, not `ct`)
+- Add comments for complex logic
+- Keep functions small and focused (single responsibility)
+- No console.logs in production code
+
+### CSS
+- Mobile-first responsive design
+- Use CSS custom properties for colors and spacing
+- BEM naming convention for classes (e.g., `countdown__timer--large`)
+- Group related styles together
+- Comment sections clearly
+
+### HTML
+- Semantic HTML5 elements
+- Accessible markup (ARIA labels where needed)
+- Meta tags for SEO and social sharing
+- Clean indentation (2 spaces)
+
+## File Organization
+```
+day-16/
+├── .goosehints          # This file
+├── README.md            # Project documentation
+├── TODO.md              # Task tracking
+├── PRD.md               # Product requirements
+├── index.html           # Main HTML file
+├── css/
+│   ├── styles.css       # Main styles
+│   ├── responsive.css   # Media queries
+│   └── animations.css   # Animations and transitions
+├── js/
+│   ├── countdown.js     # Countdown timer logic
+│   ├── facts.js         # Fun facts rotation
+│   └── form.js          # Email form handling
+├── assets/
+│   ├── images/          # Images and icons
+│   └── fonts/           # Custom fonts (if needed)
+└── docs/
+    └── deployment.md    # Deployment guide
+```
+
+## Design Guidelines
+
+### Color Palette (Winter Theme)
+- Primary: Ice blue (#5AB9EA, #4A90E2)
+- Secondary: Snow white (#FFFFFF, #F8F9FA)
+- Accent: Silver (#C0C0C0, #E8E8E8)
+- Text: Dark slate (#2C3E50, #34495E)
+- Gradient backgrounds encouraged
+
+### Typography
+- Headings: Clean, modern sans-serif (system fonts preferred)
+- Body: Readable, accessible fonts
+- Minimum font size: 16px for body text
+- Line height: 1.6 for readability
+
+### Spacing
+- Use consistent spacing scale (8px base)
+- Mobile padding: 16px
+- Desktop padding: 24px-32px
+
+## Development Workflow
+1. Build features incrementally (one stage at a time)
+2. Test in browser after each change
+3. Ensure mobile responsiveness throughout
+4. Keep TODO.md updated with progress
+5. Commit working code frequently
+
+## Testing Checklist
+- [ ] Works in Chrome, Firefox, Safari, Edge
+- [ ] Responsive on mobile (320px+), tablet, desktop
+- [ ] Countdown updates accurately
+- [ ] Facts rotate smoothly
+- [ ] Form validation works
+- [ ] Email storage persists
+- [ ] Accessible (keyboard navigation, screen readers)
+- [ ] Fast load time (<2s)
+
+## Accessibility Standards
+- Use semantic HTML
+- Include ARIA labels for interactive elements
+- Ensure keyboard navigation works
+- Maintain 4.5:1 color contrast ratio
+- Add alt text for images
+- Test with screen reader
+
+## Performance Goals
+- Initial load: <2 seconds
+- Smooth 60fps animations
+- Minimal JavaScript bundle
+- Optimize images (WebP format preferred)
+- Lazy load non-critical assets
+
+## Deployment
+- Static site deployment (Netlify/Vercel preferred)
+- Environment variables for any API keys
+- HTTPS required
+- Custom domain optional
+
+## Notes for Goose
+- Prefer simplicity over complexity
+- Write clean, readable code
+- Explain complex logic with comments
+- Test incrementally as you build
+- Ask for clarification if requirements are unclear
+- Focus on one stage at a time per the PRD
