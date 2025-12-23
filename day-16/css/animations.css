@@ -55,3 +55,218 @@
 .countdown__value.update {
     animation: pulse 0.3s ease;
 }
+
+/* Snowfall Animation */
+@keyframes snowfall {
+    0% {
+        transform: translateY(-10vh) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh) translateX(100px);
+        opacity: 0;
+    }
+}
+
+@keyframes snowfall-left {
+    0% {
+        transform: translateY(-10vh) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh) translateX(-100px);
+        opacity: 0;
+    }
+}
+
+@keyframes sway {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(20px);
+    }
+}
+
+/* Snowflake container */
+.snowflakes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.snowflake {
+    position: absolute;
+    top: -10vh;
+    color: var(--snowflake-color, rgba(255, 255, 255, 0.9));
+    font-size: 1rem;
+    user-select: none;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    text-shadow: 0 0 5px var(--snowflake-shadow, rgba(79, 195, 247, 0.6));
+}
+
+/* Create different snowflake variations */
+.snowflake:nth-child(1) {
+    left: 10%;
+    animation: snowfall 10s linear infinite;
+    animation-delay: 0s;
+    font-size: 1.2rem;
+}
+
+.snowflake:nth-child(2) {
+    left: 20%;
+    animation: snowfall-left 12s linear infinite;
+    animation-delay: 2s;
+    font-size: 0.9rem;
+}
+
+.snowflake:nth-child(3) {
+    left: 30%;
+    animation: snowfall 15s linear infinite;
+    animation-delay: 4s;
+    font-size: 1.4rem;
+}
+
+.snowflake:nth-child(4) {
+    left: 40%;
+    animation: snowfall-left 18s linear infinite;
+    animation-delay: 6s;
+    font-size: 0.8rem;
+}
+
+.snowflake:nth-child(5) {
+    left: 50%;
+    animation: snowfall 14s linear infinite;
+    animation-delay: 8s;
+    font-size: 1.1rem;
+}
+
+.snowflake:nth-child(6) {
+    left: 60%;
+    animation: snowfall-left 16s linear infinite;
+    animation-delay: 3s;
+    font-size: 1.3rem;
+}
+
+.snowflake:nth-child(7) {
+    left: 70%;
+    animation: snowfall 13s linear infinite;
+    animation-delay: 5s;
+    font-size: 0.9rem;
+}
+
+.snowflake:nth-child(8) {
+    left: 80%;
+    animation: snowfall-left 17s linear infinite;
+    animation-delay: 7s;
+    font-size: 1.2rem;
+}
+
+.snowflake:nth-child(9) {
+    left: 90%;
+    animation: snowfall 11s linear infinite;
+    animation-delay: 1s;
+    font-size: 1rem;
+}
+
+.snowflake:nth-child(10) {
+    left: 15%;
+    animation: snowfall-left 19s linear infinite;
+    animation-delay: 9s;
+    font-size: 0.85rem;
+}
+
+.snowflake:nth-child(11) {
+    left: 25%;
+    animation: snowfall 16s linear infinite;
+    animation-delay: 2.5s;
+    font-size: 1.15rem;
+}
+
+.snowflake:nth-child(12) {
+    left: 35%;
+    animation: snowfall-left 14s linear infinite;
+    animation-delay: 4.5s;
+    font-size: 0.95rem;
+}
+
+.snowflake:nth-child(13) {
+    left: 45%;
+    animation: snowfall 12s linear infinite;
+    animation-delay: 6.5s;
+    font-size: 1.25rem;
+}
+
+.snowflake:nth-child(14) {
+    left: 55%;
+    animation: snowfall-left 15s linear infinite;
+    animation-delay: 8.5s;
+    font-size: 0.9rem;
+}
+
+.snowflake:nth-child(15) {
+    left: 65%;
+    animation: snowfall 13s linear infinite;
+    animation-delay: 1.5s;
+    font-size: 1.1rem;
+}
+
+.snowflake:nth-child(16) {
+    left: 75%;
+    animation: snowfall-left 17s linear infinite;
+    animation-delay: 3.5s;
+    font-size: 1.3rem;
+}
+
+.snowflake:nth-child(17) {
+    left: 85%;
+    animation: snowfall 11s linear infinite;
+    animation-delay: 5.5s;
+    font-size: 0.85rem;
+}
+
+.snowflake:nth-child(18) {
+    left: 95%;
+    animation: snowfall-left 18s linear infinite;
+    animation-delay: 7.5s;
+    font-size: 1.2rem;
+}
+
+.snowflake:nth-child(19) {
+    left: 5%;
+    animation: snowfall 14s linear infinite;
+    animation-delay: 9.5s;
+    font-size: 1rem;
+}
+
+.snowflake:nth-child(20) {
+    left: 50%;
+    animation: snowfall-left 16s linear infinite;
+    animation-delay: 0.5s;
+    font-size: 1.15rem;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    .snowflakes {
+        display: none;
+    }
+}

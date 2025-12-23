@@ -23,6 +23,16 @@
     <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
+    <!-- Dark Mode Toggle -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+        <span class="theme-icon">🌙</span>
+    </button>
+
+    <!-- Sound Toggle -->
+    <button class="sound-toggle" id="sound-toggle" aria-label="Toggle sound effects">
+        <span class="sound-icon">🔇</span>
+    </button>
+
     <!-- Main Container -->
     <div class="container">
         <!-- Header -->
@@ -123,7 +133,33 @@
         </footer>
     </div>
 
+    <!-- Snowfall Animation -->
+    <div class="snowflakes" aria-hidden="true">
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❄</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❄</div>
+    </div>
+
     <!-- Scripts -->
+    <script src="js/darkmode.js"></script>
+    <script src="js/sound.js"></script>
     <script src="js/countdown.js"></script>
     <script src="js/facts.js"></script>
     <script src="js/form.js"></script>
