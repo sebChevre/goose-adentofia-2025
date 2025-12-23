@@ -1,0 +1,336 @@
+/* Winter Festival Countdown - Main Styles */
+/* Inspired by day-4 Winter Festival design */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Winter Color Palette - Similar to day-4 */
+    --ice-blue: #0277bd;
+    --ice-blue-bright: #4fc3f7;
+    --deep-blue: #1a1a2e;
+    --midnight-blue: #16213e;
+    --ocean-blue: #0f3460;
+    --frost-white: #f8f9fa;
+    --snow-white: #ffffff;
+    --warm-orange: #ff6f3c;
+    --soft-purple: #7b1fa2;
+    --silver: #c0c0c0;
+    --silver-light: #e8e8e8;
+    
+    /* Background */
+    --bg-primary: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 50%, #e1f5fe 100%);
+    --bg-card: rgba(255, 255, 255, 0.95);
+    --bg-card-hover: rgba(255, 255, 255, 1);
+    
+    /* Text */
+    --text-primary: #1a1a2e;
+    --text-secondary: #424242;
+    --text-light: #616161;
+    
+    /* Borders & Shadows */
+    --border-color: rgba(2, 119, 189, 0.3);
+    --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --card-shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.15);
+    
+    /* Typography - Using same fonts as day-4 */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Poppins', sans-serif;
+    
+    /* Spacing */
+    --spacing-xs: 8px;
+    --spacing-sm: 16px;
+    --spacing-md: 24px;
+    --spacing-lg: 32px;
+    --spacing-xl: 48px;
+    --spacing-2xl: 64px;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Base Styles */
+body {
+    font-family: var(--font-body);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: var(--spacing-2xl) var(--spacing-md);
+}
+
+.header__title {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--ice-blue);
+    margin-bottom: var(--spacing-sm);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.snowflake-icon {
+    display: inline-block;
+    animation: float 3s ease-in-out infinite;
+}
+
+.header__subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+    font-style: italic;
+}
+
+/* Countdown Section */
+.countdown-section {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    background: var(--bg-card);
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: var(--spacing-xl);
+    border: 2px solid var(--border-color);
+}
+
+.countdown-section__title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--deep-blue);
+    margin-bottom: var(--spacing-sm);
+}
+
+.countdown-section__subtitle {
+    font-size: 1.125rem;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-xl);
+}
+
+.countdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.countdown__unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100px;
+}
+
+.countdown__value {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--ice-blue);
+    line-height: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.countdown__label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: var(--spacing-xs);
+    font-weight: 600;
+}
+
+.countdown__separator {
+    font-size: 3rem;
+    color: var(--silver);
+    font-weight: 300;
+    margin: 0 var(--spacing-xs);
+}
+
+/* Fun Facts Section */
+.facts-section {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.facts-section__title {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--deep-blue);
+    margin-bottom: var(--spacing-lg);
+}
+
+.facts-container {
+    background: var(--bg-card);
+    padding: var(--spacing-lg);
+    border-radius: 15px;
+    box-shadow: var(--card-shadow);
+    border: 2px solid var(--border-color);
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fact {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    line-height: 1.8;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Email Signup Section */
+.signup-section {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    background: var(--bg-card);
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: var(--spacing-xl);
+    border: 2px solid var(--border-color);
+}
+
+.signup-section__title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--deep-blue);
+    margin-bottom: var(--spacing-sm);
+}
+
+.signup-section__subtitle {
+    font-size: 1.125rem;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-lg);
+}
+
+.signup-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: var(--spacing-md);
+    text-align: left;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: var(--transition-normal);
+    background: var(--snow-white);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--ice-blue);
+    box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.1);
+}
+
+.form-button {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: linear-gradient(135deg, var(--ice-blue) 0%, var(--ice-blue-bright) 100%);
+    color: var(--snow-white);
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    margin-top: var(--spacing-md);
+}
+
+.form-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(2, 119, 189, 0.3);
+}
+
+.form-button:active {
+    transform: translateY(0);
+}
+
+.form-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.form-message {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    display: none;
+}
+
+.form-message.success {
+    display: block;
+    background: rgba(102, 187, 106, 0.1);
+    color: #2e7d32;
+    border: 1px solid rgba(102, 187, 106, 0.3);
+}
+
+.form-message.error {
+    display: block;
+    background: rgba(239, 83, 80, 0.1);
+    color: #c62828;
+    border: 1px solid rgba(239, 83, 80, 0.3);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    color: var(--text-light);
+}
+
+.footer__text {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.footer__credits {
+    font-size: 0.875rem;
+}
+
+.footer__credits a {
+    color: var(--ice-blue);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition-fast);
+}
+
+.footer__credits a:hover {
+    color: var(--ice-blue-bright);
+    text-decoration: underline;
+}

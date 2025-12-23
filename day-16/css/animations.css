@@ -1,0 +1,57 @@
+/* Animations */
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Fade transition for facts */
+.fact {
+    animation: fadeIn 0.5s ease;
+}
+
+.fact.fade-out {
+    animation: fadeOut 0.5s ease;
+}
+
+/* Countdown value animations */
+.countdown__value {
+    transition: transform 0.3s ease;
+}
+
+.countdown__value.update {
+    animation: pulse 0.3s ease;
+}

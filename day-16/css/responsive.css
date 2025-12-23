@@ -1,0 +1,65 @@
+/* Responsive Design - Mobile First */
+
+/* Mobile devices (default, 320px+) */
+/* Base styles are mobile-first */
+
+/* Small tablets and large phones (576px and up) */
+@media (min-width: 576px) {
+    .countdown__value {
+        font-size: 4.5rem;
+    }
+}
+
+/* Tablets (768px and up) */
+@media (min-width: 768px) {
+    .header__title {
+        font-size: 3.5rem;
+    }
+    
+    .countdown-section__title {
+        font-size: 3rem;
+    }
+    
+    .countdown__value {
+        font-size: 5rem;
+    }
+    
+    .countdown__unit {
+        min-width: 120px;
+    }
+}
+
+/* Desktops (1024px and up) */
+@media (min-width: 1024px) {
+    .header__title {
+        font-size: 4rem;
+    }
+    
+    .countdown__value {
+        font-size: 6rem;
+    }
+    
+    .countdown__unit {
+        min-width: 140px;
+    }
+    
+    .facts-container {
+        padding: var(--spacing-xl);
+    }
+}
+
+/* Large desktops (1200px and up) */
+@media (min-width: 1200px) {
+    .container {
+        padding: var(--spacing-lg);
+    }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

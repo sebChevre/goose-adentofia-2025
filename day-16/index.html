@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Countdown to the Winter Festival 2026! See how many days, hours, minutes, and seconds until the magical celebration begins.">
+    <meta name="keywords" content="winter festival, countdown, 2026, festival timer">
+    <meta property="og:title" content="Winter Festival 2026 Countdown">
+    <meta property="og:description" content="Join us in counting down to the most magical winter celebration!">
+    <title>❄️ Winter Festival 2026 Countdown ⏰</title>
+    
+    <!-- Fonts - Using Google Fonts like day-4 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="header__title">
+                <span class="snowflake-icon">❄️</span>
+                Winter Festival 2026
+                <span class="snowflake-icon">❄️</span>
+            </h1>
+            <p class="header__subtitle">The Magic Returns Soon...</p>
+        </header>
+
+        <!-- Countdown Section -->
+        <section class="countdown-section">
+            <h2 class="countdown-section__title">Countdown to the Festival</h2>
+            <p class="countdown-section__subtitle">December 1, 2026 • 10:00 AM</p>
+            
+            <div class="countdown" id="countdown">
+                <div class="countdown__unit">
+                    <span class="countdown__value" id="days">00</span>
+                    <span class="countdown__label">Days</span>
+                </div>
+                <div class="countdown__separator">:</div>
+                <div class="countdown__unit">
+                    <span class="countdown__value" id="hours">00</span>
+                    <span class="countdown__label">Hours</span>
+                </div>
+                <div class="countdown__separator">:</div>
+                <div class="countdown__unit">
+                    <span class="countdown__value" id="minutes">00</span>
+                    <span class="countdown__label">Minutes</span>
+                </div>
+                <div class="countdown__separator">:</div>
+                <div class="countdown__unit">
+                    <span class="countdown__value" id="seconds">00</span>
+                    <span class="countdown__label">Seconds</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fun Facts Section -->
+        <section class="facts-section">
+            <h2 class="facts-section__title">Festival Fun Facts</h2>
+            <div class="facts-container">
+                <p class="fact" id="fact-display">Loading amazing facts...</p>
+            </div>
+        </section>
+
+        <!-- Email Signup Section -->
+        <section class="signup-section">
+            <h2 class="signup-section__title">Get Notified</h2>
+            <p class="signup-section__subtitle">Be the first to know when tickets go on sale!</p>
+            
+            <form class="signup-form" id="signup-form">
+                <div class="form-group">
+                    <label for="name" class="form-label">Name (Optional)</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        class="form-input" 
+                        placeholder="Enter your name"
+                        aria-label="Your name"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address *</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="your.email@example.com"
+                        required
+                        aria-label="Your email address"
+                        aria-required="true"
+                    >
+                </div>
+                
+                <button type="submit" class="form-button" id="submit-button">
+                    <span class="button-text">Notify Me!</span>
+                    <span class="button-loading" style="display: none;">Submitting...</span>
+                </button>
+                
+                <div class="form-message" id="form-message" role="alert" aria-live="polite"></div>
+            </form>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer__text">
+                Built with ❄️ for the Winter Festival Community
+            </p>
+            <p class="footer__credits">
+                Created with <a href="https://block.github.io/goose/" target="_blank" rel="noopener">Goose AI</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/countdown.js"></script>
+    <script src="js/facts.js"></script>
+    <script src="js/form.js"></script>
+</body>
+</html>
