@@ -7,7 +7,18 @@ const festivalFacts = [
     "We served 2,000 cups of hot cocoa!",
     "The ice sculpture took 12 hours to carve!",
     "50 volunteers made this festival possible!",
-    "The yeti mascot won by popular vote!"
+    "The yeti mascot won by popular vote!",
+    "Over 1,000 marshmallows were roasted at the fire pit!",
+    "The festival featured 25 local artisan vendors!",
+    "We collected 500 toys for the holiday toy drive!",
+    "The opening parade had 15 festive floats!",
+    "Local musicians performed 30+ live songs!",
+    "The gingerbread house contest had 42 entries!",
+    "We used 10,000 twinkling lights for decorations!",
+    "The snow maze was visited by over 3,000 people!",
+    "Free photos with Santa were taken 800+ times!",
+    "The ice skating rink welcomed 2,500 skaters!",
+    "We donated $10,000 to local charities!"
 ];
 
 // Configuration
