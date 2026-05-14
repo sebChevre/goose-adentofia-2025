@@ -68,7 +68,7 @@ jobs:
 
           # Create prompt file to avoid quoting issues
           cat > /tmp/prompt.txt << 'PROMPT_EOF'
-          Create a Python script called generate_fortune.py that generates a fortune from a fictional fortune teller with a MOOD_PLACEHOLDER mood. The fortune should be visually appealing leveraging ascii art. Since it's MOOD_PLACEHOLDER, draw a sassy goose in ascii art with the fortune above it. The whole thing should have an ascii border and there should be a divider between the sassy goose and fortune. The Python script should write the output to README.md in the current directory. Then run the Python script with the mood parameter.
+          Create a Python script called generate_fortune.py that generates a fortune from a fictional fortune teller with a MOOD_PLACEHOLDER mood. The fortune should be visually appealing leveraging ascii art. Since it's MOOD_PLACEHOLDER, draw a sassy goose in ascii art with the fortune above it. The whole thing should have an ascii border and there should be a divider between the sassy goose and fortune. The Python script should write the output to README2.md in the current directory. Then run the Python script with the mood parameter.
           PROMPT_EOF
 
           # Replace placeholder with actual mood
@@ -81,6 +81,6 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add README2.md
+          git add README.md
           git diff --staged --quiet || git commit -m "🔮 Update daily fortune - $(date +'%Y-%m-%d')"
           git push origin HEAD:main
