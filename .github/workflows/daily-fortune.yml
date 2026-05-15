@@ -73,10 +73,8 @@ jobs:
 
           echo "Today's fortune mood: $MOOD"
 
-          # Create prompt file
-          cat > /tmp/prompt.txt << PROMPT_EOF
-          $(cat ../prompt.txt)
-          PROMPT_EOF
+          # Create prompt file from committed prompt.txt, substituting $MOOD
+          sed "s/\$MOOD/$MOOD/g" prompt.txt > /tmp/prompt.txt
 
           # Run goose with verbose output to see what happens
           echo "Running goose..."
