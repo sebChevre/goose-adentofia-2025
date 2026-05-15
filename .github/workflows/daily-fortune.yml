@@ -21,7 +21,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses:/setup-python@v5
         with:
           python-version: '3.11'
 
@@ -39,8 +39,8 @@ jobs:
 
           # Create config file for OpenRouter
           cat > ~/.config/goose/config.yaml << 'EOF'
-          GOOSE_PROVIDER: "openrouter"
-          GOOSE_MODEL: "anthropic/claude-sonnet-4"
+          provider: "openrouter"
+          model: "anthropic/claude-sonnet-4"
           keyring: false
 
           extensions:
@@ -67,20 +67,23 @@ jobs:
           echo "Today's fortune mood: $MOOD"
 
           # Create prompt file to avoid quoting issues
-          cat > /tmp/prompt.txt << 'PROMPT_EOF'
-          Create a Python script called generate_fortune.py that generates a fortune from a fictional fortune teller with a MOOD_PLACEHOLDER mood. The fortune should be visually appealing leveraging ascii art. Since it's MOOD_PLACEHOLDER, draw a sassy goose in ascii art with the fortune above it. The whole thing should have an ascii border and there should be a divider between the sassy goose and fortune. The Python script should write the output to README2.md in the current directory. Then run the Python script with the mood parameter.
+          cat > /tmp/prompt.txt << PROMPT_EOF
+          Create a Python script called generate_fortune.py that generates a fortune from a fictional fortune teller with a $MOOD mood. The fortune should be visually appealing leveraging ascii art. Since it's $MOOD, draw a sassy goose in ascii art with the fortune above it. The whole thing should have an ascii border and there should be a divider between the sassy goose and fortune. The Python script should write the output to fortune.md in the current directory. Then run the Python script.
           PROMPT_EOF
-
-          # Replace placeholder with actual mood
-          sed -i "s/MOOD_PLACEHOLDER/$MOOD/g" /tmp/prompt.txt
 
           # Run goose with the prompt from file, suppress its output
           ~/.local/bin/goose run --no-session -i /tmp/prompt.txt > /dev/null 2>&1
+
+          # Verify the file was created
+          if [ ! -f "fortune.md" ]; then
+            echo "Error: fortune.md was not generated"
+            exit 1
+          fi
 
       - name: Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add README.md
+          git add fortune.md
           git diff --staged --quiet || git commit -m "🔮 Update daily fortune - $(date +'%Y-%m-%d')"
           git push origin HEAD:main
