@@ -75,7 +75,7 @@ jobs:
 
           # Create prompt file
           cat > /tmp/prompt.txt << PROMPT_EOF
-          Create a Python script called generate_fortune.py that generates a fortune from a fictional fortune teller with a $MOOD mood. Save the script in the current directory.The fortune should be visually appealing leveraging ascii art. Since it's $MOOD, draw a sassy goose in ascii art with the fortune above it. The whole thing should have an ascii border and there should be a divider between the sassy goose and fortune. The Python script should write the output to fortune.md in the current directory. If a file fortune.md already exists, renem it as old_fortune.md and create the new file. Then run the Python script. 
+          $(cat prompt.txt)
           PROMPT_EOF
 
           # Run goose with verbose output to see what happens
@@ -101,5 +101,6 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add fortune.md
+          git add old/
           git diff --staged --quiet || git commit -m "🔮 Update daily fortune - $(date +'%Y-%m-%d')"
           git push origin HEAD:main
