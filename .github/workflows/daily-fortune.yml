@@ -75,7 +75,7 @@ jobs:
 
           # Create prompt file
           cat > /tmp/prompt.txt << PROMPT_EOF
-          $(cat prompt.txt)
+          $(cat ../prompt.txt)
           PROMPT_EOF
 
           # Run goose with verbose output to see what happens
