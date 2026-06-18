@@ -1,44 +1,64 @@
 #!/usr/bin/env python3
 """
-Grumpy Fortune Teller - Generates fortunes with a sassy goose
+Fortune Generator - A sassy goose fortune teller with introspective wisdom
 """
 
 import os
 import random
-import shutil
-from pathlib import Path
+from datetime import datetime
+
+# Introspective fortune messages
+FORTUNES = [
+    "The path you seek begins with a single step inward. What you find there will surprise you.",
+    "Your greatest strength lies not in what you know, but in what you're willing to learn.",
+    "The answer you seek is hidden in a question you've been afraid to ask yourself.",
+    "Like a river finding its way, your purpose reveals itself through persistence.",
+    "The mirror shows not just your face, but the reflection of choices yet to be made.",
+    "Silence holds more wisdom than words. Listen to what your heart whispers.",
+    "The storm you fear may be the very thing that clears the path ahead.",
+    "You carry within you a light that has never needed to be lit.",
+    "The journey of a thousand miles begins with the courage to be still.",
+    "What you've been running from may be exactly what you need to embrace.",
+    "The seeds you planted long ago are ready to bloom. Trust the timing.",
+    "Your intuition speaks in riddles, but its wisdom is always true.",
+    "The door you hesitate to open leads to the room where you've been waiting.",
+    "In the space between thoughts, your true self awaits to be discovered.",
+    "The weight you carry is lighter than the burden of what you're avoiding.",
+]
 
 # Sassy goose ASCII art
-SASSY_GOOSE = """
-     __      __
-    /  \\    /  \\
-   |    \\__/    |
-   |  o      o  |
-   |     <      |  Hmph!
-   |   \\____/   |
-    \\  \\    /  /
-     \\  \\__/  /
-      \\______/
+GOOSE_ART = """
+      __
+    <(o )___
+     ( ._> /
+      \\___/
 """
 
-# Grumpy fortune messages
-FORTUNES = [
-    "Your path is clear, but don't expect me to celebrate with you.",
-    "Success is coming... eventually. Try not to get too excited.",
-    "A surprise awaits, but I'm not telling you what it is. Figure it out yourself.",
-    "Your hard work will pay off. Don't get cocky about it.",
-    "Someone is talking about you. Probably complaining, but who cares?",
-    "The stars say you'll succeed. The stars are wrong, but whatever.",
-    "A new opportunity is coming. Don't mess it up like last time.",
-    "Your luck is improving. Barely.",
-    "Challenges await, but you'll probably figure it out somehow.",
-    "A friend needs you. Try not to be too difficult about it.",
-    "Your persistence will be rewarded. Finally.",
-    "Watch out for obstacles. Or don't, see if I care.",
-    "Good things are coming. Don't get your hopes up too high.",
-    "You'll overcome your problems. It'll be messy, but you'll manage.",
-    "The universe has plans for you. They're probably complicated.",
-]
+GOOSE_ART_SASSY = """
+       __
+     <(o )___
+      ( ._> /
+       \\___/
+    "Quack, I know better!"
+"""
+
+GOOSE_ART_THOUGHTFUL = """
+      __
+    <(o )___
+     ( ._> /
+      \\___/
+    (hmm...)
+"""
+
+GOOSE_ART_WISE = """
+      __
+    <(o )___
+     ( ._> /
+      \\___/
+    *nods sagely*
+"""
+
+GOOSE_ARTS = [GOOSE_ART, GOOSE_ART_SASSY, GOOSE_ART_THOUGHTFUL, GOOSE_ART_WISE]
 
 # Border characters
 TOP_BOTTOM_BORDER = "╔" + "═" * 58 + "╗"
