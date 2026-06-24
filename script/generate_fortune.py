@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Fortune Generator - Grumpy Fortune Teller Edition
-Generates a fortune from a fictional grumpy fortune teller with ASCII art.
+Fortune Generator - Introspective Sassy Goose Edition
+Generates a fortune from a fictional fortune teller with an introspective mood.
+Features a sassy goose in ASCII art with the fortune above it.
 """
 
 import os
@@ -9,86 +10,103 @@ import shutil
 import random
 from datetime import datetime
 
-# Grumpy fortune messages
+# Introspective fortune messages
 FORTUNES = [
-    "Ugh, fine. Your future looks... tolerable. Don't get used to it.",
-    "Whatever. You'll find what you're looking for, but only because I said so.",
-    "Hmph. The stars say you'll succeed, but I'm not impressed by your chances.",
-    "Oh joy, another person wanting a fortune. Fine - success is coming, grudgingly.",
-    "Look, your path is clear. Don't waste it complaining like I am right now.",
-    "The universe whispers your name. I'm rolling my eyes. You'll be fine, apparently.",
-    "Ugh, you're going to make a big decision soon. Try not to mess it up.",
-    "Fine, fine! Your luck is about to turn. Don't expect me to celebrate.",
-    "Whatever you're worried about, it'll work out. Happy now? Go away.",
-    "The fates decree... you'll survive. Thrive, even. Disappointingly for me.",
-    "Sigh. Someone special will enter your life. Try not to scare them off.",
-    "Your hard work will pay off. I guess that's good news. There, I said it.",
-    "Ugh, you'll face a challenge. You'll overcome it. Can I go back to sleep now?",
-    "Fine! Abundance is coming your way. Don't spend it all on nonsense.",
-    "The universe has a plan. I have a headache. Both involve you somehow.",
+    "The quiet moments within hold the answers you seek. Listen to your own voice.",
+    "Your journey is not about reaching destinations, but understanding the path itself.",
+    "What you seek is already within you. The reflection you need is in your own eyes.",
+    "True wisdom comes from sitting with uncertainty. Embrace the questions.",
+    "The person you're becoming is worth more than the person you're leaving behind.",
+    "Your greatest teacher has been walking beside you in the mirror all along.",
+    "In the stillness between thoughts, your soul whispers its deepest truths.",
+    "The wounds you carry are not weaknesses—they are maps of where you've grown.",
+    "Sometimes the bravest thing is to simply be, without needing to become.",
+    "Your story is still being written. The best chapters are yet to unfold.",
+    "The light you search for outside has been illuminating your path from within.",
+    "Reflection is not dwelling—it is gathering wisdom to move forward with purpose.",
+    "The answers you seek are not in the stars, but in the quiet spaces of your heart.",
+    "Your capacity for growth exceeds any obstacle standing before you today.",
+    "The journey inward is the only one that truly matters. Everything else is scenery.",
 ]
 
-# Sassy goose ASCII art
-GRUMPY_GOOSE = """
-   __      __
-  /  \\____/  \\
- |  O      O  |
- |     <      |  *sigh*
-  \\  \\____/  /
-   \\        /
-    \\______/
-     |    |
-     |    |  Ugh, another fortune?
-    /      \\
-   |        |
-   |        |
-  /          \\
+# Sassy goose ASCII art - looking unimpressed but wise
+SASSY_GOOSE = """
+      _
+     (.)>  *raises eyebrow*
+    /   \\
+   | O O |   "Oh, you want wisdom?
+    \\ ^ /    Fine. Here's the thing..."
+     V V
+    /| |\\
+   /_|_|_\\
+  /  | |  \\
+ |   | |   |
+ |   | |   |  *crosses wings*
+ \\___| |___/
+     | |
+     | |    "Now go figure it out yourself."
+    /   \\
+   |     |
+   |     |
+  /       \\
 """
 
 # ASCII border characters
-TOP_BORDER = "╔" + "═" * 58 + "╗"
-BOTTOM_BORDER = "╚" + "═" * 58 + "╝"
-MIDDLE_BORDER = "╠" + "═" * 58 + "╣"
+TOP_BORDER = "╔" + "═" * 60 + "╗"
+BOTTOM_BORDER = "╚" + "═" * 60 + "╝"
+MIDDLE_BORDER = "╠" + "═" * 60 + "╣"
 SIDE_BORDER = "║"
 
 
 def generate_fortune():
-    """Generate a random grumpy fortune."""
+    """Generate a random introspective fortune."""
     return random.choice(FORTUNES)
 
 
 def format_fortune_output(fortune):
     """Format the fortune with ASCII art and borders."""
     lines = []
+    border_width = 60
     
     # Top border
     lines.append(TOP_BORDER)
     
     # Header
-    lines.append(f"{SIDE_BORDER}  {'GRUMPY FORTUNE TELLER - FORTUNE OF THE DAY':^54} {SIDE_BORDER}")
-    lines.append(f"{SIDE_BORDER}  {'Generated: ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S'):^54} {SIDE_BORDER}")
-    lines.append(TOP_BORDER.replace("╔", "╠").replace("╗", "╣"))
+    title = "INTROSPECTIVE FORTUNE - SASSY GOOSE EDITION"
+    lines.append(f"{SIDE_BORDER}  {title:^56} {SIDE_BORDER}")
+    lines.append(f"{SIDE_BORDER}  {datetime.now().strftime('%Y-%m-%d %H:%M:%S'):^56} {SIDE_BORDER}")
+    lines.append(MIDDLE_BORDER)
     
-    # Fortune section
-    fortune_lines = fortune.split('\n')
-    for f_line in fortune_lines:
-        # Pad or truncate to fit within border
-        padded = f_line[:52].ljust(52)
-        lines.append(f"{SIDE_BORDER}  {padded}  {SIDE_BORDER}")
+    # Fortune section header
+    lines.append(f"{SIDE_BORDER}  {'YOUR FORTUNE AWAITS...':^56} {SIDE_BORDER}")
+    lines.append(MIDDLE_BORDER)
     
-    # Divider
+    # Fortune text - wrap if needed
+    words = fortune.split()
+    current_line = ""
+    for word in words:
+        if len(current_line) + len(word) + 1 <= 54:
+            current_line += (" " if current_line else "") + word
+        else:
+            if current_line:
+                lines.append(f"{SIDE_BORDER}  {current_line:<54} {SIDE_BORDER}")
+            current_line = word
+    if current_line:
+        lines.append(f"{SIDE_BORDER}  {current_line:<54} {SIDE_BORDER}")
+    
+    # Divider between fortune and goose
     lines.append(MIDDLE_BORDER)
     
     # Goose section header
-    lines.append(f"{SIDE_BORDER}  {'YOUR GUIDE THROUGH THE MYSTERIES (RELUCTANTLY)':^54} {SIDE_BORDER}")
+    lines.append(f"{SIDE_BORDER}  {'YOUR WISE (AND SARCASTIC) GUIDE':^56} {SIDE_BORDER}")
     lines.append(MIDDLE_BORDER)
     
-    # Add the sassy goose ASCII art (centered)
-    goose_lines = GRUMPY_GOOSE.strip().split('\n')
+    # Add the sassy goose ASCII art
+    goose_lines = SASSY_GOOSE.strip().split('\n')
     for g_line in goose_lines:
         # Center the goose art within the border
-        centered = g_line.center(54)
-        lines.append(f"{SIDE_BORDER}  {centered[:52]}  {SIDE_BORDER}")
+        centered = g_line.center(56)
+        lines.append(f"{SIDE_BORDER}  {centered[:54]}  {SIDE_BORDER}")
     
     # Bottom border
     lines.append(BOTTOM_BORDER)
