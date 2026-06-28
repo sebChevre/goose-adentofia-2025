@@ -1,136 +1,150 @@
 #!/usr/bin/env python3
 """
-Fortune Generator - A wise fortune teller with a sassy goose companion
+Fortune Generator - A sassy goose fortune teller with poetic moods
 """
 
 import os
 import random
 from datetime import datetime
 
-# Fortune messages with wise tone
+# Fortune messages with poetic flair
 FORTUNES = [
-    "The path ahead is shrouded in mist, but your inner light will guide you. Trust in your wisdom.",
-    "A challenge approaches, yet it carries within it the seeds of great opportunity. Embrace it with courage.",
-    "The universe whispers of change. Those who flow with the river find peace; those who resist find struggle.",
-    "An old friendship holds a lesson you have yet to learn. Listen with an open heart.",
-    "The stars align to remind you: patience is not passive waiting, but active preparation.",
-    "What you seek is also seeking you. Continue your journey with steadfast determination.",
-    "The greatest wisdom comes from understanding that uncertainty is the only certainty.",
-    "A decision you face will seem difficult, but your intuition knows the way. Trust yourself.",
-    "The past has taught you well. Now is the time to apply those lessons with confidence.",
-    "Like a river carving through stone, persistence will shape your destiny more than force ever could."
+    "The stars whisper of adventures yet unwritten, and your name appears in their celestial script.",
+    "A door you thought closed forever shall creak open, revealing treasures you forgot you sought.",
+    "The wind carries news from distant shores—listen closely, for opportunity knocks in disguise.",
+    "Your courage shall bloom like midnight flowers, surprising even those who thought you timid.",
+    "An old friend's shadow will cross your path again, bringing gifts wrapped in familiar laughter.",
+    "The universe conspires in your favor, though it wears a mask of challenges first.",
+    "Creativity flows through you like a river finding its way to the sea—trust its course.",
+    "What you seek is already seeking you, drawn by the magnet of your authentic self.",
+    "A small act of kindness shall return multiplied, like seeds that grow into forests.",
+    "The moon's phases mirror your journey—sometimes full, sometimes hidden, always beautiful.",
 ]
 
-# ASCII art of a sassy goose
-GOOSE_ART = """
-  _._     _,-'""`-._
- (,-.`._,'(       |\\`-/|
-     `-.-' \\ )-`( , o o)
-           `-    \\_  `
-                 '~~~
-"""
-
-# Alternative sassy goose variations
+# Sassy goose ASCII art variations
 GOOSE_ARTS = [
     """
-  _._     _,-'""`-._
- (,-.`._,'(       |\\`-/|
-     `-.-' \\ )-`( , o o)
-           `-    \\_  `
-                 '~~~
-""",
+     _   _
+    (q\\_/p)
+     /. .\\
+    =\\_t_/=   A wise and sassy goose
+     /   \\
+    ((   ))
+    """,
     """
-      _._     _,-'""`-._
-     (,-.`._,'(       |\\`-/|
-         `-.-' \\ )-`( , o o)
-               `-    \\_  `
-                     '~~~
-  *SASSY*
-""",
+      _   _
+     (q\\_/p)
+      /. .\\
+    =\\_C_/=   The oracle speaks
+     /   \\
+    ((   ))
+    """,
     """
-  _._     _,-'""`-._
- (,-.`._,'(       |\\`-/|
-     `-.-' \\ )-`( , o o)
-           `-    \\_  `
-                 '~~~
-   *HONK*
-"""
+     _   _
+    (q\\_/p)
+     /. .\\
+    =\\_t_/=   *honks mysteriously*
+     /   \\
+    ((   ))
+    """,
 ]
 
 def generate_fortune():
-    """Generate a random wise fortune."""
+    """Generate a random fortune with poetic mood."""
     return random.choice(FORTUNES)
 
-def create_ascii_border(content, width=60):
-    """Create an ASCII border around the content."""
-    top_bottom = "╔" + "═" * (width - 2) + "╗"
-    middle = "║" + " " * (width - 2) + "║"
-    
-    lines = content.split('\n')
-    bordered = [top_bottom]
-    
-    for line in lines:
-        # Pad or truncate line to fit within border
-        padded = line.ljust(width - 2)[:width - 2]
-        bordered.append("║" + padded + "║")
-    
-    bordered.append(top_bottom)
-    return '\n'.join(bordered)
+def get_goose_art():
+    """Get a random sassy goose ASCII art."""
+    return random.choice(GOOSE_ARTS)
 
-def generate_fortune_display():
-    """Generate the complete fortune display with border, fortune, divider, and goose."""
-    fortune = generate_fortune()
-    goose = random.choice(GOOSE_ARTS)
+def create_bordered_content(fortune, goose_art):
+    """Create the fortune with ASCII border and formatting."""
+    border_char = "═"
+    side_char = "║"
     
-    # Create the display content
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # Create fortune box with border
+    lines = []
     
-    content = f"""
-  ✨ WISE FORTUNE ✨
-  {timestamp}
-
-  ──────────────────────────────────────────────────
-  
-  {fortune}
-
-  ──────────────────────────────────────────────────
-  
-  Your wise guide awaits:
-
-{goose.strip()}
-"""
+    # Top border
+    lines.append("╔" + border_char * 60 + "╗")
     
-    # Add ASCII border
-    bordered_content = create_ascii_border(content.strip())
+    # Fortune section
+    lines.append("║" + "  🌙 POETIC FORTUNE OF THE DAY  " + " " * 27 + "║")
+    lines.append("║" + "  " + datetime.now().strftime("%B %d, %Y") + " " * (32 - len(datetime.now().strftime("%B %d, %Y"))) + "║")
+    lines.append("╟" + border_char * 60 + "╢")
+    lines.append("║")
     
-    return bordered_content
+    # Fortune text (wrapped to fit)
+    fortune_lines = []
+    words = fortune.split()
+    current_line = "║   "
+    for word in words:
+        if len(current_line) + len(word) + 1 <= 58:
+            current_line += word + " "
+        else:
+            fortune_lines.append(current_line)
+            current_line = "║   " + word + " "
+    fortune_lines.append(current_line)
+    
+    for fl in fortune_lines:
+        lines.append(fl + " " * (58 - len(fl)) + "║")
+    
+    lines.append("║")
+    
+    # Divider
+    lines.append("╟" + "─" * 60 + "╢")
+    lines.append("║" + "  " + "✨" * 29 + " ✨" + "  ║")
+    lines.append("╟" + "─" * 60 + "╢")
+    
+    # Goose section
+    goose_lines = goose_art.strip().split('\n')
+    for gline in goose_lines:
+        # Center the goose art
+        padding = (58 - len(gline)) // 2
+        lines.append("║" + " " * padding + gline + " " * (padding + len(gline) - 58) + "║")
+    
+    lines.append("║")
+    lines.append("╟" + border_char * 60 + "╢")
+    lines.append("║" + "  Fortune told by a sassy goose 🪿✨  " + " " * 19 + "║")
+    lines.append("╚" + border_char * 60 + "╝")
+    
+    return '\n'.join(lines)
 
 def main():
-    """Main function to generate fortune and save to file."""
-    # Generate the fortune display
-    fortune_display = generate_fortune_display()
+    """Main function to generate and save fortune."""
+    # Define paths
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    output_file = os.path.join(os.getcwd(), "fortune.md")
+    old_folder = os.path.join(os.getcwd(), "old")
     
-    # Check if fortune.md exists and move to /old folder
-    fortune_path = "fortune.md"
-    old_folder = "old"
+    # Generate fortune content
+    fortune = generate_fortune()
+    goose_art = get_goose_art()
+    content = create_bordered_content(fortune, goose_art)
     
-    if os.path.exists(fortune_path):
+    # Handle existing fortune.md
+    if os.path.exists(output_file):
+        # Create old folder if it doesn't exist
         os.makedirs(old_folder, exist_ok=True)
+        
         # Move existing file to old folder with timestamp
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        old_path = os.path.join(old_folder, f"fortune_{timestamp}.md")
-        os.rename(fortune_path, old_path)
-        print(f"Moved existing fortune.md to {old_path}")
+        old_filename = f"fortune_{timestamp}.md"
+        old_path = os.path.join(old_folder, old_filename)
+        os.rename(output_file, old_path)
+        print(f"Moved existing fortune.md to: {old_path}")
     
-    # Write the new fortune to fortune.md
-    with open(fortune_path, 'w') as f:
-        f.write(f"# 🌟 Your Fortune 🌟\n\n")
-        f.write("```\n")
-        f.write(fortune_display)
+    # Write new fortune to markdown file
+    with open(output_file, 'w') as f:
+        f.write("# 🌙 Daily Fortune 🌙\n\n")
+        f.write("```text\n")
+        f.write(content)
         f.write("\n```\n")
     
-    print(f"Fortune generated and saved to {fortune_path}")
-    print("\n" + fortune_display)
+    print(f"Fortune generated and saved to: {output_file}")
+    print("\n" + "=" * 60)
+    print(content)
+    print("=" * 60)
 
 if __name__ == "__main__":
     main()
