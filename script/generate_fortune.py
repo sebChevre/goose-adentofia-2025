@@ -1,118 +1,117 @@
 #!/usr/bin/env python3
 """
-Fortune Generator - A poetic fortune teller with a sassy goose
+Fortune Generator Script
+Generates a wise fortune with ASCII art of a sassy goose.
 """
 
 import os
-import shutil
 import random
+from pathlib import Path
 
-# Poetic fortunes
-FORTUNES = [
-    "The stars whisper of adventures yet untold,\n  Where courage blooms and hearts grow bold.",
-    "A path of gold awaits your careful feet,\n  Where wisdom and delight shall meet.",
-    "Beware the shadow, trust the light,\n  For dawn will bring what suits you right.",
-    "In quiet moments, truth is found,\n  Where silence speaks without a sound.",
-    "The winds of change are gently blowing,\n  New horizons wait, your spirit growing.",
-    "A friend's true word shall guide your way,\n  And turn the darkest night to day.",
-    "Like rivers flow to meet the sea,\n  Your destiny calls out to thee.",
-    "The moon reveals what sun conceals,\n  In twilight's grace, what fortune feels."
+# Wise fortune messages
+WISE_FORTUNES = [
+    "The path you seek is not ahead, but within. Listen to the quiet voice that speaks when the world is still.",
+    "Wisdom comes not from knowing all the answers, but from asking the right questions.",
+    "Like the river that shapes the stone through persistence, your gentle efforts will transform mountains.",
+    "The seeds you plant today may not bloom tomorrow, but they will grow into something magnificent.",
+    "True strength lies not in avoiding storms, but in learning to dance in the rain.",
+    "The wisdom you seek has been with you all along. Look to the lessons of your past.",
+    "Patience is the companion of wisdom. What seems delayed is often perfectly timed.",
+    "The greatest discoveries come from those willing to wander off the beaten path.",
+    "Your intuition is a compass that never lies. Trust it, even when reason doubts.",
+    "The answers you seek are hidden in the questions you have yet to ask yourself."
 ]
 
 # Sassy goose ASCII art
-GOOSE_ART = """
-      __
-    <(o______/>
-     /       \\
-    /    _    \\
-   |    ( )    |
-   |     |     |
-   |    / \\    |
-   |   |   |   |
-   |   |   |   |
-   \\  |   |  /
-    \\ |   | /
-     \\|   |/
-      |   |
-      |   |
-      |   |
+SASSY_GOOSE_ART = """
+   __
+  /  \\
+ |    |
+ |    |
+ |    |
+  \\__/
+   ||
+   ||
+   ||
+   ||
+  _||_
+ (____)
 """
 
 def generate_fortune():
-    """Generate a random poetic fortune."""
-    return random.choice(FORTUNES)
+    """Generate a random wise fortune."""
+    return random.choice(WISE_FORTUNES)
 
-def create_border(content, width=60):
-    """Create an ASCII border around content."""
-    top_bottom = "+" + "-" * (width - 2) + "+"
-    lines = content.split('\n')
+def create_formatted_output(fortune):
+    """Create the formatted output with border, fortune, divider, and goose."""
+    # ASCII border
+    border_top = "╔" + "═" * 50 + "╗"
+    border_bottom = "╚" + "═" * 50 + "╝"
+    border_side = "║"
     
-    result = [top_bottom]
-    for line in lines:
-        # Pad line to fit within border
-        padded = line.ljust(width - 2)
-        result.append("|" + padded[:width-2] + "|")
-    result.append(top_bottom)
+    # Create the fortune text with proper spacing
+    fortune_lines = fortune.split('\n')
+    centered_fortune = []
+    for line in fortune_lines:
+        # Center the text within the border (48 chars available for text)
+        padding = (48 - len(line)) // 2
+        centered_fortune.append(" " * padding + line)
     
-    return '\n'.join(result)
-
-def create_fortune_display():
-    """Create the complete fortune display with goose and border."""
-    fortune = generate_fortune()
+    # Build the complete output
+    output_lines = []
+    output_lines.append(border_top)
+    output_lines.append(border_side + "           ✨ WISE FORTUNE ✨            " + border_side)
+    output_lines.append(border_side + "                                       " + border_side)
     
-    # Create divider
-    divider = "=" * 58
+    for line in centered_fortune:
+        output_lines.append(border_side + line.ljust(48) + border_side)
     
-    # Combine elements
-    display_parts = [
-        "   ~*~ Your Poetic Fortune ~*~",
-        "",
-        fortune,
-        "",
-        divider,
-        "",
-        GOOSE_ART.strip()
-    ]
+    output_lines.append(border_side + "                                       " + border_side)
     
-    full_content = '\n'.join(display_parts)
+    # Divider between fortune and goose
+    output_lines.append(border_side + "           ─────────────────            " + border_side)
+    output_lines.append(border_side + "           🪿 SASSY GOOSE 🪿             " + border_side)
+    output_lines.append(border_side + "                                       " + border_side)
     
-    # Add border
-    bordered = create_border(full_content, 60)
+    # Add goose art (centered)
+    goose_lines = SASSY_GOOSE_ART.strip().split('\n')
+    for line in goose_lines:
+        # Center the goose art
+        padding = (48 - len(line)) // 2
+        output_lines.append(border_side + " " * padding + line + " " * padding + border_side)
     
-    return bordered
+    output_lines.append(border_side + "                                       " + border_side)
+    output_lines.append(border_bottom)
+    
+    return '\n'.join(output_lines)
 
 def main():
-    """Main function to generate and save fortune."""
-    # Define paths
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    current_dir = os.getcwd()
-    fortune_file = os.path.join(current_dir, "fortune.md")
-    old_folder = os.path.join(current_dir, "old")
+    """Main function to generate and save the fortune."""
+    # Get current working directory
+    cwd = Path.cwd()
     
-    # Generate fortune
-    fortune_display = create_fortune_display()
+    # Check if fortune.md exists and move to /old folder
+    fortune_file = cwd / "fortune.md"
+    if fortune_file.exists():
+        old_folder = cwd / "old"
+        old_folder.mkdir(exist_ok=True)
+        old_file = old_folder / f"fortune_{fortune_file.stat().st_mtime}.md"
+        fortune_file.rename(old_file)
+        print(f"Moved existing fortune.md to {old_file}")
     
-    # Add markdown header
-    md_content = f"# 🦢 Your Fortune 🦢\n\n```\n{fortune_display}\n```\n"
+    # Generate the fortune
+    fortune = generate_fortune()
+    print(f"Generated fortune: {fortune}")
     
-    # Handle existing file
-    if os.path.exists(fortune_file):
-        # Create old folder if it doesn't exist
-        if not os.path.exists(old_folder):
-            os.makedirs(old_folder)
-        
-        # Move existing file to old folder with timestamp
-        timestamp = len(os.listdir(old_folder)) + 1
-        old_path = os.path.join(old_folder, f"fortune_{timestamp}.md")
-        shutil.move(fortune_file, old_path)
-        print(f"Moved existing fortune to: {old_path}")
+    # Create formatted output
+    output = create_formatted_output(fortune)
     
-    # Write new fortune file
+    # Write to fortune.md
     with open(fortune_file, 'w') as f:
-        f.write(md_content)
+        f.write(output)
     
-    print(f"Fortune generated and saved to: {fortune_file}")
-    print("\n" + fortune_display)
+    print(f"\nFortune saved to {fortune_file}")
+    print("\n" + output)
 
 if __name__ == "__main__":
     main()
