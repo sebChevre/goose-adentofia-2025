@@ -1,117 +1,150 @@
 #!/usr/bin/env python3
 """
-Fortune Generator Script
-Generates a wise fortune with ASCII art of a sassy goose.
+Generate a grumpy fortune teller's prediction with ASCII art.
 """
 
 import os
 import random
-from pathlib import Path
+from datetime import datetime
 
-# Wise fortune messages
-WISE_FORTUNES = [
-    "The path you seek is not ahead, but within. Listen to the quiet voice that speaks when the world is still.",
-    "Wisdom comes not from knowing all the answers, but from asking the right questions.",
-    "Like the river that shapes the stone through persistence, your gentle efforts will transform mountains.",
-    "The seeds you plant today may not bloom tomorrow, but they will grow into something magnificent.",
-    "True strength lies not in avoiding storms, but in learning to dance in the rain.",
-    "The wisdom you seek has been with you all along. Look to the lessons of your past.",
-    "Patience is the companion of wisdom. What seems delayed is often perfectly timed.",
-    "The greatest discoveries come from those willing to wander off the beaten path.",
-    "Your intuition is a compass that never lies. Trust it, even when reason doubts.",
-    "The answers you seek are hidden in the questions you have yet to ask yourself."
+# Grumpy fortunes
+FORTUNES = [
+    "Ugh, fine. You'll find what you're looking for... if you stop bothering me.",
+    "Honestly? Your future is as predictable as a goose honking at 6 AM.",
+    "Oh wonderful, another human seeking wisdom. You'll succeed... eventually.",
+    "Hmph. The stars say you'll do something sensible for once. Don't let it happen again.",
+    "Fine, fine. Luck is coming your way, but I'm not holding my breath.",
+    "Ugh, the universe is loud today. You'll avoid disaster... barely.",
+    "Wonderful, you want a fortune? You'll learn something useful. Shocking, I know.",
+    "Hah! As if I care. But fine, good things are coming. Don't tell anyone I said that.",
+    "Oh joy, another reading. You'll overcome obstacles... mostly because I'm tired of yours.",
+    "The cosmos whisper... you'll be just fine. Now leave me alone."
 ]
 
 # Sassy goose ASCII art
-SASSY_GOOSE_ART = """
+GOOSE_ART = """
    __
   /  \\
  |    |
  |    |
+  \\  /
+   \\/
+   ||
+   ||
+  /  \\
  |    |
+ |    |
+  \\__/
+"""
+
+# Alternative sassy goose variations
+GOOSE_ARTS = [
+    GOOSE_ART,
+    """
+   __
+  /  \\
+ | o o|
+ |  ^ |
   \\__/
    ||
    ||
+  /  \\
+ |    |
+ |    |
+  \\__/
+""",
+    """
+   __
+  /  \\
+ |    |
+ | >_<|
+  \\  /
+   \\/
    ||
    ||
-  _||_
- (____)
+  /  \\
+ |    |
+ |    |
+  \\__/
 """
+]
 
 def generate_fortune():
-    """Generate a random wise fortune."""
-    return random.choice(WISE_FORTUNES)
+    """Generate a random grumpy fortune."""
+    return random.choice(FORTUNES)
 
-def create_formatted_output(fortune):
-    """Create the formatted output with border, fortune, divider, and goose."""
-    # ASCII border
-    border_top = "╔" + "═" * 50 + "╗"
-    border_bottom = "╚" + "═" * 50 + "╝"
-    border_side = "║"
+def get_sassy_goose():
+    """Get a random sassy goose ASCII art."""
+    return random.choice(GOOSE_ARTS)
+
+def create_fortune_display():
+    """Create the full fortune display with border, goose, and fortune."""
+    fortune = generate_fortune()
+    goose = get_sassy_goose()
     
-    # Create the fortune text with proper spacing
-    fortune_lines = fortune.split('\n')
-    centered_fortune = []
-    for line in fortune_lines:
-        # Center the text within the border (48 chars available for text)
-        padding = (48 - len(line)) // 2
-        centered_fortune.append(" " * padding + line)
+    # Get timestamp
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-    # Build the complete output
-    output_lines = []
-    output_lines.append(border_top)
-    output_lines.append(border_side + "           ✨ WISE FORTUNE ✨            " + border_side)
-    output_lines.append(border_side + "                                       " + border_side)
+    # Calculate border width based on content
+    lines = goose.split('\n') + [''] + fortune.split('\n')
+    max_width = max(len(line) for line in lines) + 4
     
-    for line in centered_fortune:
-        output_lines.append(border_side + line.ljust(48) + border_side)
+    # Create the display
+    border = '+' + '-' * max_width + '+'
+    empty_border = '|' + ' ' * max_width + '|'
     
-    output_lines.append(border_side + "                                       " + border_side)
+    display = []
+    display.append(border)
+    display.append(f'| Fortune Teller - {timestamp} ' + ' ' * (max_width - 28 - len(timestamp)) + '|')
+    display.append(border)
+    display.append(empty_border)
     
-    # Divider between fortune and goose
-    output_lines.append(border_side + "           ─────────────────            " + border_side)
-    output_lines.append(border_side + "           🪿 SASSY GOOSE 🪿             " + border_side)
-    output_lines.append(border_side + "                                       " + border_side)
+    # Add goose art centered
+    for line in goose.split('\n'):
+        padding = (max_width - len(line) - 2) // 2
+        display.append(f'| {" " * padding}{line}{" " * (max_width - len(line) - 2 - padding)} |')
     
-    # Add goose art (centered)
-    goose_lines = SASSY_GOOSE_ART.strip().split('\n')
-    for line in goose_lines:
-        # Center the goose art
-        padding = (48 - len(line)) // 2
-        output_lines.append(border_side + " " * padding + line + " " * padding + border_side)
+    display.append(empty_border)
+    display.append('|' + '-' * (max_width - 2) + '|')  # Divider
+    display.append(empty_border)
     
-    output_lines.append(border_side + "                                       " + border_side)
-    output_lines.append(border_bottom)
+    # Add fortune text centered
+    for line in fortune.split('\n'):
+        padding = (max_width - len(line) - 2) // 2
+        display.append(f'| {" " * padding}{line}{" " * (max_width - len(line) - 2 - padding)} |')
     
-    return '\n'.join(output_lines)
+    display.append(empty_border)
+    display.append('|' + ' ' * (max_width - 2) + '|')
+    display.append('|  "A grumpy fortune teller knows best..." ' + ' ' * (max_width - 38) + '|')
+    display.append(empty_border)
+    display.append(border)
+    
+    return '\n'.join(display)
 
 def main():
-    """Main function to generate and save the fortune."""
-    # Get current working directory
-    cwd = Path.cwd()
+    """Main function to generate and save fortune."""
+    fortune_content = create_fortune_display()
     
-    # Check if fortune.md exists and move to /old folder
-    fortune_file = cwd / "fortune.md"
-    if fortune_file.exists():
-        old_folder = cwd / "old"
-        old_folder.mkdir(exist_ok=True)
-        old_file = old_folder / f"fortune_{fortune_file.stat().st_mtime}.md"
-        fortune_file.rename(old_file)
-        print(f"Moved existing fortune.md to {old_file}")
+    # Check if fortune.md exists
+    fortune_path = 'fortune.md'
+    old_dir = 'old'
     
-    # Generate the fortune
-    fortune = generate_fortune()
-    print(f"Generated fortune: {fortune}")
+    if os.path.exists(fortune_path):
+        # Create old directory if it doesn't exist
+        os.makedirs(old_dir, exist_ok=True)
+        
+        # Move existing file to old directory with timestamp
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        old_path = os.path.join(old_dir, f'fortune_{timestamp}.md')
+        os.rename(fortune_path, old_path)
+        print(f"Moved existing fortune.md to {old_path}")
     
-    # Create formatted output
-    output = create_formatted_output(fortune)
+    # Write new fortune to file
+    with open(fortune_path, 'w') as f:
+        f.write(fortune_content)
     
-    # Write to fortune.md
-    with open(fortune_file, 'w') as f:
-        f.write(output)
-    
-    print(f"\nFortune saved to {fortune_file}")
-    print("\n" + output)
+    print(f"Fortune generated and saved to {fortune_path}")
+    print("\n" + fortune_content)
 
 if __name__ == "__main__":
     main()
