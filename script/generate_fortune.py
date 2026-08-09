@@ -1,156 +1,177 @@
 #!/usr/bin/env python3
 """
-Grumpy Fortune Teller - Generates fortunes with a sassy goose attitude
+Fortune Generator - A sassy goose fortune teller with introspective wisdom.
 """
 
 import os
 import random
 from datetime import datetime
 
-# Grumpy fortune messages
+# Introspective fortunes
 FORTUNES = [
-    "Ugh, fine. Your day will be... tolerable. I suppose.",
-    "Oh joy, another human asking for wisdom. Your path is... predictable.",
-    "Hmph. The stars say you'll find what you're looking for. Eventually.",
-    "Whatever. You're about to make a decision you'll regret. Just kidding... or am I?",
-    "Sigh. Good news: nothing terrible will happen today. Boring, I know.",
-    "Look, your future involves coffee. Lots of coffee. And patience.",
-    "Fine, fine! Someone will surprise you today. Try not to faint.",
-    "Ugh, the universe whispers that you need to stop asking me these questions.",
-    "Oh, wonderful. Your luck is... adequate. Thrilling, I know.",
-    "Whatever you're worried about, it'll be fine. Now leave me alone.",
-    "Hmph. A unexpected opportunity awaits. Try not to mess it up.",
-    "Sigh. Today you'll learn something. Whether you like it or not.",
+    "The path you seek is not ahead, but within. Listen to the quiet voice you've been ignoring.",
+    "Your greatest strength is also your greatest vulnerability. Embrace the paradox.",
+    "The answer you seek has been whispering to you through your dreams. Wake up and listen.",
+    "Sometimes the detour is the destination. Trust the winding road.",
+    "You are closer to understanding than you realize. The pieces are falling into place.",
+    "The mirror shows not who you are, but who you're becoming. What do you see?",
+    "Your fears are not walls, but doors. What lies beyond them?",
+    "The question you're afraid to ask is the one that will set you free.",
+    "You carry wisdom in your silence. Speak it when the time is right.",
+    "The past is a teacher, not a prison. What lesson are you ready to learn?",
+    "Your intuition knows the way. Follow it, even when logic protests.",
+    "The weight you carry is not meant to break you, but to strengthen you.",
+    "In letting go, you gain everything. What are you holding onto?",
+    "The stars align not to dictate your fate, but to illuminate your choices.",
+    "Your reflection shows more than your face—it reveals your soul's journey.",
 ]
 
 # Sassy goose ASCII art
-SASSY_GOOSE = """
+GOOSE_ART = """
       __
-    <(o )___
-     ( ._> /
-      \\___/
+     /  \\
+    |    |
+    |    |
+    |    |
+    |    |
+     \\  /
+      \\/
+     /|\\
+    / | \\
+   /  |  \\
+  |   |   |
+  |   |   |
+ /    |    \\
+|     |     |
+|     |     |
+ \\   / \\   /
+  \\_/   \\_/
 """
 
-SASSY_GOOSE_2 = """
-   __
-  ( oo)
-  |  |
-  |  |
-  \\__/
-"""
+# Alternative goose art for variety
+GOOSE_ART_VARIATIONS = [
+    GOOSE_ART,
+    """
+      __
+     /  \\
+    | o o|
+    |  ^ |
+    | \\_/|
+     \\  /
+      \\/
+    __|__
+   /  |  \\
+  |   |   |
+  |   |   |
+ /    |    \\
+|     |     |
+ \\   / \\   /
+  \\_/   \\_/
+""",
+    """
+      __
+     /  \\
+    |    |
+    |    |
+    |    |
+     \\  /
+      \\/
+     /|\\
+    / | \\
+   /  |  \\
+  |   |   |
+  |   |   |
+ /    |    \\
+|     |     |
+|     |     |
+ \\   |   /
+  \\  |  /
+   \\_|_/
+""",
+]
 
-SASSY_GOOSE_3 = """
-      _
-    _( >
-   ( ._)
-    \\__
-"""
+def generate_fortune():
+    """Generate a random introspective fortune."""
+    return random.choice(FORTUNES)
 
-SASSY_GOOSE_4 = """
-   _  _
-  (o)(o)--.
-   \\../   )
-   /\\*    /
-  oo^--'o
-"""
-
-def get_border(width):
-    """Create an ASCII border"""
-    top_bottom = "╔" + "═" * (width - 2) + "╗"
-    middle = "║" + " " * (width - 2) + "║"
-    return top_bottom, middle, "╚" + "═" * (width - 2) + "╝"
-
-def format_fortune(fortune, goose_art):
-    """Format the fortune with border, goose art, and divider"""
-    # Determine the maximum width needed
-    lines = [goose_art, fortune]
-    max_width = max(len(line) for line in lines) + 4  # Add padding
-    
-    # Ensure minimum width
-    max_width = max(max_width, 40)
-    
-    top_border, middle_border, bottom_border = get_border(max_width)
-    
-    # Build the output
-    output_lines = []
-    output_lines.append(top_border)
-    
-    # Add goose art centered
-    goose_lines = goose_art.strip().split('\n')
-    for line in goose_lines:
-        padding = (max_width - 2 - len(line)) // 2
-        output_lines.append("║" + " " * padding + line + " " * (max_width - 2 - padding - len(line)) + "║")
-    
-    # Add divider
-    divider = "║" + "─" * (max_width - 2) + "║"
-    output_lines.append(divider)
-    
-    # Add fortune title
-    title = "🔮 GRUMPY FORTUNE 🔮"
-    padding = (max_width - 2 - len(title)) // 2
-    output_lines.append("║" + " " * padding + title + " " * (max_width - 2 - padding - len(title)) + "║")
-    
-    # Add fortune text (wrap if needed)
-    fortune_lines = fortune.split('\n')
-    for line in fortune_lines:
-        # Simple word wrapping
-        words = line.split()
-        current_line = ""
-        for word in words:
-            if len(current_line) + len(word) + 1 <= max_width - 4:
-                current_line += " " + word if current_line else word
-            else:
-                if current_line:
-                    padding = (max_width - 2 - len(current_line)) // 2
-                    output_lines.append("║" + " " * padding + current_line + " " * (max_width - 2 - padding - len(current_line)) + "║")
-                current_line = word
-        if current_line:
-            padding = (max_width - 2 - len(current_line)) // 2
-            output_lines.append("║" + " " * padding + current_line + " " * (max_width - 2 - padding - len(current_line)) + "║")
-    
-    # Add timestamp
+def create_fortune_display():
+    """Create the full fortune display with border, goose, and fortune."""
+    fortune = generate_fortune()
+    goose = random.choice(GOOSE_ART_VARIATIONS)
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    ts_padding = (max_width - 2 - len(timestamp)) // 2
-    output_lines.append("║" + " " * ts_padding + timestamp + " " * (max_width - 2 - ts_padding - len(timestamp)) + "║")
     
-    output_lines.append(bottom_border)
+    # Calculate width for border (based on longest line in goose art + fortune)
+    lines = fortune.split('\n') + goose.split('\n')
+    max_width = max(len(line) for line in lines) + 4
     
-    return '\n'.join(output_lines)
+    # Create the border
+    top_border = "╔" + "═" * max_width + "╗"
+    bottom_border = "╚" + "═" * max_width + "╝"
+    side_border = "║"
+    
+    # Build the display
+    display_lines = []
+    display_lines.append(top_border)
+    
+    # Fortune section
+    display_lines.append(f"{side_border}  🌟 YOUR FORTUNE 🌟{' ' * (max_width - 20)}{side_border}")
+    display_lines.append(f"{side_border}{' ' * max_width}{side_border}")
+    
+    for line in fortune.split('\n'):
+        padded_line = line.ljust(max_width - 2)
+        display_lines.append(f"{side_border} {padded_line}{side_border}")
+    
+    display_lines.append(f"{side_border}{' ' * max_width}{side_border}")
+    
+    # Divider
+    divider = f"{side_border}{'─' * max_width}{side_border}"
+    display_lines.append(divider)
+    
+    # Goose section
+    display_lines.append(f"{side_border}{' ' * max_width}{side_border}")
+    display_lines.append(f"{side_border}  🪿 THE SASSY GOOSE SAYS... 🪿{' ' * (max_width - 32)}{side_border}")
+    display_lines.append(f"{side_border}{' ' * max_width}{side_border}")
+    
+    for line in goose.split('\n'):
+        padded_line = line.ljust(max_width - 2)
+        display_lines.append(f"{side_border} {padded_line}{side_border}")
+    
+    display_lines.append(f"{side_border}{' ' * max_width}{side_border}")
+    display_lines.append(f"{side_border}  Generated: {timestamp}{' ' * (max_width - 26)}{side_border}")
+    display_lines.append(bottom_border)
+    
+    return '\n'.join(display_lines)
 
 def main():
-    # Get a random fortune
-    fortune = random.choice(FORTUNES)
-    
-    # Get a random sassy goose
-    goose_artifacts = [SASSY_GOOSE, SASSY_GOOSE_2, SASSY_GOOSE_3, SASSY_GOOSE_4]
-    goose_art = random.choice(goose_artifacts)
-    
-    # Format the fortune
-    output = format_fortune(fortune, goose_art)
-    
-    # Handle existing fortune.md file
-    fortune_path = "fortune.md"
+    """Main function to generate fortune and save to file."""
+    output_file = "fortune.md"
     old_folder = "old"
     
-    if os.path.exists(fortune_path):
+    # Check if fortune.md already exists
+    if os.path.exists(output_file):
         # Create old folder if it doesn't exist
         os.makedirs(old_folder, exist_ok=True)
         
-        # Move existing file with timestamp
+        # Move existing file to old folder with timestamp
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        old_path = os.path.join(old_folder, f"fortune_{timestamp}.md")
-        os.rename(fortune_path, old_path)
+        old_filename = f"fortune_{timestamp}.md"
+        old_path = os.path.join(old_folder, old_filename)
+        os.rename(output_file, old_path)
         print(f"Moved existing fortune.md to {old_path}")
     
-    # Write the new fortune
-    with open(fortune_path, 'w') as f:
-        f.write("# 🦢 Grumpy Fortune Teller 🔮\n\n")
-        f.write("```text\n")
-        f.write(output)
-        f.write("\n```\n")
+    # Generate the fortune display
+    fortune_display = create_fortune_display()
     
-    print(f"Fortune generated and saved to {fortune_path}")
-    print("\n" + output)
+    # Write to markdown file
+    with open(output_file, 'w') as f:
+        f.write("# 🌟 Your Introspective Fortune 🌟\n\n")
+        f.write("```text\n")
+        f.write(fortune_display)
+        f.write("\n```\n")
+        f.write("\n*May the wisdom of the sassy goose guide your journey.*\n")
+    
+    print(f"Fortune generated and saved to {output_file}")
+    print("\n" + fortune_display)
 
 if __name__ == "__main__":
     main()
