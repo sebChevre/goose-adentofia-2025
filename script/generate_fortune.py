@@ -1,119 +1,112 @@
 #!/usr/bin/env python3
 """
-Fortune Generator - A sassy goose fortune teller
-Generates poetic fortunes with ASCII art
+Fortune Generator - A Sarcastic Fortune Teller
+Generates a fortune from a sassy goose and writes it to fortune.md
 """
 
 import os
 import shutil
-import random
 from datetime import datetime
 
-# Fortune messages from the mystical fortune teller
+# Sarcastic fortunes from the sassy goose
 FORTUNES = [
-    "The stars whisper that your courage shall bloom like midnight roses,\n    leading you to treasures hidden in plain sight.",
-    "A sassy goose knows: the winds of change carry whispers of opportunity.\n    Listen closely, for fortune favors the bold.",
-    "The cosmos dance in rhythm with your destiny.\n    What seems a detour is but a graceful pirouette toward your purpose.",
-    "Like a goose who sees the storm before it breaks,\n    your intuition guides you to shores of abundant joy.",
-    "The ancient stars align to tell a tale of your making:\n    patience now shall harvest a garden of wonders.",
-    "A sassy goose preens her feathers and declares:\n    your path is illuminated by the moon's silver blessing.",
-    "The river of time flows toward a waterfall of surprises.\n    Embrace the plunge, for it leads to a crystal pool of clarity.",
-    "Like dawn breaking over a misty lake,\n    your dreams shall reveal themselves in colors more vibrant than imagined.",
-    "The cosmic goose honks a prophecy: unexpected allies shall appear,\n    bearing gifts that unlock doors you thought forever sealed.",
-    "Stars align in a celestial dance, whispering that your next step\n    shall echo through the halls of destiny with resounding triumph."
+    "Ah, I see your future... it involves more scrolling and less doing. Shocking.",
+    "The stars align to tell me one thing: you should probably drink more water.",
+    "I sense a great opportunity coming your way. Too bad you'll probably ignore it.",
+    "Your future self is judging your current decisions. Hard.",
+    "The universe has a plan for you. It's mostly just awkward silences.",
+    "I see... oh wait, that's just your reflection in my crystal ball. You're the problem.",
+    "Great news! Your luck is about to change. Bad news: it's getting worse.",
+    "The cosmos whisper: 'Have you tried turning yourself off and on again?'",
+    "I predict with 100% certainty that you'll read another fortune tomorrow.",
+    "Your destiny? Honestly, I'm not sure you have one. But here's hoping!",
 ]
 
-def get_sassy_goose():
-    """Return ASCII art of a sassy goose"""
-    return r"""
-      __
-     (o>
-     // \
-    // _ \
-   =\___)=
-    /   \
-   /     \
-  /       \
- /         \
-/___________\
-    """
+# Sassy goose ASCII art
+GOOSE_ART = """
+  __      __
+ /'\\_____/\\
+/  o     o  \\
+\\    > <    /
+ \\  \\___/  /
+  \\_______/
+   /     \\
+  /       \\
+ /         \\
+/___________\\
+   \\_____/
+    |   |
+    |   |
+   /|   |\\
+  / |   | \\
+ /  |   |  \\
+|   |   |   |
+|   |   |   |
+\\___|___|___/
+"""
+
+def get_fortune():
+    """Return a random sarcastic fortune."""
+    import random
+    return random.choice(FORTUNES)
 
 def create_ascii_border(content, width=60):
-    """Create an ASCII border around content"""
-    top_bottom = "╔" + "═" * width + "╗"
-    middle = "║" + " " * width + "║"
-    
-    lines = content.split('\n')
-    bordered = [top_bottom]
-    
-    for line in lines:
-        # Pad or truncate line to fit width
-        padded = line.ljust(width)[:width]
-        bordered.append("║" + padded + "║")
-    
-    bordered.append(top_bottom.replace("╔", "╚").replace("╗", "╝"))
-    return '\n'.join(bordered)
+    """Create an ASCII border around the content."""
+    top_bottom = "╔" + "═" * (width - 2) + "╗"
+    middle = "║" + content.center(width - 2) + "║"
+    return f"{top_bottom}\n{middle}\n{'╚' + '═' * (width - 2) + '╝'}"
 
-def generate_fortune():
-    """Generate a fortune with ASCII art"""
-    fortune = random.choice(FORTUNES)
-    goose = get_sassy_goose()
+def generate_fortune_output():
+    """Generate the complete fortune output with all decorations."""
+    fortune = get_fortune()
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    # Build the fortune section
+    fortune_lines = fortune.split('\n')
+    fortune_box = []
+    for line in fortune_lines:
+        fortune_box.append(f"  {line}")
     
     # Create the divider
-    divider = "─" * 58
+    divider = "  " + "─" * 56
     
-    # Build the content
-    fortune_lines = fortune.split('\n')
+    # Combine goose, divider, and fortune
+    inner_content = f"{GOOSE_ART}\n\n{divider}\n\n" + '\n'.join(fortune_box) + "\n"
     
-    content_parts = [
-        "  🌙✨ THE MYSTIC GOOSE FORTUNE TELLER ✨🌙  ".center(58),
-        f"  {datetime.now().strftime('%B %d, %Y - %I:%M %p')}  ".center(58),
-        "",
-        "  " + divider,
-        "",
-        "  YOUR FORTUNE:",
-        ""
-    ]
+    # Add timestamp
+    inner_content += f"\n  Generated: {timestamp}"
     
-    for line in fortune_lines:
-        content_parts.append("  " + line)
+    # Create the bordered output
+    output = create_ascii_border(inner_content, 60)
     
-    content_parts.extend([
-        "",
-        "  " + divider,
-        "",
-        "  " + goose
-    ])
-    
-    content = '\n'.join(content_parts)
-    return create_ascii_border(content)
+    return output
 
 def main():
-    """Main function to generate and save fortune"""
-    fortune_output = generate_fortune()
+    """Main function to generate and save the fortune."""
+    # Current working directory
+    cwd = os.getcwd()
+    fortune_file = os.path.join(cwd, "fortune.md")
+    old_folder = os.path.join(cwd, "old")
     
-    # Check if fortune.md exists
-    fortune_path = "fortune.md"
-    old_folder = "old"
-    
-    if os.path.exists(fortune_path):
-        # Create old folder if it doesn't exist
+    # If fortune.md exists, move it to /old folder
+    if os.path.exists(fortune_file):
         os.makedirs(old_folder, exist_ok=True)
-        
-        # Move existing file to old folder with timestamp
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        old_path = os.path.join(old_folder, f"fortune_{timestamp}.md")
-        shutil.move(fortune_path, old_path)
+        old_name = f"fortune_{timestamp}.md"
+        old_path = os.path.join(old_folder, old_name)
+        shutil.move(fortune_file, old_path)
         print(f"Moved existing fortune.md to {old_path}")
     
-    # Write new fortune to fortune.md
-    with open(fortune_path, 'w') as f:
-        f.write("# 🌙 Mystic Goose Fortune 🌙\n\n")
-        f.write("```text\n")
-        f.write(fortune_output)
-        f.write("\n```\n")
+    # Generate the fortune
+    fortune_output = generate_fortune_output()
     
-    print(f"Fortune generated and saved to {fortune_path}")
+    # Write to fortune.md
+    with open(fortune_file, 'w') as f:
+        f.write(f"# 🦢 Sassy Goose Fortune 🦢\n\n")
+        f.write(fortune_output)
+        f.write("\n")
+    
+    print(f"Fortune generated and saved to {fortune_file}")
     print("\n" + fortune_output)
 
 if __name__ == "__main__":
