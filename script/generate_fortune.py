@@ -1,136 +1,153 @@
 #!/usr/bin/env python3
 """
-Fortune Generator - A sassy goose delivers introspective wisdom
+Fortune Generator - A poetic fortune teller with a sassy goose
 """
 
 import os
 import random
 from datetime import datetime
 
-def get_fortune():
-    """Return a random introspective fortune."""
-    fortunes = [
-        "The answers you seek are not found in the stars, but in the quiet moments between your thoughts.",
-        "Today, ask yourself: What would I do if I weren't afraid of my own potential?",
-        "A mirror reflects what is, but only you can decide what should be.",
-        "The weight you carry is not a burden—it is the anchor that keeps you grounded while you learn to fly.",
-        "In the silence of your own company, you will find the loudest truths.",
-        "Your reflection shows not who you were, but who you are becoming.",
-        "The path ahead is not written in stone, but in the footprints you choose to leave.",
-        "Sometimes the deepest wisdom comes from asking the simplest question: 'What do I truly want?'",
-        "The shadows you avoid are the same ones that give your light meaning.",
-        "You are both the question and the answer, dancing together in the dark.",
-    ]
-    return random.choice(fortunes)
+# Fortune messages with poetic flair
+FORTUNES = [
+    "The stars whisper of adventures waiting just beyond your horizon. Dare to step forward.",
+    "A creative spark ignites within you—let it guide you to unexpected wonders.",
+    "Patience shall be your companion, for the finest treasures bloom in their own time.",
+    "An old friendship shall rekindle, bringing warmth to your autumn days.",
+    "The universe conspires to bring you a moment of pure, unbridled joy.",
+    "Your words carry magic today—speak them with confidence and kindness.",
+    "A surprise awaits you where you least expect it. Keep your eyes wide open.",
+    "The path ahead may twist, but each turn reveals a new gift.",
+    "Trust your intuition—it knows the way even when the road seems dark.",
+    "Something beautiful is growing in the shadows of your doubts. Nurture it.",
+]
 
-def get_sassy_goose():
-    """Return ASCII art of a sassy goose."""
-    goose_art = """
-     __
-    /  \\
-   |    |
-   |    |
-   \\    /
-    \\/\\/
-    /  \\
-   |  |
-   |  |
-   |  |
-   |  |
-  _/  \\_
- (      )
-  \\    /
-   \\__/
-    ||
-    ||
-    ||
-    ||
-   _||_
-  (____)
-    """
-    return goose_art
+# Sassy goose ASCII art
+GOOSE_ART = """
+   __
+  /  \\
+ |    |
+ |    |
+  \\__/
+   ||
+   ||    /\\
+   ||   /  \\
+   ||  |    |
+   ||   \\__/
+   ||
+  _||_
+ (____)
+"""
 
-def create_border(text_lines, padding=2):
-    """Create an ASCII border around the content."""
-    max_length = max(len(line.rstrip()) for line in text_lines)
-    border_width = max_length + (padding * 2) + 4
-    
-    top_border = "╔" + "═" * (border_width - 2) + "╗"
-    bottom_border = "╚" + "═" * (border_width - 2) + "╝"
-    
-    bordered_lines = []
-    for line in text_lines:
-        padded = " " * padding + line.rstrip() + " " * (max_length - len(line.rstrip()) + padding)
-        bordered_lines.append("║" + padded + "║")
-    
-    return [top_border] + bordered_lines + [bottom_border]
+GOOSE_ART_SASSY = """
+    __
+   /  \\
+  | o o|
+  |  < |   HONK!
+  \\__/
+   ||
+   ||    /\\
+   ||   /  \\
+   ||  |    |
+   ||   \\__/
+   ||
+  _||_
+ (____)
+"""
 
-def generate_fortune_output():
-    """Generate the complete fortune output with ASCII art and border."""
-    fortune = get_fortune()
-    goose = get_sassy_goose()
+GOOSE_ART_MISCHIEVOUS = """
+   __
+  /  \\
+ | ^ ^|
+ |    |   *wink*
+  \\__/
+   ||
+   ||    /\\
+   ||   /  \\
+   ||  |    |
+   ||   \\__/
+   ||
+  _||_
+ (____)
+"""
+
+def generate_fortune():
+    """Generate a random fortune with ASCII art."""
+    fortune = random.choice(FORTUNES)
     
-    # Build the content
+    # Choose a random goose art style
+    goose_variants = [GOOSE_ART, GOOSE_ART_SASSY, GOOSE_ART_MISCHIEVOUS]
+    goose = random.choice(goose_variants)
+    
+    # Get current date
+    date_str = datetime.now().strftime("%B %d, %Y")
+    
+    # Build the fortune card with border
+    border = "╔" + "═" * 58 + "╗"
+    bottom = "╚" + "═" * 58 + "╝"
+    side = "║"
+    
     lines = []
+    lines.append(border)
+    lines.append(f"{side}{'✨ POETIC FORTUNE ✨':^56}{side}")
+    lines.append(f"{side}{'🌙 ' + date_str + ' 🌙':^56}{side}")
+    lines.append(side + "═" * 58 + side)
+    lines.append(side)
     
-    # Header
-    lines.append("🔮  MYSTIC FORTUNE  🔮")
-    lines.append("")
-    lines.append(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    lines.append("")
+    # Add fortune text (wrapped)
+    words = fortune.split()
+    current_line = ""
+    for word in words:
+        if len(current_line) + len(word) + 1 <= 54:
+            current_line += (" " if current_line else "") + word
+        else:
+            lines.append(f"{side} {current_line:<54}{side}")
+            current_line = word
+    if current_line:
+        lines.append(f"{side} {current_line:<54}{side}")
     
-    # Fortune text
-    lines.append("─" * 40)
-    lines.append("✨  YOUR FORTUNE  ✨")
-    lines.append("─" * 40)
-    lines.append("")
-    lines.append(f"  {fortune}")
-    lines.append("")
-    lines.append("─" * 40)
+    lines.append(side)
+    lines.append(side + "─" * 58 + side)
+    lines.append(side)
     
-    # Divider
-    lines.append("═══  🪿  THE SASSY GOOSE SPEAKS  🪿  ═══")
-    lines.append("")
+    # Add goose art (centered)
+    for goose_line in goose.strip().split('\n'):
+        # Center the goose art within the border
+        centered = goose_line.center(56)
+        lines.append(f"{side} {centered:<54}{side}")
     
-    # Add goose art lines
-    for line in goose.strip().split('\n'):
-        lines.append(f"  {line}")
+    lines.append(side)
+    lines.append(bottom)
     
-    # Footer
-    lines.append("")
-    lines.append("─" * 40)
-    lines.append("Remember: The goose knows what you're thinking.")
-    
-    # Create bordered output
-    bordered_content = create_border(lines)
-    
-    return '\n'.join(bordered_content)
+    return '\n'.join(lines)
 
 def main():
-    """Main function to generate and save the fortune."""
-    output_dir = os.getcwd()
-    fortune_file = os.path.join(output_dir, "fortune.md")
-    old_folder = os.path.join(output_dir, "old")
-    
-    # Check if fortune.md exists and move it to old folder
-    if os.path.exists(fortune_file):
-        os.makedirs(old_folder, exist_ok=True)
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        old_file = os.path.join(old_folder, f"fortune_{timestamp}.md")
-        os.rename(fortune_file, old_file)
-        print(f"Moved existing fortune.md to: {old_file}")
-    
+    """Main function to generate and save fortune."""
     # Generate the fortune
-    fortune_output = generate_fortune_output()
+    fortune_content = generate_fortune()
     
-    # Write to fortune.md
-    with open(fortune_file, 'w') as f:
-        f.write(fortune_output)
+    # Output file path (current directory)
+    output_file = "fortune.md"
     
-    print(f"Fortune generated and saved to: {fortune_file}")
-    print("\n" + "=" * 50)
-    print(fortune_output)
-    print("=" * 50)
+    # Check if file exists and move to old folder
+    if os.path.exists(output_file):
+        old_folder = "old"
+        if not os.path.exists(old_folder):
+            os.makedirs(old_folder)
+        
+        # Move existing file to old folder with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        old_filename = f"fortune_{timestamp}.md"
+        old_path = os.path.join(old_folder, old_filename)
+        os.rename(output_file, old_path)
+        print(f"Moved existing fortune to: {old_path}")
+    
+    # Write new fortune to file
+    with open(output_file, 'w') as f:
+        f.write(f"# Daily Fortune\n\n")
+        f.write(f"```text\n{fortune_content}\n```\n")
+    
+    print(f"Fortune generated and saved to: {output_file}")
+    print("\n" + fortune_content)
 
 if __name__ == "__main__":
     main()
