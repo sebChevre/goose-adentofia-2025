@@ -9,114 +9,113 @@ from datetime import datetime
 
 # Fortune messages with poetic flair
 FORTUNES = [
-    "The stars whisper of adventures waiting just beyond your horizon. Dare to step forward.",
-    "A creative spark ignites within you—let it guide you to unexpected wonders.",
-    "Patience shall be your companion, for the finest treasures bloom in their own time.",
-    "An old friendship shall rekindle, bringing warmth to your autumn days.",
-    "The universe conspires to bring you a moment of pure, unbridled joy.",
-    "Your words carry magic today—speak them with confidence and kindness.",
-    "A surprise awaits you where you least expect it. Keep your eyes wide open.",
-    "The path ahead may twist, but each turn reveals a new gift.",
-    "Trust your intuition—it knows the way even when the road seems dark.",
-    "Something beautiful is growing in the shadows of your doubts. Nurture it.",
+    "The stars whisper of adventures yet unexplored, where courage meets destiny.",
+    "A surprise awaits around the corner, wrapped in mystery and delight.",
+    "Your path leads to unexpected joy, found in the simplest of moments.",
+    "The universe aligns to bring you clarity where once there was fog.",
+    "An old friend will return with news that brightens your darkest hour.",
+    "Creativity flows through you like a river—let it carve new channels.",
+    "Patience will be rewarded with a harvest more bountiful than imagined.",
+    "The answer you seek lies not in the distance, but within your own heart.",
+    "A small risk today paves the way for a magnificent tomorrow.",
+    "The goose knows: sometimes the wildest path leads home.",
 ]
 
-# Sassy goose ASCII art
-GOOSE_ART = """
-   __
-  /  \\
- |    |
- |    |
-  \\__/
-   ||
-   ||    /\\
-   ||   /  \\
-   ||  |    |
-   ||   \\__/
-   ||
-  _||_
- (____)
-"""
-
-GOOSE_ART_SASSY = """
-    __
-   /  \\
-  | o o|
-  |  < |   HONK!
-  \\__/
-   ||
-   ||    /\\
-   ||   /  \\
-   ||  |    |
-   ||   \\__/
-   ||
-  _||_
- (____)
-"""
-
-GOOSE_ART_MISCHIEVOUS = """
-   __
-  /  \\
- | ^ ^|
- |    |   *wink*
-  \\__/
-   ||
-   ||    /\\
-   ||   /  \\
-   ||  |    |
-   ||   \\__/
-   ||
-  _||_
- (____)
-"""
+# ASCII art of a sassy goose
+GOOSE_ALTERNATIVES = [
+    """
+      __
+    <(o )___
+     ( ._> /
+      \\___/
+    /|   |\\
+   (_|   |_)
+    /|   |\\
+   / |   | \\
+  /  |   |  \\
+ /   |   |   \\
+/____|___|____\\
+  (SASSY MODE)
+""",
+    """
+      __
+    <(o )___
+     ( ._> /
+      \\___/
+    /|   |\\
+   (_|   |_)
+    /|   |\\
+   / |   | \\
+  /  |   |  \\
+ /   |   |   \\
+/____|___|____\\
+  (MYSTIC MODE)
+""",
+    """
+      __
+    <(o )___
+     ( ._> /
+      \\___/
+    /|   |\\
+   (_|   |_)
+    /|   |\\
+   / |   | \\
+  /  |   |  \\
+ /   |   |   \\
+/____|___|____\\
+  (WISDOM MODE)
+""",
+]
 
 def generate_fortune():
-    """Generate a random fortune with ASCII art."""
+    """Generate a fortune with poetic mood and sassy goose."""
     fortune = random.choice(FORTUNES)
-    
-    # Choose a random goose art style
-    goose_variants = [GOOSE_ART, GOOSE_ART_SASSY, GOOSE_ART_MISCHIEVOUS]
-    goose = random.choice(goose_variants)
-    
-    # Get current date
-    date_str = datetime.now().strftime("%B %d, %Y")
+    goose = random.choice(GOOSE_ALTERNATIVES)
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     # Build the fortune card with border
-    border = "╔" + "═" * 58 + "╗"
-    bottom = "╚" + "═" * 58 + "╝"
-    side = "║"
+    border = "+" + "-" * 58 + "+"
+    divider = "|" + "=" * 58 + "|"
     
     lines = []
     lines.append(border)
-    lines.append(f"{side}{'✨ POETIC FORTUNE ✨':^56}{side}")
-    lines.append(f"{side}{'🌙 ' + date_str + ' 🌙':^56}{side}")
-    lines.append(side + "═" * 58 + side)
-    lines.append(side)
+    lines.append("|" + " " * 58 + "|")
+    lines.append("|" + "  ✨ POETIC FORTUNE OF THE DAY ✨".center(58) + "|")
+    lines.append("|" + " " * 58 + "|")
+    lines.append(divider)
+    lines.append("|" + " " * 58 + "|")
     
-    # Add fortune text (wrapped)
+    # Add fortune text (wrapped to fit)
+    fortune_lines = []
     words = fortune.split()
     current_line = ""
     for word in words:
-        if len(current_line) + len(word) + 1 <= 54:
-            current_line += (" " if current_line else "") + word
+        if len(current_line) + len(word) + 1 <= 56:
+            current_line += " " + word if current_line else word
         else:
-            lines.append(f"{side} {current_line:<54}{side}")
+            fortune_lines.append(current_line)
             current_line = word
     if current_line:
-        lines.append(f"{side} {current_line:<54}{side}")
+        fortune_lines.append(current_line)
     
-    lines.append(side)
-    lines.append(side + "─" * 58 + side)
-    lines.append(side)
+    for line in fortune_lines:
+        lines.append("|" + "  " + line + " " * (54 - len(line)) + "|")
+    
+    lines.append("|" + " " * 58 + "|")
+    lines.append(divider)
+    lines.append("|" + " " * 58 + "|")
     
     # Add goose art (centered)
-    for goose_line in goose.strip().split('\n'):
-        # Center the goose art within the border
-        centered = goose_line.center(56)
-        lines.append(f"{side} {centered:<54}{side}")
+    goose_lines = goose.strip().split('\n')
+    for line in goose_lines:
+        centered = line.center(58)
+        lines.append("|" + centered + "|")
     
-    lines.append(side)
-    lines.append(bottom)
+    lines.append("|" + " " * 58 + "|")
+    lines.append(border)
+    lines.append("")
+    lines.append(f"Generated: {timestamp}")
+    lines.append("May the cosmic winds guide your path... 🪿✨")
     
     return '\n'.join(lines)
 
@@ -125,28 +124,27 @@ def main():
     # Generate the fortune
     fortune_content = generate_fortune()
     
-    # Output file path (current directory)
-    output_file = "fortune.md"
+    # Check if fortune.md exists
+    fortune_path = "fortune.md"
+    old_folder = "old"
     
-    # Check if file exists and move to old folder
-    if os.path.exists(output_file):
-        old_folder = "old"
+    if os.path.exists(fortune_path):
+        # Create old folder if it doesn't exist
         if not os.path.exists(old_folder):
             os.makedirs(old_folder)
         
         # Move existing file to old folder with timestamp
+        import shutil
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        old_filename = f"fortune_{timestamp}.md"
-        old_path = os.path.join(old_folder, old_filename)
-        os.rename(output_file, old_path)
-        print(f"Moved existing fortune to: {old_path}")
+        old_path = os.path.join(old_folder, f"fortune_{timestamp}.md")
+        shutil.move(fortune_path, old_path)
+        print(f"Moved existing fortune.md to {old_path}")
     
-    # Write new fortune to file
-    with open(output_file, 'w') as f:
-        f.write(f"# Daily Fortune\n\n")
-        f.write(f"```text\n{fortune_content}\n```\n")
+    # Write the new fortune
+    with open(fortune_path, 'w') as f:
+        f.write(fortune_content)
     
-    print(f"Fortune generated and saved to: {output_file}")
+    print(f"Fortune generated and saved to {fortune_path}")
     print("\n" + fortune_content)
 
 if __name__ == "__main__":
