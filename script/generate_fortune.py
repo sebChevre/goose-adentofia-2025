@@ -1,175 +1,141 @@
 #!/usr/bin/env python3
 """
-Fortune Generator - A sassy goose fortune teller with introspective musings.
-Generates fortunes with ASCII art and saves to fortune.md.
+Sarcastic Fortune Generator by a Sassy Goose Fortune Teller
 """
 
 import os
 import random
 from datetime import datetime
 
-# Fortune messages with introspective, slightly sassy mood
+# Sarcastic fortunes
 FORTUNES = [
-    "The path you seek is not ahead, but within. Stop looking outward and start looking inward.",
-    "Your doubts are merely echoes of your own potential. Listen closer.",
-    "A decision you've been avoiding will reveal itself when you stop running from yourself.",
-    "The answers you crave are already whispering in your mind. You're just too noisy to hear them.",
-    "Patience is not waiting—it's the quiet courage to trust your own timing.",
-    "What you fear most is the shadow of what you're capable of becoming.",
-    "The universe is not conspiring against you; you're just overthinking everything.",
-    "Your greatest strength is also your greatest vulnerability. Embrace the paradox.",
-    "The change you desire begins the moment you stop waiting for permission.",
-    "Silence is where wisdom lives. Your inner goose knows more than you think.",
-    "You are not lost—you are exactly where you need to be to find yourself.",
-    "The mirror reflects not who you are, but who you're afraid to become.",
-    "Your intuition is louder than your excuses. Which will you listen to?",
-    "The journey of a thousand miles begins with a single step... or a very dramatic honk.",
-    "What you seek is seeking you. The question is: are you ready to answer?",
+    "Congratulations! Your future is as predictable as a weather forecast in spring... which is to say, not at all.",
+    "The stars say you'll achieve great things. The stars also say they're tired of you asking them for advice.",
+    "A mysterious stranger will enter your life. They're probably just there to return your lost dignity.",
+    "You will soon face a challenge. Spoiler alert: it's the same one you faced last week.",
+    "Love is in the air. Unfortunately, so is pollution and that weird smell from the neighbor's BBQ.",
+    "Your lucky numbers are 4, 8, 15, 16, 23, and 42. Good luck finding a lottery that accepts those.",
+    "Success is just around the corner. Too bad you keep walking in circles.",
+    "The universe has a plan for you. Unfortunately, the universe is also terrible at communication.",
+    "You'll receive unexpected news today. It's probably going to be about your student loans.",
+    "A friend will need your help. Remember: friends are like stars, some shine brighter when they're far away.",
+    "Your career will flourish! Flourish like a weed in an abandoned parking lot.",
+    "Money will come your way. It's called 'paycheck' and it arrives every two weeks.",
+    "You'll discover a hidden talent. It's probably the ability to procrastinate with style.",
+    "The cosmos whispers your destiny. They're whispering because they know you won't listen anyway.",
+    "Today is the perfect day to start that project you've been avoiding since 2019.",
 ]
 
-# Sassy Goose ASCII Art
+# Sassy goose ASCII art
 GOOSE_ART = """
-         __
-        /  \\
-       |    |
-       |    |
-       \\____/
-       /    \\
-      /      \\
-     /        \\
-    |  O    O  |
-    |     <    |    *hONK*
-    \\   __    /    I'm judging you.
-     \\  ||   /
-      \\ ||  /
-       \\|| /
-        \\/
-     __/  \\__
-    /        \\
-   |  ~~~~    |
-   |  ~~~~    |
-   |  ~~~~    |
-    \\        /
-     \\______/
+      __
+    <(o )___
+     ( ._> /
+      \\___/
 """
 
-def get_fortune():
-    """Return a random introspective fortune."""
+GOOSE_ART_SASSY = """
+       __
+     <(o )___  "Oh, you want YOUR fortune? How ORIGINAL."
+      ( ._> /  "Let me consult my crystal ball... it's just a disco ball."
+       \\___/   "Your future looks... *checks notes*... mildly concerning."
+"""
+
+GOOSE_ART_EXTRA_SASSY = """
+        __
+      <(o )___  "Look, I'm a goose, not a LIFE COACH."
+       ( ._> /  "But fine, let me squawk something profound."
+        \\___/   "Your future is as clear as my vision after eating too many breadcrumbs."
+"""
+
+# Divider
+DIVIDER = "=" * 60
+
+
+def get_random_fortune():
+    """Select a random sarcastic fortune."""
     return random.choice(FORTUNES)
 
-def create_formatted_fortune(fortune_text):
-    """Create the full fortune with border, art, and divider."""
-    # Get terminal width or use default
-    width = 60
-    
-    # Create top border
-    top_border = "╔" + "═" * (width - 2) + "╗"
-    bottom_border = "╚" + "═" * (width - 2) + "╝"
-    side_border = "║"
-    
-    # Build the content
-    lines = []
-    lines.append(top_border)
-    lines.append(side_border + " " * (width - 2) + side_border)
-    
-    # Add title
-    title = "🔮 THE SASSY GOOSE FORTUNE TELLER 🔮"
-    padding = (width - 2 - len(title)) // 2
-    lines.append(side_border + " " * padding + title + " " * (width - 2 - padding - len(title)) + side_border)
-    lines.append(side_border + " " * (width - 2) + side_border)
-    
-    # Add timestamp
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    ts_padding = (width - 2 - len(timestamp)) // 2
-    lines.append(side_border + " " * ts_padding + timestamp + " " * (width - 2 - ts_padding - len(timestamp)) + side_border)
-    lines.append(side_border + " " * (width - 2) + side_border)
-    
-    # Add fortune text with proper wrapping
-    fortune_lines = []
-    words = fortune_text.split()
-    current_line = ""
-    for word in words:
-        if len(current_line) + len(word) + 1 <= width - 4:
-            current_line += (" " if current_line else "") + word
-        else:
-            fortune_lines.append(current_line)
-            current_line = word
-    if current_line:
-        fortune_lines.append(current_line)
-    
-    # Add fortune with padding
-    lines.append(side_border + " " * (width - 2) + side_border)
-    lines.append(side_border + " " * 2 + "Your Fortune:" + " " * (width - 17) + side_border)
-    lines.append(side_border + " " * 2 + "-" * 30 + " " * (width - 35) + side_border)
-    for fl in fortune_lines:
-        padded = fl.ljust(width - 4)
-        lines.append(side_border + " " * 2 + padded + side_border)
-    lines.append(side_border + " " * (width - 2) + side_border)
-    
-    # Add divider
-    divider = side_border + " " * 2 + "═══" + "─" * (width - 8) + "═══" + " " * 2 + side_border
-    lines.append(divider)
-    lines.append(side_border + " " * (width - 2) + side_border)
-    
-    # Add goose art (center it within the border)
-    art_lines = GOOSE_ART.strip().split('\n')
-    for art_line in art_lines:
-        # Center the art within the available space
-        art_width = len(art_line)
-        total_padding = width - 2 - art_width
-        left_pad = total_padding // 2
-        if left_pad < 0:
-            left_pad = 0
-        padded_art = " " * left_pad + art_line
-        lines.append(side_border + padded_art.ljust(width - 2) + side_border)
-    
-    lines.append(side_border + " " * (width - 2) + side_border)
-    
-    # Add footer
-    footer = "  ~ Trust the honk, dear seeker ~  "
-    footer_padding = (width - 2 - len(footer)) // 2
-    lines.append(side_border + " " * footer_padding + footer + " " * (width - 2 - footer_padding - len(footer)) + side_border)
-    lines.append(side_border + " " * (width - 2) + side_border)
-    lines.append(bottom_border)
-    
-    return '\n'.join(lines)
 
-def move_existing_fortune():
-    """Move existing fortune.md to /old folder if it exists."""
-    fortune_path = os.path.join(os.getcwd(), 'fortune.md')
-    old_dir = os.path.join(os.getcwd(), 'old')
+def get_random_goose():
+    """Select a random sassy goose art."""
+    return random.choice([GOOSE_ART, GOOSE_ART_SASSY, GOOSE_ART_EXTRA_SASSY])
+
+
+def generate_fortune_output():
+    """Generate the complete fortune output with all decorations."""
+    fortune = get_random_fortune()
+    goose = get_random_goose()
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-    if os.path.exists(fortune_path):
+    # Build the fortune content
+    fortune_text = f"""
+┌────────────────────────────────────────────────────────────┐
+│                    ✨ YOUR FORTUNE ✨                      │
+│                                                            │
+│   {fortune[:50]}{"..." if len(fortune) > 50 else ""}
+│   {fortune[50:100] if len(fortune) > 50 else ""}
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+"""
+    
+    # Combine goose and fortune with divider
+    full_content = f"""
+╔══════════════════════════════════════════════════════════╗
+║                                                          ║
+║           🦢 THE SASSY GOOSE FORTUNE TELLER 🦢           ║
+║                                                          ║
+╠══════════════════════════════════════════════════════════╣
+║                                                          ║
+║{goose}║
+║                                                          ║
+╠══════════════════════════════════════════════════════════╣
+║                                                          ║
+║{fortune_text}║
+║                                                          ║
+╠══════════════════════════════════════════════════════════╣
+║                                                          ║
+║           Generated on: {timestamp:<36} ║
+║                                                          ║
+║   "The goose giveth, and the goose takeeth away."        ║
+║                                                          ║
+╚══════════════════════════════════════════════════════════╝
+"""
+    
+    return full_content
+
+
+def main():
+    """Main function to generate and save the fortune."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    current_dir = os.getcwd()
+    
+    fortune_file = os.path.join(current_dir, "fortune.md")
+    old_dir = os.path.join(current_dir, "old")
+    
+    # Check if fortune.md already exists
+    if os.path.exists(fortune_file):
         # Create old directory if it doesn't exist
         os.makedirs(old_dir, exist_ok=True)
         
-        # Generate unique filename with timestamp
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        old_filename = f'fortune_{timestamp}.md'
+        # Move existing file to old folder
+        import shutil
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        old_filename = f"fortune_{timestamp}.md"
         old_path = os.path.join(old_dir, old_filename)
-        
-        # Move the file
-        os.rename(fortune_path, old_path)
+        shutil.move(fortune_file, old_path)
         print(f"Moved existing fortune.md to: {old_path}")
-
-def main():
-    """Main function to generate and save fortune."""
-    # Get a fortune
-    fortune_text = get_fortune()
     
-    # Format with ASCII art and border
-    formatted_fortune = create_formatted_fortune(fortune_text)
-    
-    # Handle existing file
-    move_existing_fortune()
+    # Generate the fortune
+    fortune_output = generate_fortune_output()
     
     # Write to fortune.md
-    output_path = os.path.join(os.getcwd(), 'fortune.md')
-    with open(output_path, 'w', encoding='utf-8') as f:
-        f.write(formatted_fortune)
+    with open(fortune_file, "w") as f:
+        f.write(fortune_output)
     
-    print(f"Fortune generated and saved to: {output_path}")
-    print("\n" + formatted_fortune)
+    print(f"Fortune generated and saved to: {fortune_file}")
+    print("\n" + fortune_output)
+
 
 if __name__ == "__main__":
     main()
