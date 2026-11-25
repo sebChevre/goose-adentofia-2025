@@ -1,44 +1,45 @@
 # 🦢 Today's Fortune
 
-> *Drawn up by Madame Plume the Wise, oracle of the willow pond -- mood: **wise***
+> *Drawn up by Madame Plume the Wise, Oracle of the Willow Pond -- mood: **wise***
 
 ```
-+==========================================================+
-|                                                          |
-|         ***  THE ORACLE OF THE WILLOW POND  ***          |
-|            a fortune of Madame Plume the Wise            |
-|         (mood: wise; attitude: sassy, as always)         |
-|                                                          |
-|        "Do not mourn the sunken bread. The river         |
-|        provides for those who know how to wait --        |
-|        and, on the rare occasion, how to steal."         |
-|                                                          |
-|     ================================================     |
-|       ~ the sassy goose, with honks, approaches ~        |
-|     ================================================     |
-|                                                          |
-|                          .--------.          "Honk.      |
-|                       / ##  ##  \          Mind your     |
-|                          |  .--.  |          step."      |
-|                                  \  '--'  /              |
-|                                   '------'               |
-|                                   |      |               |
-|                                   |      |               |
-|                .------------'      '------------.        |
-|               |                                  |       |
-|               |                ,--.              |       |
-|               |               (    )             |       |
-|               |                '--'              |       |
-|               |                                  |       |
-|               '----------------------------------'       |
-|                                |  |    |  |              |
-|                                |  |    |  |              |
-|                               _|  |    |  |_             |
-|                             (______) (______)            |
-|                                                          |
-|        *~*~*  honked with full confidence  *~*~*         |
-|                                                          |
-+==========================================================+
++==============================================================+
+|                                                              |
+|           ***  THE ORACLE OF THE WILLOW POND  ***            |
+|           a fortune from Madame Plume the Wise               |
+|           (mood: wise; sass: 100%, as always)                |
+|                                                              |
+|      "The answer you seek is already in your hands. You      |
+|      have simply not yet stopped honking long enough to      |
+|      look."                                                  |
+|                                                              |
+|       ------------------------------------------------       |
+|                                                              |
+|                                       .----.                 |
+|                                       |    |                 |
+|                         .----.        |  . |                 |
+|                        / o  - \       |  | |                 |
+|                        \   ^  /       |  . |                 |
+|                         '.__'         |  | |                 |
+|                          | |          '----'                 |
+|                           /          \                       |
+|                          /            \                      |
+|                         /              \                     |
+|                         \              /                     |
+|                          \            /                      |
+|                           _____________                      |
+|                               |   |                          |
+|                               |   \                          |
+|                               v                              |
+|                                                              |
+|       ~ head tilted, one wing up, deeply unimpressed ~       |
+|                                                              |
+|       ------------------------------------------------       |
+|                                                              |
+| -- divined by Madame Plume the Wise, Oracle of the Willow Pond |
+| honked with full confidence, to be read before noon            |
+|                                                              |
++==============================================================+
 ```
 
-_Honked on 2026-11-24 21:01 -- the goose finds this binding._
+_Honked on 2026-11-25 20:23 -- the goose finds this binding._
