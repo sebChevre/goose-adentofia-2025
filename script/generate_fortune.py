@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""generate_fortune.py -- a small daily ritual for the modern soul.
+"""generate_fortune.py -- the daily reading of the Wise Goose Oracle.
 
-Generates an introspective fortune from Madame Ganderella, the sassy
-goose oracle, framed in ASCII art, and writes it to ``fortune.md`` in
-the current directory.
+Generates a fortune from a fictional fortune teller with a *wise* mood,
+drawn in ASCII art together with a sassy goose (the fortune sits above
+the goose, separated by a divider), and writes the whole card to
+``fortune.md`` in the current directory.
 
-If a ``fortune.md`` already exists, it is moved into the ``old/``
-folder first (with a timestamp if ``old/fortune.md`` is already taken).
+If ``fortune.md`` already exists, it is moved into the ``old/`` folder
+(timestamped if that name is already taken) before the new file is
+created.
 
 Usage:
     python3 generate_fortune.py
@@ -21,120 +23,172 @@ import textwrap
 from datetime import datetime, timezone
 
 # --------------------------------------------------------------------------
-# The oracle's words -- introspective mood, sassy delivery
+# The oracle: a fictional fortune teller with a wise mood
 # --------------------------------------------------------------------------
 
-FORTUNES = [
-    "You keep asking the universe for signs, my dear, while the answer "
-    "has been sitting in the pond behind your thoughts all along, "
-    "watching you swim in circles. Tonight, look at the reflection "
-    "instead of the water. Yes, it is you. No, it is not a joke. Breathe.",
-
-    "The card shows a long, dignified neck. The reading is this: you "
-    "have been holding your head very high while refusing to turn it "
-    "around. Whatever you are afraid to look at from behind has been "
-    "looking at you for a long time. Turn around. Gently. The oracle "
-    "means it.",
-
-    "Someone is overthinking you, and the someone is you, so the "
-    "oracle is simply introducing you to yourself. The fortune: you "
-    "are allowed to be unfinished. Even a goose is allowed to waddle, "
-    "and this one has a doctorate in it. hmph. Be kind to the waddle.",
+ORACLES = [
+    ("Grandmother Goose", "Keeper of the Ancient Pond"),
+    ("Madame Plume-de-Sagesse", "Elder of the Reeds"),
+    ("The Wise One of the Marsh", "Reader of Feathers and Fates"),
+    ("Sister Quackworth", "Oracle of the Mirror Pond"),
 ]
 
-ORACLE_NAME = "M A D A M E   G A N D E R E L L A"
-ORACLE_SUBTITLE = "~ the sassy goose oracle of introspection ~"
-ATTRIBUTION = "- Madame Ganderella, goose oracle of the deep pond"
-FOOTER = "hmph. The oracle has spoken. It is about you. All of you."
+FORTUNES = [
+    "The pond remembers every stone, and so does time. What you toss in "
+    "today you will scoop up tomorrow, so choose your words like stones "
+    "and your kindnesses like water: both will find their way to you.",
+
+    "You seek a shortcut across the marsh, but the marsh has no "
+    "shortcuts -- only paths that look like shortcuts. Walk the long one "
+    "quietly; it is far shorter than the detour of regret.",
+
+    "The tallest reed bows the least, and it is not weakness to bend. "
+    "Bend where you can, hold where you must, and let the wind take the "
+    "rest. That is the oldest lesson the marsh ever gave anyone.",
+
+    "Do not mistake a honk for thunder. The storm you fear is mostly the "
+    "echo of the one that has already passed. Listen again, my dear: it "
+    "is only you, quietly practicing your courage.",
+
+    "A goose that trusts the river arrives before the one that carries "
+    "the river on its back. Let what is meant to flow, flow, and carry "
+    "only what you can: your own light, and a little patience.",
+
+    "You have been re-reading the same leaf, hoping the ink will change. "
+    "The leaf does not change; you do. Put it down and look up -- the "
+    "answer was written in the sky, where you have been all along.",
+
+    "Patience is not waiting. It is staying in the pond with your eyes "
+    "closed, trusting the fish to find you. The wise never chase; they "
+    "simply make themselves worth catching.",
+
+    "Fortune has a long memory and a very long neck. It watched you last "
+    "winter, sitting exactly where you sit now, and it decided: yes, "
+    "this one is ready. It only kept the good news for a good day. "
+    "Today counts.",
+
+    "The road you fear and the road you want lead to the same pond. Walk "
+    "both with your head held high, and the water will never know the "
+    "difference between your courage and your comfort.",
+
+    "The moon has no neck, and yet it looks down on everyone without "
+    "flinching. Do not be surprised if your own reflection shows up in "
+    "your pond wearing your face. It is you. Be kind to it; it has been "
+    "carrying you all along.",
+]
 
 # --------------------------------------------------------------------------
-# The sassy goose -- facing forward, wings akimbo, one eye not fooled
+# The sassy goose: raised brow, smug eye, smirking bill, and a Hmph.
+# All rows share one column grid -- do not realign them independently.
 # --------------------------------------------------------------------------
 
 GOOSE_ART = [
-    "           _--.",
-    "          (o  _)    hmph.",
-    "           \\__/",
-    "            ||",
-    "            ||",
-    "           /||\\",
-    "   .-------'  '-------.",
-    "   /   .----------.   \\",
-    "  /   |            |   \\",
-    " /    |            |    \\",
-    "  \\   |            |   /",
-    "     \\'------------'/",
-    "          |    |",
-    "         _|    |_",
+    "                 .-~~~-.       .-~~~~~.",
+    "                /  _    \\      / Hmph!  \\",
+    "                |  o   \\____~ \\        /",
+    "                |      \\__/   '-.__.-'",
+    "                  \\______",
+    "                    |  |",
+    "                   |  |",
+    "                   |  |",
+    "           .-------'  '",
+    "          /           \\",
+    "         /    .-~~~.    \\",
+    "         |    '-----'   |",
+    "          \\             /",
+    "           '-----------'",
+    "             |    |",
+    "             |    |",
+    "            \\__/  \\__/",
 ]
 
 # --------------------------------------------------------------------------
 # Layout helpers
 # --------------------------------------------------------------------------
 
-WIDTH = 64  # inner width of the ASCII frame
+INNER_WIDTH = 50   # content width between the frame's pipes
+TEXT_WIDTH = 44    # wrap width for the fortune text
+
+
+def _edge() -> str:
+    return "+" + "=" * INNER_WIDTH + "+"
+
+
+def _frame_row(content: str = "") -> str:
+    return "|" + (" " + content).ljust(INNER_WIDTH) + "|"
 
 
 def _center(text: str) -> str:
-    """Center a single line within the frame width."""
-    if len(text) <= WIDTH:
-        return text.center(WIDTH)
-    return text[: WIDTH - 1] + "~"
+    if len(text) > INNER_WIDTH - 2:
+        return text[: INNER_WIDTH - 2]
+    return text.center(INNER_WIDTH)
 
 
-def _indent_block(lines: list[str], width: int = WIDTH) -> list[str]:
-    """Left-pad a multi-line block uniformly so its internal grid survives.
+def _divider() -> str:
+    """Divider line between the fortune and the sassy goose."""
+    tag = "~*~"
+    left = (INNER_WIDTH - len(tag)) // 2
+    right = INNER_WIDTH - len(tag) - left
+    return "+" + "-" * left + tag + "-" * right + "+"
 
-    (Centering each row independently would misalign rows of differing
-    lengths, because the art shares one common column grid.)
-    """
+
+def _indent_block(lines: list[str], width: int = INNER_WIDTH) -> list[str]:
+    """Left-pad a multi-line block as a unit so its column grid survives."""
     stripped = [line.rstrip() for line in lines]
-    max_len = max(len(line) for line in stripped)
-    pad = max(0, (width - max_len) // 2)
+    pad = max(0, (width - max(len(line) for line in stripped)) // 2)
     return [" " * pad + line for line in stripped]
 
 
-def _frame(inner_lines: list[str]) -> str:
-    edge = "+" + "=" * WIDTH + "+"
-    rows = [edge]
-    for line in inner_lines:
-        rows.append("|" + line.ljust(WIDTH)[:WIDTH] + "|")
-    rows.append(edge)
-    return "\n".join(rows)
-
-
 def _wrap_fortune(text: str) -> list[str]:
-    lines = textwrap.fill(text, width=54).splitlines()
-    lines[0] = '" ' + lines[0]
-    lines[-1] += ' "'
+    lines = textwrap.fill(text, width=TEXT_WIDTH).splitlines()
+    lines[0] = '"' + lines[0]
+    lines[-1] += '"'
     return lines
 
 
-def build_document(fortune_text: str, stamp: str) -> str:
-    """Assemble the full markdown document (title, fortune, divider, goose)."""
-    inner: list[str] = [
-        _center(ORACLE_NAME),
-        _center(ORACLE_SUBTITLE),
+# --------------------------------------------------------------------------
+# Document assembly
+# --------------------------------------------------------------------------
+
+
+def build_document(fortune_text: str, oracle: tuple[str, str], stamp: str) -> str:
+    name, title = oracle
+    top = _edge()
+
+    # Section 1: the fortune (wise words, on top)
+    fortune_section = [
+        "",
+        _center(f"~ The Prophecy of {name} ~"),
+        _center("~ wise of mind, sassy of beak ~"),
+        _center(f"foreseen {stamp}"),
         "",
         *_indent_block(_wrap_fortune(fortune_text)),
         "",
-        _center(ATTRIBUTION),
+        _center(f"- {name}, {title}"),
         "",
-        _center("*~" * (WIDTH // 2)),
+    ]
+
+    # Section 2: the sassy goose (below the divider)
+    goose_section = [
         "",
         *_indent_block(GOOSE_ART),
         "",
-        _center(FOOTER),
     ]
-    framed = _frame(inner)
+
+    rows = [top]
+    rows += [_frame_row(line) for line in fortune_section]
+    rows.append(_divider())
+    rows += [_frame_row(line) for line in goose_section]
+    rows.append(top)
+
     return (
-        "# Fortune from Madame Ganderella\n"
+        "# The Wise Goose Oracle\n"
         "\n"
-        f"*{stamp}*\n"
+        f"*{stamp} -- {name}, {title}*\n"
         "\n"
         "```text\n"
-        f"{framed}\n"
-        "```\n"
+        + "\n".join(rows)
+        + "\n```\n"
     )
 
 
@@ -144,7 +198,7 @@ def build_document(fortune_text: str, stamp: str) -> str:
 
 
 def archive_existing(path: str, file_stamp: str) -> str | None:
-    """Move an existing fortune.md into ./old/. Returns destination or None."""
+    """Move an existing fortune.md into ./old/. Returns the destination."""
     if not os.path.exists(path):
         return None
     old_dir = os.path.join(os.path.dirname(path) or ".", "old")
@@ -158,11 +212,12 @@ def archive_existing(path: str, file_stamp: str) -> str | None:
 
 def main() -> None:
     now = datetime.now(timezone.utc)
-    stamp = now.strftime("%Y-%m-%d %H:%M UTC")
+    stamp = now.strftime("%Y-%m-%d")
     file_stamp = now.strftime("%Y%m%d_%H%M%S")
 
     fortune = random.choice(FORTUNES)
-    document = build_document(fortune, stamp)
+    oracle = random.choice(ORACLES)
+    document = build_document(fortune, oracle, stamp)
 
     out_path = os.path.join(os.getcwd(), "fortune.md")
     archived = archive_existing(out_path, file_stamp)
